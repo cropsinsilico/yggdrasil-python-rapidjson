@@ -138,3 +138,29 @@ def test_pandas(dumps, loads):
     loaded = loads(dumped)
     assert type(loaded) is type(value) and loaded.dtype == value.dtype
     np.testing.assert_equal(loaded, value)
+
+
+def test_pandas_empty(dumps, loads):
+    try:
+        import pandas as pd
+    except ImportError:
+        pytest.skip("requires pandas")
+    value = np.array([], dtype=[('name', 'U0'), ('age', 'i4'),
+                                ('weight', 'f4'), ('color', 'S0')])
+    value_pd = pd.DataFrame(value)
+    dumped = dumps(value_pd)
+    loaded = loads(dumped)
+    loaded_value = loads(dumps(value))
+    print(loaded, loaded_value)
+    print(type(loaded), type(loaded_value))
+    # import pdb; pdb.set_trace()
+    assert (type(loaded) is type(loaded_value))
+    if isinstance(loaded, list):
+        assert len(loaded) == len(loaded_value)
+        np.testing.assert_equal(loaded, loaded_value)
+        # for a, b in zip(loaded, loaded_value):
+        #     np.testing.assert_equal(a, b)
+    else:
+        assert loaded.dtype == loaded_value.dtype
+        np.testing.assert_equal(loaded, value)
+        np.testing.assert_equal(loaded, loaded_value)

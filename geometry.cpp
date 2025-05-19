@@ -3370,7 +3370,8 @@ static PyObject* objwavefront_str(PyObject* self) {
     ObjWavefrontObject* v = (ObjWavefrontObject*) self;
     std::basic_stringstream<char> ss;
     ss << *v->obj;
-    return PyUnicode_FromString(ss.str().c_str());
+    return PyUnicode_FromStringAndSize(ss.str().c_str(),
+                                       (Py_ssize_t)(ss.str().size()));
 }
 
 
@@ -3425,7 +3426,7 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
     ObjWavefrontObject* v = (ObjWavefrontObject*) self;
 
     if (PyList_Check(x)) {
-	std::vector<uint8_t> values;
+	std::vector<double> values;
 	if (PyList_Size(x) != (Py_ssize_t)v->obj->count_elements(name)) {
 	    PyErr_SetString(geom_error, "Number of colors dosn't match the number of elements in the set.");
 	    return NULL;
@@ -3445,21 +3446,31 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 			PyErr_SetString(PyExc_TypeError, "ObjWavefront element keys must be strings");
 			return NULL;
 		    }
-		    if (PyLong_Check(value)) {
-			long vc = PyLong_AsLong(value);
-			if (vc < 0 || vc > 255) {
-			    PyErr_SetString(geom_error, "Color out of range (0, 255).");
+		    if (PyFloat_Check(value)) {
+			double vc = PyFloat_AsDouble(value);
+			if (vc < 0 || vc > 1) {
+			    PyErr_SetString(geom_error, "Color out of range for floating point color value (0, 1).");
 			    return NULL;
 			}
-			values.push_back((uint8_t)vc);
+			values.push_back(vc);
+		    } else if (PyLong_Check(value)) {
+			long vc = PyLong_AsLong(value);
+			if (vc < 0 || vc > 255) {
+			    PyErr_SetString(geom_error, "Color out of range for integer color value (0, 255).");
+			    return NULL;
+			}
+			values.push_back(((double)vc)/255.0);
 		    } else if (PyArray_CheckScalar(value)) {
-			PyArray_Descr* desc = PyArray_DescrNewFromType(NPY_UINT8);
-			uint8_t vc = 0;
+                        PyArray_Descr* value_desc = PyArray_DescrFromScalar(value);
+			PyArray_Descr* desc = PyArray_DescrNewFromType(NPY_DOUBLE);
+			double vc = 0;
 			PyArray_CastScalarToCtype(value, &vc, desc);
+                        if (PyDataType_ISINTEGER(value_desc))
+                            vc /= 255.0;
 			values.push_back(vc);
 			Py_DECREF(desc);
 		    } else {
-			PyErr_SetString(PyExc_TypeError, "ObjWavefront element colors must be integers.");
+			PyErr_SetString(PyExc_TypeError, "ObjWavefront element colors must be integers or floats.");
 			return NULL;
 		    }
 		}
@@ -3471,15 +3482,22 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 		for (Py_ssize_t j = 0; j < PyList_Size(item); j++) {
 		    PyObject* value = PyList_GetItem(item, j);
 		    if (value == NULL) return NULL;
-		    if (PyLong_Check(value)) {
-			long vc = PyLong_AsLong(value);
-			if (vc < 0 || vc > 255) {
-			    PyErr_SetString(geom_error, "Color out of range (0, 255).");
+		    if (PyFloat_Check(value)) {
+                        double vc = PyFloat_AsDouble(value);
+			if (vc < 0 || vc > 1) {
+			    PyErr_SetString(geom_error, "Color out of range for floating point color value (0, 1).");
 			    return NULL;
 			}
-			values.push_back((uint8_t)vc);
+			values.push_back(vc);
+		    } else if (PyLong_Check(value)) {
+			long vc = PyLong_AsLong(value);
+			if (vc < 0 || vc > 255) {
+			    PyErr_SetString(geom_error, "Color out of range for integer color value (0, 255).");
+			    return NULL;
+			}
+			values.push_back(((double)vc)/255.0);
 		    } else {
-			PyErr_SetString(PyExc_TypeError, "ObjWavefront element color values must be integers.");
+			PyErr_SetString(PyExc_TypeError, "ObjWavefront element color values must be integers or floats.");
 			return NULL;
 		    }
 		}
@@ -3494,6 +3512,7 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 	    return NULL;
 	}
     } else if (PyArray_Check(x)) {
+        PyArray_Descr* value_desc = PyArray_DESCR((PyArrayObject*)x);
 	SizeType xn = 0, xm = 0;
 	int ndim = PyArray_NDIM((PyArrayObject*)x);
 	if (ndim != 2) return NULL;
@@ -3505,7 +3524,7 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 	    PyErr_SetString(geom_error, "Colors array is not the correct shape.");
 	    return NULL;
 	}
-	PyObject* x2 = PyArray_Cast((PyArrayObject*)x, NPY_UINT8);
+	PyObject* x2 = PyArray_Cast((PyArrayObject*)x, NPY_DOUBLE);
 	if (x2 == NULL) return NULL;
 	if (!PyArray_IS_C_CONTIGUOUS((PyArrayObject*)x2)) {
 	    PyArrayObject* cpy = PyArray_GETCONTIGUOUS((PyArrayObject*)x2);
@@ -3513,7 +3532,11 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 	    Py_DECREF(x2);
 	    x2 = (PyObject*)cpy;
 	}
-	uint8_t* xa = (uint8_t*)PyArray_BYTES((PyArrayObject*)x2);
+	double* xa = (double*)PyArray_BYTES((PyArrayObject*)x2);
+        if (PyDataType_ISINTEGER(value_desc)) {
+            for (SizeType i = 0; i < (xn * xm); i++)
+                xa[i] /= 255.0;
+        }
 	bool ret = v->obj->add_element_set_colors(name, xa, xn, xm);
 	Py_DECREF(x2);
 	if (!ret) {
@@ -3552,8 +3575,8 @@ static PyObject* objwavefront_get_colors(PyObject* self, PyObject* args, PyObjec
     if (asArray) {
 	
 	size_t N = 0, M = 0;
-	std::vector<uint8_t> vect = v->obj->get_colors_array(elementType, N, M);
-	PyArray_Descr* desc = PyArray_DescrNewFromType(NPY_UINT8);
+	std::vector<double> vect = v->obj->get_colors_array<double>(elementType, N, M);
+	PyArray_Descr* desc = PyArray_DescrNewFromType(NPY_DOUBLE);
 	if (desc == NULL) return NULL;
 	npy_intp np_shape[2] = { (npy_intp)N, (npy_intp)M };
 	PyObject* tmp = PyArray_NewFromDescr(&PyArray_Type, desc,
@@ -3565,7 +3588,7 @@ static PyObject* objwavefront_get_colors(PyObject* self, PyObject* args, PyObjec
 
     } else {
 	size_t N = 0, M = 0;
-	std::vector<uint8_t> vect = v->obj->get_colors_array(elementType, N, M);
+	std::vector<double> vect = v->obj->get_colors_array<double>(elementType, N, M);
 	PyObject* out = PyList_New(N);
 	if (out == NULL) {
 	    return NULL;
@@ -3579,7 +3602,7 @@ static PyObject* objwavefront_get_colors(PyObject* self, PyObject* args, PyObjec
 	    size_t j = 0;
 	    std::vector<std::string> colors({"red", "green", "blue"});
 	    for (std::vector<std::string>::const_iterator p = colors.begin(); p != colors.end(); p++, j++) {
-		PyObject* ival = PyLong_FromLong(static_cast<long>(vect[i * 3 + j]));
+		PyObject* ival = PyFloat_FromDouble(vect[i * 3 + j]);
 		if (ival == NULL) {
 		    Py_DECREF(item);
 		    Py_DECREF(out);

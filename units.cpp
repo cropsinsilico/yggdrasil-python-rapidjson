@@ -1349,8 +1349,11 @@ static PyObject* quantity_array__array_ufunc__(PyObject* self, PyObject* args, P
     if (is_call < 0) {
 	goto cleanup;
     } else if (!is_call) {
-	PyErr_SetString(units_error,
-			    "Only the __call__ ufunc method is currently supported by rapidjson.units.QuantityArray");
+        std::string msg = "Only the __call__ ufunc method is currently supported by rapidjson.units.QuantityArray, not \"";
+        msg += std::string(PyUnicode_AsUTF8(method_name));
+        msg += "\"";
+	PyErr_SetString(units_error, msg.c_str());
+			    
 	goto cleanup;
     }
     if (kwargs != NULL) {

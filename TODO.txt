@@ -1,1 +1,2 @@
 * Move python module into subdirectory for ease of re-packaging in submodule
+* Add numpy tile array method

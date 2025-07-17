@@ -34,6 +34,7 @@ static PyObject* units_new(PyTypeObject* type, PyObject* args, PyObject* kwargs)
 static PyObject* units_str(PyObject* self);
 static PyObject* units_is_compatible(PyObject* self, PyObject* args, PyObject* kwargs);
 static PyObject* units_is_dimensionless(PyObject* self, PyObject* args);
+static PyObject* units_to_system(PyObject* self, PyObject* args);
 static PyObject* units_richcompare(PyObject *self, PyObject *other, int op);
 static PyObject* units_multiply(PyObject *a, PyObject *b);
 static PyObject* units_divide(PyObject *a, PyObject *b);
@@ -62,6 +63,7 @@ static PyObject* quantity_array_is_compatible(PyObject* self, PyObject* args, Py
 static PyObject* quantity_array_is_dimensionless(PyObject* self, PyObject* args);
 static PyObject* quantity_array_is_equivalent(PyObject* self, PyObject* args);
 static PyObject* quantity_array_to(PyObject* self, PyObject* args);
+static PyObject* quantity_array_to_system(PyObject* self, PyObject* args);
 static PyObject* quantity_array__array_ufunc__(PyObject* self, PyObject* args, PyObject* kwargs);
 static PyObject* quantity_array__array_finalize__(PyObject* self, PyObject* args);
 static PyObject* quantity_array__array_wrap__(PyObject* self, PyObject* args);
@@ -196,6 +198,8 @@ static PyMethodDef units_methods[] = {
     {"is_compatible", (PyCFunction) units_is_compatible, METH_VARARGS,
      "Check if a set of units are compatible with another set."},
     {"is_dimensionless", (PyCFunction) units_is_dimensionless, METH_NOARGS,
+     "Check if the units are dimensionless."},
+    {"to_system", (PyCFunction) units_to_system, METH_NOARGS,
      "Check if the units are dimensionless."},
     {"__getstate__", (PyCFunction) units__getstate__,
      METH_NOARGS,
@@ -461,6 +465,47 @@ static PyObject* units_is_dimensionless(PyObject* self, PyObject*) {
 }
 
 
+static PyObject* units_to_system(PyObject* self, PyObject* args) {
+    PyObject* unitSysObject_args = NULL;
+    PyObject* unitSysObject = NULL;
+    if (!PyArg_ParseTuple(args, "O", &unitSysObject_args))
+	return NULL;
+    if (PyObject_IsInstance(unitSysObject_args, (PyObject*)&Units_Type)) {
+        unitSysObject = unitSysObject_args;
+        Py_INCREF(unitSysObject);
+    } else {
+        PyObject* units_args = PyTuple_Pack(1, unitSysObject_args);
+        if (units_args == NULL) return NULL;
+        unitSysObject = PyObject_Call((PyObject*)&Units_Type, units_args, NULL);
+        Py_DECREF(units_args);
+    }
+    if (unitSysObject == NULL)
+        return NULL;
+
+    UnitsObject* v = (UnitsObject*) self;
+    UnitsObject* vsys = (UnitsObject*) unitSysObject;
+
+    Units new_units = v->units->as_units_system(*(vsys->units));
+    if (new_units.is_empty()) {
+        PyErr_Format(units_error,
+                     "Failed to convert units to new system.");
+        return NULL;
+    }
+
+    PyTypeObject* type = (PyTypeObject*) PyObject_Type(self);
+    UnitsObject* out = (UnitsObject*) type->tp_alloc(type, 0);
+    if (out == NULL)
+        return NULL;
+    out->units = new Units(new_units);
+    if (out->units->is_empty()) {
+        PyErr_Format(units_error,
+                     "Failed to convert units to new system.");
+        return NULL;
+    }
+    return (PyObject*) out;
+}
+
+
 static PyObject* units_richcompare(PyObject *self, PyObject *other, int op) {
     if (!PyObject_IsInstance(other, (PyObject*)(&Units_Type))) {
 	Py_INCREF(Py_False);
@@ -631,6 +676,8 @@ static PyMethodDef quantity_array_methods[] = {
     {"is_dimensionless", (PyCFunction) quantity_array_is_dimensionless, METH_NOARGS,
      "Check if the quantity has dimensionless units."},
     {"to", (PyCFunction) quantity_array_to, METH_VARARGS,
+     "Convert the quantity to another system of units."},
+    {"to_system", (PyCFunction) quantity_array_to_system, METH_VARARGS,
      "Convert the quantity to another set of units."},
     {"is_equivalent", (PyCFunction) quantity_array_is_equivalent, METH_VARARGS,
      "Check if another QuantityArray is equivalent when convert to the same units/"},
@@ -1308,6 +1355,21 @@ static PyObject* quantity_array_to(PyObject* self, PyObject* args) {
     if (out == NULL)
 	return NULL;
 
+    return out;
+}
+
+static PyObject* quantity_array_to_system(PyObject* self, PyObject* args) {
+    QuantityArrayObject* v = (QuantityArrayObject*) self;
+    PyObject* unitsObject = units_to_system(
+        (PyObject*)v->units, args);
+    if (unitsObject == NULL)
+        return NULL;
+
+    PyObject* new_args = PyTuple_Pack(1, unitsObject);
+    if (new_args == NULL) return NULL;
+    PyObject* out = quantity_array_to(self, new_args);
+    Py_DECREF(new_args);
+    Py_DECREF(unitsObject);
     return out;
 }
 

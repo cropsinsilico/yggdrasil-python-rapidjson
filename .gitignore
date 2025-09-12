@@ -65,3 +65,9 @@ target/
 /.emacs.desktop.lock
 /emacs.desktop
 *~
+
+# Virtualenv
+.venv/
+
+# Git Worktree
+.wt/

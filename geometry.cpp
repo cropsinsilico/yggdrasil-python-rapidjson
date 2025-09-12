@@ -2730,19 +2730,21 @@ static PyObject* objwavefront_richcompare(PyObject *self, PyObject *other, int o
 
 static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObject* kwargs) {
     const char* elementType0 = 0;
-    int asArray = 0;
+    int asArray = 0, integerColors = 0;
     PyObject* defaultRet = NULL;
     
     static char const* kwlist[] = {
 	"name",
 	"default",
 	"as_array",
+        "integer_colors",
         NULL
     };
     
     
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|Op:", (char**) kwlist,
-				     &elementType0, &defaultRet, &asArray))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|Opp:", (char**) kwlist,
+				     &elementType0, &defaultRet, &asArray,
+                                     &integerColors))
 	return NULL;
 
     std::string elementType = obj_alias2base(std::string(elementType0));
@@ -2775,7 +2777,8 @@ static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObj
 	if (tmp == NULL) return NULL;					\
 	out = (PyObject*)PyArray_NewCopy((PyArrayObject*)tmp, NPY_CORDER); \
 	Py_DECREF(tmp)
-	
+
+        // TODO: Check for color?
 	if (v->obj->requires_double(elementType)) {
 	    GET_ARRAY(double, NPY_DOUBLE);
 	} else {
@@ -2892,6 +2895,11 @@ static PyObject* objwavefront_as_trimesh(PyObject* self, PyObject*, PyObject* kw
 	Py_DECREF(dict_kwargs);
 	return NULL;
     }
+    if (PyDict_SetItemString(dict_kwargs, "integer_colors", Py_True) < 0) {
+	Py_DECREF(dict_args);
+	Py_DECREF(dict_kwargs);
+	return NULL;
+    }
     PyObject* mesh_dict = objwavefront_as_dict(self, dict_args, dict_kwargs);
     Py_DECREF(dict_args);
     Py_DECREF(dict_kwargs);
@@ -2929,16 +2937,17 @@ static PyObject* objwavefront_from_trimesh(PyObject* cls, PyObject* args, PyObje
 }
 
 static PyObject* objwavefront_as_dict(PyObject* self, PyObject* args, PyObject* kwargs) {
-    int asArray = 0;
+    int asArray = 0, integerColors = 0;
     
     static char const* kwlist[] = {
 	"as_array",
+        "integer_colors",
         NULL
     };
     
     
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|p:", (char**) kwlist,
-				     &asArray))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|pp:", (char**) kwlist,
+				     &asArray, &integerColors))
 	return NULL;
 
     ObjWavefrontObject* v = (ObjWavefrontObject*) self;
@@ -3465,8 +3474,9 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 			PyArray_Descr* desc = PyArray_DescrNewFromType(NPY_DOUBLE);
 			double vc = 0;
 			PyArray_CastScalarToCtype(value, &vc, desc);
-                        if (PyDataType_ISINTEGER(value_desc))
+                        if (PyDataType_ISINTEGER(value_desc)) {
                             vc /= 255.0;
+                        }
 			values.push_back(vc);
 			Py_DECREF(desc);
 		    } else {
@@ -3534,8 +3544,9 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 	}
 	double* xa = (double*)PyArray_BYTES((PyArrayObject*)x2);
         if (PyDataType_ISINTEGER(value_desc)) {
-            for (SizeType i = 0; i < (xn * xm); i++)
+            for (SizeType i = 0; i < (xn * xm); i++) {
                 xa[i] /= 255.0;
+            }
         }
 	bool ret = v->obj->add_element_set_colors(name, xa, xn, xm);
 	Py_DECREF(x2);
@@ -3553,17 +3564,18 @@ static PyObject* objwavefront_add_colors(PyObject* self, PyObject* args, PyObjec
 
 static PyObject* objwavefront_get_colors(PyObject* self, PyObject* args, PyObject* kwargs) {
     const char* elementType0 = 0;
-    int asArray = 0;
+    int asArray = 0, integerColors = 0;
     
     static char const* kwlist[] = {
 	"name",
 	"as_array",
+        "integer_colors",
         NULL
     };
     
     
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|p:", (char**) kwlist,
-				     &elementType0, &asArray))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|pp:", (char**) kwlist,
+				     &elementType0, &asArray, &integerColors))
 	return NULL;
 
     std::string elementType(elementType0);
@@ -3575,13 +3587,24 @@ static PyObject* objwavefront_get_colors(PyObject* self, PyObject* args, PyObjec
     if (asArray) {
 	
 	size_t N = 0, M = 0;
-	std::vector<double> vect = v->obj->get_colors_array<double>(elementType, N, M);
-	PyArray_Descr* desc = PyArray_DescrNewFromType(NPY_DOUBLE);
+        void* vectData = NULL;
+        std::vector<double> vect_D;
+        std::vector<uint8_t> vect_I;
+        PyArray_Descr* desc = NULL;
+        if (integerColors) {
+            vect_I = v->obj->get_colors_array<uint8_t>(elementType, N, M);
+            vectData = (void*)vect_I.data();
+            desc = PyArray_DescrNewFromType(NPY_UINT8);
+        } else {
+            vect_D = v->obj->get_colors_array<double>(elementType, N, M);
+            vectData = (void*)vect_D.data();
+            desc = PyArray_DescrNewFromType(NPY_DOUBLE);
+        }
 	if (desc == NULL) return NULL;
 	npy_intp np_shape[2] = { (npy_intp)N, (npy_intp)M };
 	PyObject* tmp = PyArray_NewFromDescr(&PyArray_Type, desc,
 					     2, np_shape, NULL,
-					     (void*)vect.data(), 0, NULL);
+					     vectData, 0, NULL);
 	if (tmp == NULL) return NULL;
 	out = (PyObject*)PyArray_NewCopy((PyArrayObject*)tmp, NPY_CORDER);
 	Py_DECREF(tmp);
@@ -3602,7 +3625,13 @@ static PyObject* objwavefront_get_colors(PyObject* self, PyObject* args, PyObjec
 	    size_t j = 0;
 	    std::vector<std::string> colors({"red", "green", "blue"});
 	    for (std::vector<std::string>::const_iterator p = colors.begin(); p != colors.end(); p++, j++) {
-		PyObject* ival = PyFloat_FromDouble(vect[i * 3 + j]);
+                PyObject* ival = NULL;
+                if (integerColors) {
+                    ival = PyLong_FromLong(
+                        static_cast<long>(vect[i * 3 + j] * 255.0));
+                } else {
+                    ival = PyFloat_FromDouble(vect[i * 3 + j]);
+                }
 		if (ival == NULL) {
 		    Py_DECREF(item);
 		    Py_DECREF(out);

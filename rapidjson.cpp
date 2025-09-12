@@ -3,7 +3,7 @@
 // :Author:    Ken Robbins <ken@kenrobbins.com>
 // :License:   MIT License
 // :Copyright: © 2015 Ken Robbins
-// :Copyright: © 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Lele Gaifax
+// :Copyright: © 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 Lele Gaifax
 //
 
 #ifndef _USE_MATH_DEFINES
@@ -102,6 +102,13 @@ static PyObject* encoding_name = NULL;
 static PyObject* minus_inf_string_value = NULL;
 static PyObject* nan_string_value = NULL;
 static PyObject* plus_inf_string_value = NULL;
+
+
+enum JSONExpects {
+    JSONExpectsNull,
+    JSONExpectsString,
+    JSONExpectsBytes
+};
 
 
 enum HandlerContextObjectFlag {
@@ -932,32 +939,36 @@ static unsigned check_types(const Value& d,
     return 0;
 }
 
-static unsigned check_allowsString(Document& d) {
+static JSONExpects check_for_string(Document& d,
+                                    bool relaxed = false) {
     if (!d.IsObject())
-	return 0;
+	return JSONExpectsNull;
     std::vector<TTYPE_> types, subtypes;
     types.push_back(&Value::GetStringString());
     types.push_back(&Value::GetPythonFunctionString());
     types.push_back(&Value::GetPythonClassString());
     types.push_back(&Value::GetPythonInstanceString());
-    types.push_back(&Value::GetAnyString());
-    subtypes.push_back(&Value::GetBytesString());
     subtypes.push_back(&Value::GetStringString());
     subtypes.push_back(&Value::GetUnicodeString());
-    return check_types(d, types, subtypes, true);
+    if (relaxed) {
+        types.push_back(&Value::GetAnyString());
+        // subtypes.push_back(&Value::GetAnyString());
+    }
+    if (check_types(d, types, subtypes, relaxed))
+        return JSONExpectsString;
+    types.clear();
+    subtypes.clear();
+    subtypes.push_back(&Value::GetBytesString());
+    if (check_types(d, types, subtypes, relaxed))
+        return JSONExpectsBytes;
+    return JSONExpectsNull;
 }
-static unsigned check_expectsString(Document& d) {
-    if (!d.IsObject())
-	return 0;
-    std::vector<TTYPE_> types, subtypes;
-    types.push_back(&Value::GetStringString());
-    types.push_back(&Value::GetPythonFunctionString());
-    types.push_back(&Value::GetPythonClassString());
-    types.push_back(&Value::GetPythonInstanceString());
-    subtypes.push_back(&Value::GetBytesString());
-    subtypes.push_back(&Value::GetStringString());
-    subtypes.push_back(&Value::GetUnicodeString());
-    return check_types(d, types, subtypes, false);
+
+static JSONExpects check_allowsString(Document& d) {
+    return check_for_string(d, true);
+}
+static JSONExpects check_expectsString(Document& d) {
+    return check_for_string(d, false);
 }
 
 #undef TTYPE_
@@ -1065,7 +1076,7 @@ static bool isNumber(const char* jsonStr, size_t len, bool has_digit) {
 
 static bool isJSONDocument(const char* jsonStr, size_t len,
 			   bool* isEmpty = 0,
-			   unsigned expectsString = 0) {
+                           JSONExpects expectsString = JSONExpectsNull) {
     size_t i = 0;
     while (i < len) {
 	switch (jsonStr[i]) {
@@ -1158,6 +1169,7 @@ struct PyHandler {
     unsigned datetimeMode;
     unsigned uuidMode;
     unsigned numberMode;
+    unsigned recursionLimit;
     std::vector<HandlerContext> stack;
 
     PyHandler(PyObject* decoder,
@@ -1192,6 +1204,7 @@ struct PyHandler {
                 }
             }
             sharedKeys = PyDict_New();
+            recursionLimit = Py_GetRecursionLimit();
         }
 
     ~PyHandler() {
@@ -1295,6 +1308,12 @@ struct PyHandler {
     }
 
     bool StartObject(bool yggdrasilInstance=false) {
+        if (recursionLimit-- == 0) {
+            PyErr_SetString(PyExc_RecursionError,
+                            "Maximum parse recursion depth exceeded");
+            return false;
+        }
+
         PyObject* mapping;
         bool key_value_pairs;
 
@@ -1337,6 +1356,8 @@ struct PyHandler {
     }
 
     bool EndObject(SizeType, bool yggdrasilInstance=false) {
+        recursionLimit++;
+        
         const HandlerContext& ctx = stack.back();
 
         if (ctx.copiedKey)
@@ -1445,6 +1466,12 @@ struct PyHandler {
     }
 
     bool StartArray() {
+        if (recursionLimit-- == 0) {
+            PyErr_SetString(PyExc_RecursionError,
+                            "Maximum parse recursion depth exceeded!");
+            return false;
+        }
+
         PyObject* list = PyList_New(0);
         if (list == NULL) {
             return false;
@@ -1467,6 +1494,8 @@ struct PyHandler {
     }
 
     bool EndArray(SizeType) {
+        recursionLimit++;
+
         const HandlerContext& ctx = stack.back();
 
         if (ctx.copiedKey)
@@ -2660,8 +2689,9 @@ decoder_call(PyObject* self, PyObject* args, PyObject* kwargs)
         jsonStr = NULL;
         jsonStrLen = 0;
     } else {
-        PyErr_SetString(PyExc_TypeError,
-                        "Expected string or UTF-8 encoded bytes or bytearray");
+        PyErr_SetString(
+            PyExc_TypeError,
+            "Expected string or UTF-8 encoded bytes or bytearray or a file-like object");
         return NULL;
     }
 
@@ -3523,28 +3553,42 @@ static bool python2document(PyObject* jsonObject, Document& d,
 			    unsigned iterableMode,
 			    unsigned mappingMode,
 			    unsigned yggdrasilMode,
-			    unsigned expectsString,
-			    unsigned allowsString,
+                            JSONExpects expectsString,
+                            JSONExpects allowsString,
 			    bool forSchema = false,
 			    bool forceObject = false,
 			    bool* isEmptyString = NULL,
 			    bool* isPythonDoc = NULL) {
     const char* jsonStr;
     Py_ssize_t jsonStrLen = 0;
+    JSONExpects jsonStrType = JSONExpectsNull;
+    PyObject* asUnicode = NULL;
 
     if (isEmptyString != NULL)
 	isEmptyString[0] = false;
     if (isPythonDoc)
 	isPythonDoc[0] = false;
-    if ((!forceObject) && PyBytes_Check(jsonObject)) {
+    if ((!forceObject) && PyUnicode_Check(jsonObject)) {
+        jsonStrType = JSONExpectsString;
+        jsonStr = PyUnicode_AsUTF8AndSize(jsonObject, &jsonStrLen);
+        if (jsonStr == NULL)
+	    return false;
+    } else if ((!forceObject) && PyBytes_Check(jsonObject)) {
+        jsonStrType = JSONExpectsBytes;
         jsonStr = PyBytes_AsString(jsonObject);
         if (jsonStr == NULL)
 	    return false;
 	jsonStrLen = PyBytes_Size(jsonObject);
-    } else if ((!forceObject) && PyUnicode_Check(jsonObject)) {
-        jsonStr = PyUnicode_AsUTF8AndSize(jsonObject, &jsonStrLen);
-        if (jsonStr == NULL)
-	    return false;
+    } else if ((!forceObject) && PyByteArray_Check(jsonObject)) {
+        jsonStrType = JSONExpectsBytes;
+        asUnicode = PyUnicode_FromEncodedObject(jsonObject, "utf-8", NULL);
+        if (asUnicode == NULL)
+            return false;
+        jsonStr = PyUnicode_AsUTF8(asUnicode);
+        if (jsonStr == NULL) {
+            Py_DECREF(asUnicode);
+            return false;
+        }
     } else if (forceObject || (!forSchema) || PyDict_Check(jsonObject)) {
         jsonStr = NULL;
     } else {
@@ -3561,35 +3605,46 @@ static bool python2document(PyObject* jsonObject, Document& d,
     bool error;
     bool empty = false;
 
-    if ((jsonStr != NULL) && (!forSchema) && expectsString &&
-	(!isJSONDocument(jsonStr, jsonStrLen, &empty, expectsString)))
+    if ((jsonStr != NULL) && (!forSchema) &&
+        expectsString && jsonStrType == expectsString &&
+	(!isJSONDocument(jsonStr, jsonStrLen, &empty, expectsString))) {
 	jsonStr = NULL;
+    }
 
     if (jsonStr == NULL) {
         error = (!PythonAccept(&d, jsonObject, numberMode, datetimeMode,
 			       uuidMode, bytesMode, iterableMode,
 			       mappingMode, yggdrasilMode));
 	d.FinalizeFromStack();
-	if (error)
+	if (error) {
+            if (asUnicode != NULL)
+                Py_DECREF(asUnicode);
 	    return false;
+        }
 	if (isPythonDoc)
 	    isPythonDoc[0] = true;
     } else {
         YGGDRASIL_PYGIL_ALLOW_THREADS_BEGIN
         error = d.Parse(jsonStr).HasParseError();
         YGGDRASIL_PYGIL_ALLOW_THREADS_END
-	if ((error || d.IsNumber()) && (expectsString || allowsString)) {
+	if ((expectsString || allowsString) &&
+            (error || (d.IsNumber() && expectsString == jsonStrType))) {
 	    error = (!PythonAccept(&d, jsonObject, numberMode, datetimeMode,
 				   uuidMode, bytesMode, iterableMode,
 				   mappingMode, yggdrasilMode));
 	    d.FinalizeFromStack();
-	    if (error)
+	    if (error) {
+                if (asUnicode != NULL)
+                    Py_DECREF(asUnicode);
 		return false;
+            }
 	    if (isPythonDoc)
 		isPythonDoc[0] = true;
 	}
     }
 
+    if (asUnicode != NULL)
+        Py_DECREF(asUnicode);
     if (error) {
         PyErr_Format(decode_error, "Invalid JSON when creating a document (expectsString = %d, allowsString = %d)", (int)expectsString, (int)allowsString);
 	return false;
@@ -3713,10 +3768,7 @@ dumps_internal(
             Py_DECREF(intStrObj);
         }
     } else if (PyFloat_Check(object)) {
-        double d = PyFloat_AsDouble(object);
-        if (d == -1.0 && PyErr_Occurred())
-            return false;
-
+        double d = PyFloat_AS_DOUBLE(object);
         if (IS_NAN(d)) {
             if (numberMode & NM_NAN) {
                 writer->RawValue("NaN", 3, kNumberType);
@@ -3739,12 +3791,12 @@ dumps_internal(
             // The RJ dtoa() produces "strange" results for particular values, see #101:
             // use Python's repr() to emit a raw value instead of writer->Double(d)
 
-	    
             PyObject* dr = NULL;
-	    if (PyArray_CheckScalar(object))
+	    if (PyArray_CheckScalar(object)) {
 		dr = PyObject_Str(object);
-	    else
-		dr = PyObject_Repr(object);
+	    } else {
+                dr = PyFloat_Type.tp_repr(object);
+            }
 
             if (dr == NULL)
                 return false;
@@ -5061,8 +5113,8 @@ typedef struct {
     unsigned iterableMode;
     unsigned mappingMode;
     unsigned yggdrasilMode;
-    unsigned expectsString;
-    unsigned allowsString;
+    JSONExpects expectsString;
+    JSONExpects allowsString;
 } ValidatorObject;
 
 
@@ -5320,7 +5372,8 @@ static PyObject* validator_new(PyTypeObject* type, PyObject* args, PyObject* kwa
     Document d;
     if (!python2document(jsonObject, d, numberMode, datetimeMode,
 			 uuidMode, bytesMode, iterableMode,
-			 mappingMode, yggdrasilMode, 0, 0, true))
+			 mappingMode, yggdrasilMode,
+                         JSONExpectsNull, JSONExpectsNull, true))
 	return NULL;
 
     ValidatorObject* v = (ValidatorObject*) type->tp_alloc(type, 0);
@@ -5441,7 +5494,8 @@ static PyObject* validator_check_schema(PyObject*, PyObject* args, PyObject* kwa
     Document d;
     if (!python2document(jsonObject, d, numberMode, datetimeMode,
 			 uuidMode, bytesMode, iterableMode,
-			 mappingMode, yggdrasilMode, 0, 0, true))
+			 mappingMode, yggdrasilMode,
+                         JSONExpectsNull, JSONExpectsNull, true))
 	return NULL;
 
     Document d_meta;
@@ -5744,7 +5798,9 @@ encode_schema(PyObject*, PyObject* args, PyObject* kwargs)
     bool isPythonDoc = false;
     if (!python2document(jsonObject, d, numberMode, datetimeMode,
 			 uuidMode, bytesMode, iterableMode,
-			 mappingMode, yggdrasilMode, 0, 0, false, true,
+			 mappingMode, yggdrasilMode,
+                         JSONExpectsNull, JSONExpectsNull,
+                         false, true,
 			 &isEmptyString, &isPythonDoc))
 	return NULL;
 
@@ -6070,7 +6126,9 @@ as_pure_json(PyObject*, PyObject* args, PyObject* kwargs)
     bool isPythonDoc = false;
     if (!python2document(jsonObject, d, numberMode, datetimeMode,
 			 uuidMode, bytesMode, iterableMode,
-			 mappingMode, yggdrasilMode, 0, 0, false, false,
+			 mappingMode, yggdrasilMode,
+                         JSONExpectsNull, JSONExpectsNull,
+                         false, false,
 			 &isEmptyString, &isPythonDoc))
 	return NULL;
 
@@ -6104,8 +6162,8 @@ typedef struct {
     unsigned iterableMode;
     unsigned mappingMode;
     unsigned yggdrasilMode;
-    unsigned expectsString;
-    unsigned allowsString;
+    JSONExpects expectsString;
+    JSONExpects allowsString;
 } NormalizerObject;
 
 
@@ -6378,7 +6436,8 @@ static PyObject* normalizer_new(PyTypeObject* type, PyObject* args, PyObject* kw
     Document d;
     if (!python2document(jsonObject, d, numberMode, datetimeMode,
 			 uuidMode, bytesMode, iterableMode,
-			 mappingMode, yggdrasilMode, 0, 0, true))
+			 mappingMode, yggdrasilMode,
+                         JSONExpectsNull, JSONExpectsNull, true))
 	return NULL;
 
     NormalizerObject* v = (NormalizerObject*) type->tp_alloc(type, 0);
@@ -6994,10 +7053,16 @@ module_exec(PyObject* m)
                                       ", Lele Gaifax <lele@metapensiero.it>")
         || PyModule_AddStringConstant(m, "__rapidjson_version__",
                                       RAPIDJSON_VERSION_STRING)
-#ifdef RAPIDJSON_EXACT_VERSION
         || PyModule_AddStringConstant(m, "__rapidjson_exact_version__",
-                                      STRINGIFY(RAPIDJSON_EXACT_VERSION))
+#ifdef RAPIDJSON_EXACT_VERSION
+                                      STRINGIFY(RAPIDJSON_EXACT_VERSION)
+#else
+                                      // This may happen for several reasons, under CI
+                                      // test or when the RJ library does not come from
+                                      // the git submodule
+                                      "not available"
 #endif
+            )
         )
         return -1;
 

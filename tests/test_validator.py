@@ -2,7 +2,7 @@
 # :Project:   python-rapidjson -- Validator class tests
 # :Author:    Lele Gaifax <lele@metapensiero.it>
 # :License:   MIT License
-# :Copyright: © 2017, 2019, 2020 Lele Gaifax
+# :Copyright: © 2017, 2019, 2020, 2024 Lele Gaifax
 #
 
 import pytest
@@ -36,11 +36,25 @@ def test_notEncoded():
     ('{ "type": ["number", "string"] }', '42'),
     ('{ "type": ["number", "string"] }',
      '"Life, the universe, and everything"'),
+    ('{"type": "string"}', '0000000'),
+))
+def test_valid(schema, json):
+    for s in (schema, schema.encode('utf-8'),
+              bytearray(schema.encode('utf-8'))):
+        for j in (json, json.encode('utf-8'),
+                  bytearray(json.encode('utf-8'))):
+            validate = rj.Validator(s)
+            validate(j)
+            validate.validate(j)
+            rj.validate(j, s)
+
+
+@pytest.mark.parametrize('schema,json', (
     ({"type": ["number", "string"]}, 42),
     ({"type": ["number", "string"]}, "Life, the universe, and everything"),
     ({"type": "string"}, '0000000'),
 ))
-def test_valid(schema, json):
+def test_valid_direct(schema, json):
     validate = rj.Validator(schema)
     validate(json)
     validate.validate(json)
@@ -210,16 +224,16 @@ def test_get_metaschema():
      ('{\n'
       '    "message": "Incompatible schema property \'type\': [\\"number\\"] '
       'vs [\\"schema\\"].",\n'
-      '    "instanceRef": "#",\n'
-      '    "schemaRef": "#"\n'
+      '    "schemaIteratorRef": "#",\n'
+      '    "schemaHandlerRef": "#"\n'
       '}', )),
     ({'type': 'scalar', 'subtype': 'int', 'precision': 8},
      {'type': 'ply'},
      ('{\n'
       '    "message": "Incompatible schema property \'type\': [\\"scalar\\"] '
       'vs [\\"ply\\"].",\n'
-      '    "instanceRef": "#",\n'
-      '    "schemaRef": "#"\n'
+      '    "schemaIteratorRef": "#",\n'
+      '    "schemaHandlerRef": "#"\n'
       '}', ))))
 def test_compare_schemas(schemaA, schemaB, details):
     assert rj.compare_schemas(schemaA, schemaA)

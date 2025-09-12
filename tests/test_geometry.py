@@ -83,9 +83,14 @@ def mesh_base():
                 out[k] = np.vstack([base[k] for i in range(stack)])
         if obj:
             out.pop("edge_colors", False)
+            if 'vertex_colors' not in types:
+                types = dict(types, vertex_colors='float32')
         for k, v in types.items():
             if k in out:
                 out[k] = out[k].astype(v)
+        if out['vertex_colors'].dtype in (np.float32, np.float64):
+            assert obj
+            out['vertex_colors'] = out['vertex_colors'] / 255.0
         return out
 
     return wrapped_mesh_base

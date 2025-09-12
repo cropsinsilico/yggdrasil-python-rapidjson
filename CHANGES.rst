@@ -1,6 +1,84 @@
 Changes
 -------
 
+1.21 (2025-07-10)
+~~~~~~~~~~~~~~~~~
+
+* Use `current master`__ version of rapidjson, thanks to Kyle Gottfried (although I didn't
+  merge his `PR #224`__)
+
+  __ https://github.com/Tencent/rapidjson/compare/ab1842a2dae061284c0a62dca1cc6d5e7e37e346..24b5e7a8b27f42fa16b96fc70aade9106cf7102f
+  __ https://github.com/python-rapidjson/python-rapidjson/pull/224
+
+* Recompute comparison table with latest versions of other libraries, using Python 3.13
+
+* Typing stubs: specify default value for ``stream`` argument of ``Encoder.__call__()``
+  (`issue #215`__)
+
+  __ https://github.com/python-rapidjson/python-rapidjson/issues/215
+
+* Use more recent OS images on GH Actions to test and build wheels
+
+
+1.20 (2024-08-05)
+~~~~~~~~~~~~~~~~~
+
+* Rectify type hints of ``loads()`` and ``Decoder.__call__()`` (`issue #214`__)
+
+  __ https://github.com/python-rapidjson/python-rapidjson/issues/214
+
+* Ensure ``Validator`` receives valid UTF-8 ``bytes``/``bytearray`` arguments
+
+* Generate wheels on PyPI using Python 3.13.0rc1 release, thanks to cibuildwheel `2.20.0`__
+
+  __ https://cibuildwheel.pypa.io/en/stable/changelog/#v2200
+
+
+1.19 (2024-07-28)
+~~~~~~~~~~~~~~~~~
+
+* Properly dump subclasses of ``float`` with custom ``__repr__()`` method ( `issue #213`__)
+
+  __ https://github.com/python-rapidjson/python-rapidjson/issues/213
+
+
+1.18 (2024-06-29)
+~~~~~~~~~~~~~~~~~
+
+* Expose PEP-484 typing stubs, thanks to Rodion Kosianenko and GoodWasHere (`PR #204`__)
+
+  __ https://github.com/python-rapidjson/python-rapidjson/pull/204
+
+
+1.17 (2024-05-18)
+~~~~~~~~~~~~~~~~~
+
+* Use `current master`__ version of rapidjson
+
+  __ https://github.com/Tencent/rapidjson/compare/5e17dbed34eef33af8f3e734820b5dc547a2a3aa...ab1842a2dae061284c0a62dca1cc6d5e7e37e346
+
+* Generate wheels on PyPI using Python 3.13b1 release, thanks to cibuildwheel `2.18.0`__
+
+  __ https://cibuildwheel.pypa.io/en/stable/changelog/#v2180
+
+
+1.16 (2024-02-28)
+~~~~~~~~~~~~~~~~~
+
+* Produce Python 3.8 wheels again, I deactivated it too eagerly, it's in *security fixes
+  only* mode, not yet reached its `end-of-life` state
+
+
+1.15 (2024-02-28)
+~~~~~~~~~~~~~~~~~
+
+* Honor the `recursion limit`__ also at parse time, to avoid attacks as described by
+  `CVE-2024-27454`__
+
+  __ https://docs.python.org/3.12/library/sys.html#sys.setrecursionlimit
+  __ https://monicz.dev/CVE-2024-27454
+
+
 1.14 (2023-12-14)
 ~~~~~~~~~~~~~~~~~
 
@@ -30,7 +108,7 @@ Changes
 
 * Use `current master`__ version of rapidjson
 
-  __ https://github.com/Tencent/rapidjson/compare/083f359f5c36198accc2b9360ce1e32a333231d9...5e17dbed34eef33af8f3e734820b5dc547a2a3aa9
+  __ https://github.com/Tencent/rapidjson/compare/083f359f5c36198accc2b9360ce1e32a333231d9...5e17dbed34eef33af8f3e734820b5dc547a2a3aa
 
 * Use cibuildwheel `2.15.0`__
 

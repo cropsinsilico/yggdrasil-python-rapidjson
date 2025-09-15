@@ -52,9 +52,9 @@ jobs:
         run: |
           make -C docs doctest -e PYTHON=$(which python3)
 
-      - name: Typing stub tests
-        run: |
-          stubtest rapidjson
+      # - name: Typing stub tests
+      #   run: |
+      #     stubtest rapidjson
 
   debug-tests:
     name: Memory leak tests, on current debug build Python

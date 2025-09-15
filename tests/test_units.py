@@ -52,6 +52,8 @@ class TestUnits:
         y = units.Units("hr")
         z = x * y
         assert str(z) == "hr"
+        x *= y
+        assert x == z
 
     @pytest.mark.parametrize('u', [
         'invalid'

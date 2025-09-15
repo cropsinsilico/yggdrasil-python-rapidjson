@@ -546,6 +546,7 @@ static PyObject* do_units_op(PyObject* a, PyObject *b, BinaryOps op,
     PyObject* out;
     if (inplace) {
 	out = a;
+        Py_INCREF(out);
     } else {
 	out = (PyObject*) Units_Type.tp_alloc(&Units_Type, 0);
 	((UnitsObject*)out)->units = new Units();
@@ -568,9 +569,7 @@ static PyObject* do_units_op(PyObject* a, PyObject *b, BinaryOps op,
 	break;
     }
     default: {
-	if (!inplace) {
-	    Py_DECREF(out);
-	}
+        Py_DECREF(out);
 	PyErr_SetString(PyExc_NotImplementedError, "rapidjson.units.Units do not support this operation.");
 	return NULL;
     }

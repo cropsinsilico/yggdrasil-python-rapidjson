@@ -16,9 +16,13 @@ name: Build, test and upload to PyPI
 
 on:
   push:
-    branches: [ yggdrasil, scikit_build_core ]
-  pull_request:
-    branches: [ yggdrasil ]
+    branches-ignore:
+     - gh-pages
+    tags:
+     - '*'
+  schedule:
+  - cron: 0 10 * * 1
+  - cron: 0 10 1 * *
 
 jobs:
   tests:
@@ -130,7 +134,7 @@ jobs:
           CIBW_ENABLE: cpython-prerelease
           CIBW_ENVIRONMENT: "PIP_ONLY_BINARY=numpy"
           # CIBW_BEFORE_BUILD: python -m pip install oldest-supported-numpy
-          # CIBW_PRERELEASE_PYTHONS: True
+
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

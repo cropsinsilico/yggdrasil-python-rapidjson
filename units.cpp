@@ -1900,7 +1900,7 @@ static PyObject* quantity_array__array_finalize__(PyObject* self, PyObject* args
 
 static PyObject* quantity_array__array_wrap__(PyObject*, PyObject* args) {
     PyObject *array = NULL, *context = NULL;
-    if (!PyArg_ParseTuple(args, "OO", array, context)) {
+    if (!PyArg_ParseTuple(args, "OO", &array, &context)) {
 	return NULL;
     }
     Py_INCREF(array);

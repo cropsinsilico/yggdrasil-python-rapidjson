@@ -11,9 +11,21 @@ import datetime
 import gc
 
 import pytest
+import importlib
 import rapidjson as rj
 
 tracemalloc = pytest.importorskip("tracemalloc")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def import_external():
+    r"""Import the external libraries so they don't contribute to the
+    reference count."""
+    packages = [
+        'numpy', 'pandas', 'trimesh',
+    ]
+    for name in packages:
+        importlib.import_module(name)
 
 
 def object_hook(td):
@@ -33,18 +45,6 @@ def default(obj):
 def test_object_hook_and_default():
     tracemalloc.start()
 
-    try:
-        import trimesh
-    except ImportError:
-        pass
-    try:
-        import pandas
-    except ImportError:
-        pass
-    try:
-        import numpy as np
-    except ImportError:
-        pass
     data = []
     for i in range(1, 100):
         data.append({"name": "a%d" % i, "timestamp": datetime.timedelta(seconds=i)})

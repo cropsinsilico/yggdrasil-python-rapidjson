@@ -37,6 +37,9 @@ def test_object_hook_and_default():
     for i in range(1, 100):
         data.append({"name": "a%d" % i, "timestamp": datetime.timedelta(seconds=i)})
 
+    a0 = rj.dumps(data, default=default)
+    rj.loads(a0, object_hook=object_hook)
+
     snapshot1 = tracemalloc.take_snapshot().filter_traces((
         tracemalloc.Filter(True, __file__),))
 

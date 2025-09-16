@@ -33,6 +33,18 @@ def default(obj):
 def test_object_hook_and_default():
     tracemalloc.start()
 
+    try:
+        import trimesh
+    except ImportError:
+        pass
+    try:
+        import pandas
+    except ImportError:
+        pass
+    try:
+        import numpy as np
+    except ImportError:
+        pass
     data = []
     for i in range(1, 100):
         data.append({"name": "a%d" % i, "timestamp": datetime.timedelta(seconds=i)})

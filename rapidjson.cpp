@@ -3486,7 +3486,12 @@ PythonAccept(
 		 PyIter_Check(object))) {
 	// Try to import trimesh
 	PyObject* trimeshClass = import_trimesh_class();
-	if (trimeshClass != NULL && PyObject_IsInstance(object, trimeshClass)) {
+        bool isTrimesh = (trimeshClass != NULL &&
+                          PyObject_IsInstance(object, trimeshClass));
+        if (trimeshClass != NULL) {
+            Py_CLEAR(trimeshClass);
+        }
+        if (isTrimesh) {
 	    RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	    Py_INCREF(object);
 	    PyObject* ply_args = PyTuple_Pack(1, object);

@@ -25,7 +25,10 @@ def import_external():
         'numpy', 'pandas', 'trimesh',
     ]
     for name in packages:
-        importlib.import_module(name)
+        try:
+            importlib.import_module(name)
+        except ImportError:
+            pass
 
 
 def object_hook(td):

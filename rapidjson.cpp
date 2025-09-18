@@ -13,6 +13,7 @@
 #include <locale.h>
 
 #include <Python.h>
+#include "rapidjson/pythoncapi_compat.h"
 #include <datetime.h>
 #include <structmember.h>
 
@@ -35,15 +36,6 @@
 #include "geometry.cpp"
 
 using namespace rapidjson;
-
-
-#ifdef YGGDRASIL_DONT_MANAGE_PYTHON_GIL
-#define YGGDRASIL_PYGIL_ALLOW_THREADS_BEGIN
-#define YGGDRASIL_PYGIL_ALLOW_THREADS_END
-#else // YGGDRASIL_DONT_MANAGE_PYTHON_GIL
-#define YGGDRASIL_PYGIL_ALLOW_THREADS_BEGIN global_PyThreadState();
-#define YGGDRASIL_PYGIL_ALLOW_THREADS_END global_PyThreadState(true);
-#endif // YGGDRASIL_DONT_MANAGE_PYTHON_GIL
 
 
 /* On some MacOS combo, using Py_IS_XXX() macros does not work (see
@@ -1235,15 +1227,15 @@ struct PyHandler {
                     return false;
                 }
 
-                PyObject* shared_key = PyDict_SetDefault(sharedKeys, key, key);
-                if (shared_key == NULL) {
+                PyObject* shared_key = NULL;
+                if (PyDict_SetDefaultRef(sharedKeys, key, key, &shared_key) < 0) {
                     Py_DECREF(key);
                     Py_DECREF(value);
                     return false;
                 }
-                Py_INCREF(shared_key);
                 Py_DECREF(key);
                 key = shared_key;
+                shared_key = NULL;
 
                 int rc;
                 if (current.keyValuePairs) {
@@ -1401,15 +1393,15 @@ struct PyHandler {
                     return false;
                 }
 
-                PyObject* shared_key = PyDict_SetDefault(sharedKeys, key, key);
-                if (shared_key == NULL) {
+                PyObject* shared_key = NULL;
+                if (PyDict_SetDefaultRef(sharedKeys, key, key, &shared_key) < 0) {
                     Py_DECREF(key);
                     Py_DECREF(replacement);
                     return false;
                 }
-                Py_INCREF(shared_key);
                 Py_DECREF(key);
                 key = shared_key;
+                shared_key = NULL;
 
                 int rc;
                 if (current.keyValuePairs) {
@@ -2031,13 +2023,17 @@ struct PyHandler {
 	PyObject* class_key = PyUnicode_FromString("class");
 	PyObject* args_key = PyUnicode_FromString("args");
 	PyObject* kwargs_key = PyUnicode_FromString("kwargs");
+        bool error = false;
 	if (PyDict_CheckExact(x)) {
-	    cls_name = PyDict_GetItem(x, class_key);
-	    args = PyDict_GetItem(x, args_key);
-	    kwargs = PyDict_GetItem(x, kwargs_key);
-	    Py_XINCREF(cls_name);
-	    Py_XINCREF(args);
-	    Py_XINCREF(kwargs);
+            if (PyDict_GetItemRef(x, class_key, &cls_name) < 0) {
+                error = true;
+            }
+            if (PyDict_GetItemRef(x, args_key, &args) < 0) {
+                error = true;
+            }
+            if (PyDict_GetItemRef(x, kwargs_key, &kwargs) < 0) {
+                error = true;
+            }
 	} else {
 	    cls_name = PyObject_GetItem(x, class_key);
 	    args = PyObject_GetItem(x, args_key);
@@ -2046,7 +2042,7 @@ struct PyHandler {
 	Py_DECREF(class_key);
 	Py_DECREF(args_key);
 	Py_DECREF(kwargs_key);
-	if (cls_name == NULL) {
+	if (error || cls_name == NULL) {
 	    Py_XDECREF(args);
 	    Py_XDECREF(kwargs);
 	    return NULL;
@@ -2856,10 +2852,16 @@ all_keys_are_string(PyObject* dict) {
     Py_ssize_t pos = 0;
     PyObject* key;
 
-    while (PyDict_Next(dict, &pos, &key, NULL))
-        if (!PyUnicode_Check(key))
-            return false;
-    return true;
+    bool out = true;
+    YGGDRASIL_PYGIL_CRITICAL_BEGIN(dict);
+    while (PyDict_Next(dict, &pos, &key, NULL)) {
+        if (!PyUnicode_Check(key)) {
+            out = false;
+            break;
+        }
+    }
+    YGGDRASIL_PYGIL_CRITICAL_END();
+    return out;
 }
 
 
@@ -2978,8 +2980,9 @@ PythonAccept(
         for (Py_ssize_t i = 0; i < size; i++) {
             if (Py_EnterRecursiveCall(" while JSONifying list object"))
                 return false;
-            PyObject* item = PyList_GET_ITEM(object, i);
+            PyObject* item = PyList_GetItemRef(object, i);
             bool r = RECURSE(item);
+            Py_DECREF(item);
             Py_LeaveRecursiveCall();
             if (!r)
                 return false;
@@ -3020,12 +3023,16 @@ PythonAccept(
 	SizeType size = 0;
 
         if (!(mappingMode & MM_SORT_KEYS)) {
+            bool error = false;
+            YGGDRASIL_PYGIL_CRITICAL_BEGIN(object);
             while (PyDict_Next(object, &pos, &key, &item)) {
                 if (mappingMode & MM_COERCE_KEYS_TO_STRINGS) {
                     if (!PyUnicode_Check(key)) {
                         coercedKey = PyObject_Str(key);
-                        if (coercedKey == NULL)
-                            return false;
+                        if (coercedKey == NULL) {
+                            error = true;
+                            break;
+                        }
                         key = coercedKey;
                     }
                 }
@@ -3034,39 +3041,49 @@ PythonAccept(
                     const char* key_str = PyUnicode_AsUTF8AndSize(key, &l);
                     if (key_str == NULL) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                     ASSERT_VALID_SIZE(l);
                     handler->Key(key_str, (SizeType) l, true);
                     if (Py_EnterRecursiveCall(" while JSONifying dict object")) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                     bool r = RECURSE(item);
                     Py_LeaveRecursiveCall();
                     if (!r) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                 } else if (!(mappingMode & MM_SKIP_NON_STRING_KEYS)) {
                     PyErr_SetString(PyExc_TypeError, "keys must be strings");
                     // No need to dispose coercedKey here, because it can be set *only*
                     // when mapping_mode is MM_COERCE_KEYS_TO_STRINGS
                     assert(!coercedKey);
-                    return false;
+                    error = true;
+                    break;
                 }
                 Py_CLEAR(coercedKey);
 		size++;
             }
+            YGGDRASIL_PYGIL_CRITICAL_END();
+            if (error) return false;
         } else {
             std::vector<DictItem> items;
 
+            bool error = false;
+            YGGDRASIL_PYGIL_CRITICAL_BEGIN(object);
             while (PyDict_Next(object, &pos, &key, &item)) {
                 if (mappingMode & MM_COERCE_KEYS_TO_STRINGS) {
                     if (!PyUnicode_Check(key)) {
                         coercedKey = PyObject_Str(key);
-                        if (coercedKey == NULL)
-                            return false;
+                        if (coercedKey == NULL) {
+                            error = true;
+                            break;
+                        }
                         key = coercedKey;
                     }
                 }
@@ -3075,17 +3092,21 @@ PythonAccept(
                     const char* key_str = PyUnicode_AsUTF8AndSize(key, &l);
                     if (key_str == NULL) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                     ASSERT_VALID_SIZE(l);
                     items.push_back(DictItem(key_str, l, item));
                 } else if (!(mappingMode & MM_SKIP_NON_STRING_KEYS)) {
                     PyErr_SetString(PyExc_TypeError, "keys must be strings");
                     assert(!coercedKey);
-                    return false;
+                    error = true;
+                    break;
                 }
                 Py_CLEAR(coercedKey);
             }
+            YGGDRASIL_PYGIL_CRITICAL_END();
+            if (error) return false;
 
             std::sort(items.begin(), items.end());
 
@@ -3849,8 +3870,9 @@ dumps_internal(
         for (Py_ssize_t i = 0; i < size; i++) {
             if (Py_EnterRecursiveCall(" while JSONifying list object"))
                 return false;
-            PyObject* item = PyList_GET_ITEM(object, i);
+            PyObject* item = PyList_GetItemRef(object, i);
             bool r = RECURSE(item);
+            Py_DECREF(item);
             Py_LeaveRecursiveCall();
             if (!r)
                 return false;
@@ -3890,12 +3912,16 @@ dumps_internal(
         PyObject* coercedKey = NULL;
 
         if (!(mappingMode & MM_SORT_KEYS)) {
+            bool error = false;
+            YGGDRASIL_PYGIL_CRITICAL_BEGIN(object);
             while (PyDict_Next(object, &pos, &key, &item)) {
                 if (mappingMode & MM_COERCE_KEYS_TO_STRINGS) {
                     if (!PyUnicode_Check(key)) {
                         coercedKey = PyObject_Str(key);
-                        if (coercedKey == NULL)
-                            return false;
+                        if (coercedKey == NULL) {
+                            error = true;
+                            break;
+                        }
                         key = coercedKey;
                     }
                 }
@@ -3904,38 +3930,48 @@ dumps_internal(
                     const char* key_str = PyUnicode_AsUTF8AndSize(key, &l);
                     if (key_str == NULL) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                     ASSERT_VALID_SIZE(l);
                     writer->Key(key_str, (SizeType) l);
                     if (Py_EnterRecursiveCall(" while JSONifying dict object")) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                     bool r = RECURSE(item);
                     Py_LeaveRecursiveCall();
                     if (!r) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                 } else if (!(mappingMode & MM_SKIP_NON_STRING_KEYS)) {
                     PyErr_SetString(PyExc_TypeError, "keys must be strings");
                     // No need to dispose coercedKey here, because it can be set *only*
                     // when mapping_mode is MM_COERCE_KEYS_TO_STRINGS
                     assert(!coercedKey);
-                    return false;
+                    error = true;
+                    break;
                 }
                 Py_CLEAR(coercedKey);
             }
+            YGGDRASIL_PYGIL_CRITICAL_END();
+            if (error) return false;
         } else {
             std::vector<DictItem> items;
 
+            bool error = false;
+            YGGDRASIL_PYGIL_CRITICAL_BEGIN(object);
             while (PyDict_Next(object, &pos, &key, &item)) {
                 if (mappingMode & MM_COERCE_KEYS_TO_STRINGS) {
                     if (!PyUnicode_Check(key)) {
                         coercedKey = PyObject_Str(key);
-                        if (coercedKey == NULL)
-                            return false;
+                        if (coercedKey == NULL) {
+                            error = true;
+                            break;
+                        }
                         key = coercedKey;
                     }
                 }
@@ -3944,17 +3980,21 @@ dumps_internal(
                     const char* key_str = PyUnicode_AsUTF8AndSize(key, &l);
                     if (key_str == NULL) {
                         Py_XDECREF(coercedKey);
-                        return false;
+                        error = true;
+                        break;
                     }
                     ASSERT_VALID_SIZE(l);
                     items.push_back(DictItem(key_str, l, item));
                 } else if (!(mappingMode & MM_SKIP_NON_STRING_KEYS)) {
                     PyErr_SetString(PyExc_TypeError, "keys must be strings");
                     assert(!coercedKey);
-                    return false;
+                    error = true;
+                    break;
                 }
                 Py_CLEAR(coercedKey);
             }
+            YGGDRASIL_PYGIL_CRITICAL_END();
+            if (error) return false;
 
             std::sort(items.begin(), items.end());
 
@@ -5557,14 +5597,19 @@ static PyObject* validator_compare(PyObject* self, PyObject* args, PyObject* kwa
 		return NULL;
 	    PyObject* tmp = PyUnicode_FromString("dont_raise");
 	    if (PyDict_Size(kwargs) > 1) {
+                bool error = false;
+                YGGDRASIL_PYGIL_CRITICAL_BEGIN(kwargs);
 		while (PyDict_Next(kwargs, &kw_pos, &kw_key, &kw_val)) {
 		    if (PyObject_RichCompareBool(kw_key, tmp, Py_EQ))
 			continue;
 		    if (PyDict_SetItem(kwargs_copy, kw_key, kw_val) < 0) {
 			Py_DECREF(tmp);
-			return NULL;
+                        error = true;
+                        break;
 		    }
 		}
+                YGGDRASIL_PYGIL_CRITICAL_END();
+                if (error) return NULL;
 	    }
 	    Py_DECREF(tmp);
 	}

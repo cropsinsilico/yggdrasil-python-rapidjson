@@ -1821,19 +1821,26 @@ static PyObject* quantity_array__array_ufunc__(PyObject* self, PyObject* args, P
 		}
 		kw_pos = 0;
 		tmp = PyUnicode_FromString("out");
+                bool error = false;
+                YGGDRASIL_PYGIL_CRITICAL_BEGIN(kwargs);
 		while (PyDict_Next(kwargs, &kw_pos, &kw_key, &kw_val)) {
 		    if (PyObject_RichCompareBool(kw_key, tmp, Py_EQ)) {
 			if (PyDict_SetItem(modified_kwargs, kw_key, modified_out) < 0) {
 			    Py_DECREF(tmp);
-			    goto cleanup;
+                            error = true;
+                            break;
 			}
 		    } else {
 			if (PyDict_SetItem(modified_kwargs, kw_key, kw_val) < 0) {
 			    Py_DECREF(tmp);
-			    goto cleanup;
+                            error = true;
+                            break;
 			}
 		    }
 		}
+                YGGDRASIL_PYGIL_CRITICAL_END();
+                if (error)
+                    goto cleanup;
 		Py_DECREF(tmp);
 	    }
 	}
@@ -2083,7 +2090,7 @@ static PyObject* quantity_array__array_function__(PyObject* self, PyObject* c_ar
 	    goto cleanup;
 	}
 	for (i = 0; i < PyList_Size(result_units_list); i++) {
-	    PyObject* iresult = PyList_GetItem(result, i);
+	    PyObject* iresult = PyList_GetItemRef(result, i);
 	    if (iresult == NULL) {
 		Py_DECREF(result);
 		result = NULL;
@@ -2091,25 +2098,26 @@ static PyObject* quantity_array__array_function__(PyObject* self, PyObject* c_ar
 	    }
 	    i0 = PyTuple_GetItem(args, i);
 	    if (i0 == NULL) {
-		Py_DECREF(result);
-		result = NULL;
+                Py_CLEAR(result);
+                Py_CLEAR(iresult);
 		goto cleanup;
 	    }
 	    result_type = (PyObject*)(i0->ob_type);
 	    if (result_type != (PyObject*)(&QuantityArray_Type)) {
+                Py_CLEAR(iresult);
 		continue;
 	    }
 	    Py_INCREF(result_type);
 	    PyObject* iresult_units = PyList_GetItem(result_units_list, i);
 	    if (iresult_units == NULL) {
-		Py_DECREF(result);
-		result = NULL;
+                Py_CLEAR(result);
+                Py_CLEAR(iresult);
 		goto cleanup;
 	    }
 	    PyObject* result_args = PyTuple_Pack(2, iresult, iresult_units);
+            Py_CLEAR(iresult);
 	    if (result_args == NULL) {
-		Py_DECREF(result);
-		result = NULL;
+                Py_CLEAR(result);
 		goto cleanup;
 	    }
 	    iresult = PyObject_Call(result_type, result_args, NULL);
@@ -2117,13 +2125,11 @@ static PyObject* quantity_array__array_function__(PyObject* self, PyObject* c_ar
 	    Py_DECREF(result_type);
 	    result_type = NULL;
 	    if (iresult == NULL) {
-		Py_DECREF(result);
-		result = NULL;
+                Py_CLEAR(result);
 		goto cleanup;
 	    }
 	    if (PyList_SetItem(result, i, iresult) < 0) {
-		Py_DECREF(result);
-		result = NULL;
+                Py_CLEAR(result);
 		goto cleanup;
 	    }
 	}

@@ -13,7 +13,7 @@ import sys
 
 import pytest
 import importlib
-import rapidjson as rj
+import yggdrasil_rapidjson as rj
 
 tracemalloc = pytest.importorskip("tracemalloc")
 _is_gil_enabled = False

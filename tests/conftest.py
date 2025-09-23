@@ -9,7 +9,7 @@ import pytest
 import io
 import sys
 import os
-import rapidjson as rj
+import yggdrasil_rapidjson as rj
 
 
 @pytest.fixture(autouse=True)

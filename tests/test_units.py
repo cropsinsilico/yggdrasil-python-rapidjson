@@ -9,12 +9,14 @@
 import pytest
 import numpy as np
 
-import rapidjson as rj
-from rapidjson import units
+import yggdrasil_rapidjson as rj
+from yggdrasil_rapidjson import units
 
 
 def test_class_import_units():
-    from rapidjson.units import Units, Quantity, QuantityArray  # noqa: F401
+    from yggdrasil_rapidjson.units import (
+        Units, Quantity, QuantityArray  # noqa: F401
+    )
 
 
 def test_submodule_units():

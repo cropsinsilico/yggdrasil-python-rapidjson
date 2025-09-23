@@ -9,12 +9,12 @@
  dump() function
 =================
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
    import io
-   from rapidjson import dump, dumps
+   from yggdrasil_rapidjson import dump, dumps
 
 .. function:: dump(obj, stream, *, skipkeys=False, ensure_ascii=True, \
                    write_mode=WM_COMPACT, indent=4, default=None, sort_keys=False, \

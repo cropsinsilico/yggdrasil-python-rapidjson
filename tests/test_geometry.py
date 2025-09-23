@@ -9,11 +9,11 @@ import pytest
 import copy
 import numpy as np
 
-from rapidjson import geometry
+from yggdrasil_rapidjson import geometry
 
 
 def test_class_import_geometry():
-    from rapidjson.geometry import Ply, ObjWavefront  # noqa: F401
+    from yggdrasil_rapidjson.geometry import Ply, ObjWavefront  # noqa: F401
 
 
 def test_submodule_geometry():

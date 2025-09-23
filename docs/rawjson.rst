@@ -10,11 +10,11 @@
  RawJSON class
 ===============
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
-   from rapidjson import RawJSON, dumps
+   from yggdrasil_rapidjson import RawJSON, dumps
 
 .. class:: RawJSON(value)
 

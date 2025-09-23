@@ -9,12 +9,12 @@
  load() function
 =================
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
    import io
-   from rapidjson import load
+   from yggdrasil_rapidjson import load
 
 .. function:: load(stream, *, object_hook=None, number_mode=None, datetime_mode=None, \
                    uuid_mode=None, parse_mode=None, chunk_size=65536, allow_nan=True)

@@ -8,7 +8,7 @@
 
 import enum
 
-import rapidjson as rj
+import yggdrasil_rapidjson as rj
 
 
 def test_intenums_as_ints():

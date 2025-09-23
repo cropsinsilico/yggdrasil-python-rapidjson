@@ -9,12 +9,12 @@
  Decoder class
 ===============
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
    import io
-   from rapidjson import Decoder, Encoder, DM_ISO8601
+   from yggdrasil_rapidjson import Decoder, Encoder, DM_ISO8601
 
 .. class:: Decoder(number_mode=None, datetime_mode=None, uuid_mode=None, parse_mode=None)
 

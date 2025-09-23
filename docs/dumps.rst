@@ -9,11 +9,11 @@
  dumps() function
 ==================
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
-   from rapidjson import (dumps, loads, BM_NONE, BM_UTF8, BM_SCALAR, DM_NONE, DM_ISO8601,
+   from yggdrasil_rapidjson import (dumps, loads, BM_NONE, BM_UTF8, BM_SCALAR, DM_NONE, DM_ISO8601,
                           DM_UNIX_TIME, DM_ONLY_SECONDS, DM_IGNORE_TZ, DM_NAIVE_IS_UTC,
                           DM_SHIFT_TO_UTC, IM_ANY_ITERABLE, IM_ONLY_LISTS, MM_ANY_MAPPING,
                           MM_ONLY_DICTS, MM_COERCE_KEYS_TO_STRINGS, MM_SORT_KEYS,

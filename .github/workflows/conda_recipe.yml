@@ -55,31 +55,12 @@ jobs:
           conda-build --use-local --no-anaconda-upload --output-folder ./local_channel/ --python ${{ matrix.python-version }} recipe/
       - name: Install from local conda recipe
         run: |
-          conda install -n test -c ./local_channel yggdrasil_python_rapidjson
+          conda install -n test -c ./local_channel yggdrasil-python-rapidjson
           conda list -n test
 
       ###################################
       # Test
       ###################################
-      # TODO: Update to yggdrasil version
-      - name: Build & run serialize test example using conda installation
+      - name: Run tests
         run: |
-          mkdir example/serialize/build
-          cd example/serialize/build
-          conda run -n test cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-          conda run -n test cmake --build . --config Debug
-          conda run -n test ./serialize
-      - name: Build & run yggdrasil test example using conda installation
-        run: |
-          mkdir example/yggdrasil/build
-          cd example/yggdrasil/build
-          conda run -n test cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-          conda run -n test cmake --build . --config Debug
-          conda run -n test ./yggdrasil
-      - name: Build & run schemanormalizer test example using conda installation
-        run: |
-          mkdir example/units/build
-          cd example/units/build
-          conda run -n test cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-          conda run -n test cmake --build . --config Debug
-          conda run -n test ./units
+          conda run -n test pytest -svx tests

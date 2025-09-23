@@ -10,7 +10,7 @@ import json
 
 import pytest
 
-import rapidjson
+import yggdrasil_rapidjson as rj
 
 
 @pytest.mark.parametrize('u', [
@@ -21,7 +21,7 @@ import rapidjson
 def test_unicode(u, dumps, loads):
     s = u.encode('utf-8')
     ju = dumps(u)
-    js = dumps(s, bytes_mode=rapidjson.BM_UTF8)
+    js = dumps(s, bytes_mode=rj.BM_UTF8)
     assert ju == js
     assert ju.lower() == json.dumps(u).lower()
     assert dumps(u, ensure_ascii=False) == json.dumps(u, ensure_ascii=False)
@@ -52,7 +52,7 @@ def test_load_surrogate(j, loads):
     '"\\udfff"',
 ])
 def test_unicode_decode_error(j, loads):
-    with pytest.raises(rapidjson.JSONDecodeError,
+    with pytest.raises(rj.JSONDecodeError,
                        match="The surrogate pair in string is invalid."):
         loads(j)
 
@@ -60,4 +60,4 @@ def test_unicode_decode_error(j, loads):
 def test_non_utf8_bytes(dumps):
     value = b'\xff\xf0'
     with pytest.raises(UnicodeDecodeError, match="'utf-8' codec can't decode byte"):
-        dumps(value, bytes_mode=rapidjson.BM_UTF8)
+        dumps(value, bytes_mode=rj.BM_UTF8)

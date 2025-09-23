@@ -11,7 +11,7 @@ import tempfile
 
 import pytest
 
-import rapidjson as rj
+import yggdrasil_rapidjson as rj
 
 
 @pytest.mark.parametrize('cs', (-1, 0, sys.maxsize*10, 1.23, 'foo'))

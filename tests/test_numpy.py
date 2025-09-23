@@ -7,7 +7,7 @@
 
 import pytest
 import numpy as np
-import rapidjson as rj
+import yggdrasil_rapidjson as rj
 
 
 @pytest.mark.parametrize(

@@ -11,7 +11,7 @@ import sys
 
 import pytest
 
-import rapidjson as rj
+import yggdrasil_rapidjson as rj
 
 
 @pytest.mark.parametrize(

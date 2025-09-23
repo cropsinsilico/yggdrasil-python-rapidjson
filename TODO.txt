@@ -1,2 +1,6 @@
 * Move python module into subdirectory for ease of re-packaging in submodule
 * Add numpy tile array method
+* Re-name python package to yggdrasil-rapidjson
+* Conda recipe
+* Docs build (add link to docs in conda recipe & update README)
+* Update README with info specific to extension

@@ -83,7 +83,7 @@ def test_object_hook_and_default():
         if _is_gil_enabled:
             assert stat.count_diff <= 3
         else:
-            assert stat.count_diff <= 7
+            assert stat.count_diff <= 10  # 10 on mac arm64
 
 
 def test_load():

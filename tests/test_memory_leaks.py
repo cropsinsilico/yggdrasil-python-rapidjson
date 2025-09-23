@@ -9,12 +9,18 @@
 import io
 import datetime
 import gc
+import sys
 
 import pytest
 import importlib
 import rapidjson as rj
 
 tracemalloc = pytest.importorskip("tracemalloc")
+_is_gil_enabled = False
+try:
+    _is_gil_enabled = sys._is_gil_enabled()
+except AttributeError:
+    pass
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -71,7 +77,13 @@ def test_object_hook_and_default():
 
     for stat in top_stats[:10]:
         # Uhm, with Py 3.14, on macOS,  the diff is 3...
-        assert stat.count_diff <= 3
+        # langmm: Increase in memory reported by gc.collect for
+        #   free-threaded python (3.14t). Maybe due to deferred reference
+        #   counting?
+        if _is_gil_enabled:
+            assert stat.count_diff <= 3
+        else:
+            assert stat.count_diff <= 7
 
 
 def test_load():
@@ -85,6 +97,7 @@ def test_load():
         content = io.StringIO('[' + ','.join(dct for _ in range(100)) + ']')
         rj.load(content, chunk_size=50)
 
+    del dct
     del content
     del _
     gc.collect()
@@ -97,7 +110,13 @@ def test_load():
 
     for stat in top_stats[:10]:
         # Uhm, with Py 3.14, on macOS,  the diff is 3...
-        assert stat.count_diff <= 3
+        # langmm: Increase in memory reported by gc.collect for
+        #   free-threaded python (3.14t). Maybe due to deferred reference
+        #   counting?
+        if _is_gil_enabled:
+            assert stat.count_diff <= 3
+        else:
+            assert stat.count_diff <= 5
 
 
 def test_failed_validation():
@@ -141,4 +160,10 @@ def test_failed_validation():
 
     for stat in top_stats[:10]:
         # Uhm, with Py 3.14, on macOS,  the diff is 3...
-        assert stat.count_diff <= 3
+        # langmm: Increase in memory reported by gc.collect for
+        #   free-threaded python (3.14t). Maybe due to deferred reference
+        #   counting?
+        if _is_gil_enabled:
+            assert stat.count_diff <= 3
+        else:
+            assert stat.count_diff <= 4

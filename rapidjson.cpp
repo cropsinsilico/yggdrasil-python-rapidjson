@@ -5116,13 +5116,13 @@ template <typename ValidatorObject>
 static void set_validation_error(ValidatorObject& validator,
 				 PyObject* error_type=validation_error,
 				 bool warning = false) {
-    StringBuffer sptr;
-    StringBuffer dptr;
+    // StringBuffer sptr;
+    // StringBuffer dptr;
 
-    YGGDRASIL_PYGIL_ALLOW_THREADS_BEGIN
-    validator.GetInvalidSchemaPointer().StringifyUriFragment(sptr);
-    validator.GetInvalidDocumentPointer().StringifyUriFragment(dptr);
-    YGGDRASIL_PYGIL_ALLOW_THREADS_END
+    // YGGDRASIL_PYGIL_ALLOW_THREADS_BEGIN
+    // validator.GetInvalidSchemaPointer().StringifyUriFragment(sptr);
+    // validator.GetInvalidDocumentPointer().StringifyUriFragment(dptr);
+    // YGGDRASIL_PYGIL_ALLOW_THREADS_END
 
     StringBuffer sb;
     PrettyWriter<StringBuffer> w(sb);
@@ -5143,8 +5143,8 @@ static void set_validation_error(ValidatorObject& validator,
 	PyErr_SetString(error_type, msg.c_str());
     }
 	
-    sptr.Clear();
-    dptr.Clear();
+    // sptr.Clear();
+    // dptr.Clear();
 }
 
 typedef struct {

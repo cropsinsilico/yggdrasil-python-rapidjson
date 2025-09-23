@@ -22,11 +22,14 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - numpy
   host:
     - pip
     - python
+    - numpy
   run:
     - python
+    - numpy
 
 test:
   imports:

@@ -1,0 +1,63 @@
+context:
+  name: "yggdrasil-python-rapidjson"
+  version: "1.1.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  path: ../
+
+build:
+  number: 0
+  script: '${{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+    - ${{ stdlib('c') }}
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - numpy
+  host:
+    - pip
+    - python
+    - numpy
+  run:
+    - python
+    - numpy
+
+test:
+  imports:
+    rapidjson
+  requires:
+    - pandas
+    - pytest
+    - pytz
+    - trimesh
+    - unyt
+  source_files:
+    - tests
+  commands:
+    - pytest tests
+
+about:
+  homepage: https://github.com/cropsinsilico/yggdrasil-python-rapidjson
+  repository: https://github.com/cropsinsilico/yggdrasil-python-rapidjson
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: A Python wrapper around YggdrasilRapidJSON.
+  description: |
+    A Python wrapper around YggdrasilRapidJSON. YggdrasilRapidJSON is a
+    header-only C++ library for JSON operation extended for use with
+    yggdrasil
+  # documentation:
+
+extra:
+  recipe-maintainers:
+    - langmm

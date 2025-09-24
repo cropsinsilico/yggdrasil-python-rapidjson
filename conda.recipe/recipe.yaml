@@ -31,19 +31,22 @@ requirements:
     - python
     - numpy
 
-test:
-  imports:
-    rapidjson
-  requires:
-    - pandas
-    - pytest
-    - pytz
-    - trimesh
-    - unyt
-  source_files:
-    - tests
-  commands:
-    - pytest tests
+tests:
+  - python:
+      imports:
+        - rapidjson
+  - script:
+      - pytest tests
+    requirements:
+      run:
+        - pandas
+        - pytest
+        - pytz
+        - trimesh
+        - unyt
+    files:
+      source:
+      - tests/
 
 about:
   homepage: https://github.com/cropsinsilico/yggdrasil-python-rapidjson

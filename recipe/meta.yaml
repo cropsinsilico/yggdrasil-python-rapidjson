@@ -33,7 +33,7 @@ requirements:
 
 test:
   imports:
-    rapidjson
+    - rapidjson
   requires:
     - pandas
     - pytest

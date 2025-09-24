@@ -39,7 +39,7 @@ requirements:
 
 test:
   imports:
-    - rapidjson
+    - yggdrasil_rapidjson
   requires:
     - pandas
     - pytest

@@ -22,7 +22,10 @@ requirements:
     - ${{ stdlib('c') }}
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
+    - hatch-fancy-pypi-readme
     - numpy
+    - scikit-build-core
+    - setuptools_scm
   host:
     - pip
     - python

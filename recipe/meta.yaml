@@ -27,6 +27,9 @@ requirements:
     - scikit-build-core
     - setuptools_scm
   host:
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - hatch-fancy-pypi-readme
     - numpy
     - pip
@@ -34,6 +37,7 @@ requirements:
     - scikit-build-core
     - setuptools_scm
   run:
+    - {{ stdlib('c') }}
     - python
     - numpy
 
@@ -49,7 +53,7 @@ test:
   source_files:
     - tests
   commands:
-    - pytest tests
+    - pytest -sv tests
 
 about:
   home: https://github.com/cropsinsilico/yggdrasil-python-rapidjson

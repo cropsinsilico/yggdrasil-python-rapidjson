@@ -27,9 +27,12 @@ requirements:
     - scikit-build-core
     - setuptools_scm
   host:
+    - hatch-fancy-pypi-readme
+    - numpy
     - pip
     - python
-    - numpy
+    - scikit-build-core
+    - setuptools_scm
   run:
     - python
     - numpy

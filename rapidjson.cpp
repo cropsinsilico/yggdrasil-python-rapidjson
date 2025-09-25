@@ -6725,16 +6725,12 @@ normalize(PyObject*, PyObject* args, PyObject* kwargs)
 
 static PyObject*
 get_submodule_spec(PyObject* name, PyObject* path) {
-    PyObject *importlib = NULL, *machinery = NULL, *util = NULL,
+    PyObject *machinery = NULL, *util = NULL,
 	*args = NULL, *kwargs = NULL, *spec = NULL,
 	*ExtensionFileLoader = NULL, *spec_from_loader_func = NULL,
 	*loader = NULL, *ModuleSpecCls = NULL;
-    importlib = PyImport_ImportModule("importlib");
-    if (importlib == NULL)
-	goto cleanup;
-    machinery = PyObject_GetAttrString(importlib, "machinery");
-    util = PyObject_GetAttrString(importlib, "util");
-    Py_CLEAR(importlib);
+    util = PyImport_ImportModule("importlib.util");
+    machinery = PyImport_ImportModule("importlib.machinery");
     if (machinery == NULL || util == NULL)
 	goto cleanup;
 #ifdef MAKE_SUBMODULE_VIA_PYTHON
@@ -6798,7 +6794,6 @@ cleanup:
     Py_XDECREF(spec_from_loader_func);
     Py_XDECREF(loader);
     Py_XDECREF(ModuleSpecCls);
-    Py_XDECREF(importlib);
     Py_XDECREF(machinery);
     Py_XDECREF(util);
     Py_XDECREF(args);

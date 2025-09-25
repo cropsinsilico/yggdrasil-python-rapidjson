@@ -7,11 +7,6 @@ endif()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/ygg_options.cmake)
 
-if (NOT DEFAULT_RAPIDJSON_INCLUDE_DIRS)
-  cmake_path(APPEND CMAKE_CURRENT_SOURCE_DIR rapidjson include
-             OUTPUT_VARIABLE DEFAULT_RAPIDJSON_INCLUDE_DIRS)
-endif()
-
 find_package(
   ${PYTHON_PREFIX} COMPONENTS
   Interpreter Development.Module NumPy REQUIRED)

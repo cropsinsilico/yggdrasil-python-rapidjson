@@ -1,6 +1,6 @@
 context:
   name: "yggdrasil-python-rapidjson"
-  version: "1.1.0"
+  version: "1.1.0.0"
 
 package:
   name: ${{ name|lower }}
@@ -17,29 +17,30 @@ requirements:
   build:
     - if: build_platform != target_platform
       then:
-        - python
+        - cmake >=3.5
         - cross-python_${{ target_platform }}
+        - ninja
+        - numpy >=1.13.0
+        - numpy-devel
+        - python >=3.9
     - ${{ stdlib('c') }}
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
-    - hatch-fancy-pypi-readme
-    - numpy
-    - scikit-build-core
-    - setuptools_scm
   host:
-    - ${{ stdlib('c') }}
-    - ${{ compiler('c') }}
-    - ${{ compiler('cxx') }}
+    - cmake >=3.5
     - hatch-fancy-pypi-readme
-    - numpy
+    - ninja
+    - numpy >=1.13.0
+    - numpy-devel
     - pip
-    - python
+    - python >=3.9
     - scikit-build-core
     - setuptools_scm
   run:
     - ${{ stdlib('c') }}
-    - python
-    - numpy
+    - python >=3.9
+    - numpy >=1.13.0
+    - numpy-devel
 
 tests:
   - python:

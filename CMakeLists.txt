@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.5)
 set(YGGDRASIL_REQUIRE_SKBUILD ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 if (NOT PYRJ_ALTERNATE_MODULE)
@@ -15,8 +15,8 @@ endif()
 find_package(
   ${PYTHON_PREFIX} COMPONENTS
   Interpreter Development.Module NumPy REQUIRED)
-if (${PYTHON_PREFIX}_VERSION VERSION_LESS "3.7.0")
-  message(FATAL_ERROR "Only Python 3.7+ is supported.")
+if (${PYTHON_PREFIX}_VERSION VERSION_LESS "3.9.0")
+  message(FATAL_ERROR "Only Python 3.9+ is supported.")
 endif()
 
 set(PYRJ_SRC "${CMAKE_CURRENT_SOURCE_DIR}/rapidjson.cpp")

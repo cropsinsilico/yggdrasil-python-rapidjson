@@ -49,6 +49,7 @@ test:
     - unyt
   source_files:
     - tests
+    - rapidjson/test/example_python.py
   commands:
     - pytest -sv tests
 

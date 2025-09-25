@@ -55,6 +55,7 @@ tests:
     files:
       source:
       - tests/
+      - rapidjson/test/example_python.py
 
 about:
   homepage: https://github.com/cropsinsilico/yggdrasil-python-rapidjson

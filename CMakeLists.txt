@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 if(NOT PROJECT_NAME)
   if(NOT SKBUILD)
     message(FATAL_ERROR "Must be built via scikit-build-core")
@@ -20,6 +20,7 @@ if (${PYTHON_PREFIX}_VERSION VERSION_LESS "3.9.0")
   message(FATAL_ERROR "Only Python 3.9+ is supported.")
 endif()
 
+set(PYRJ_TARGET "yggdrasil_python_rapidjson")
 set(PYRJ_SRC "${CMAKE_CURRENT_SOURCE_DIR}/rapidjson.cpp")
 
 if (PYRJ_ALTERNATE_MODULE)
@@ -75,26 +76,30 @@ endif()
 
 message(STATUS "PYRJ_ALTERNATE_MODULE = ${PYRJ_ALTERNATE_MODULE}")
 message(STATUS "PYRJ_LIBNAME = ${PYRJ_LIBNAME}")
+message(STATUS "PYRJ_TARGET = ${PYRJ_TARGET}")
 
 if (PYTHON_PREFIX STREQUAL "Python")
-  Python_add_library(${PYRJ_LIBNAME} MODULE ${PYRJ_SRC})
+  Python_add_library(${PYRJ_TARGET} MODULE ${PYRJ_SRC})
 else()
-  Python3_add_library(${PYRJ_LIBNAME} MODULE ${PYRJ_SRC})
+  Python3_add_library(${PYRJ_TARGET} MODULE ${PYRJ_SRC})
 endif()
+set_target_properties(
+  ${PYRJ_TARGET} PROPERTIES OUTPUT_NAME ${PYRJ_LIBNAME}
+)
 
 if (PYRJ_ALTERNATE_MODULE)
-  add_dependencies(${PYRJ_LIBNAME} alt_rapidjson)
+  add_dependencies(${PYRJ_TARGET} alt_rapidjson)
   target_include_directories(
-    ${PYRJ_LIBNAME} PUBLIC
+    ${PYRJ_TARGET} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   )
 endif()
 
-target_include_directories(${PYRJ_LIBNAME} PUBLIC ${RAPIDJSON_INCLUDE_DIRS})
-target_link_libraries(${PYRJ_LIBNAME} PUBLIC ${PYTHON_PREFIX}::NumPy)
+target_include_directories(${PYRJ_TARGET} PUBLIC ${RAPIDJSON_INCLUDE_DIRS})
+target_link_libraries(${PYRJ_TARGET} PUBLIC ${PYTHON_PREFIX}::NumPy)
 
 target_compile_options(
-  ${PYRJ_LIBNAME} PUBLIC
+  ${PYRJ_TARGET} PUBLIC
   -DRAPIDJSON_YGGDRASIL
   -DRAPIDJSON_YGGDRASIL_PYTHON
   -DRAPIDJSON_HAS_STDSTRING
@@ -102,14 +107,14 @@ target_compile_options(
   -D_USE_MATH_DEFINES)
 if (RAPIDJSON_EXACT_VERSION)
   target_compile_options(
-    ${PYRJ_LIBNAME} PUBLIC
+    ${PYRJ_TARGET} PUBLIC
     "-DRAPIDJSON_EXACT_VERSION=${RAPIDJSON_EXACT_VERSION}")
 endif()
 if (ASAN_COMPILE_FLAGS)
-  target_compile_options(${PYRJ_LIBNAME} PUBLIC ${ASAN_COMPILE_FLAGS})
+  target_compile_options(${PYRJ_TARGET} PUBLIC ${ASAN_COMPILE_FLAGS})
 endif()
 if (ASAN_LINK_FLAGS)
-  target_link_options(${PYRJ_LIBNAME} PUBLIC ${ASAN_LINK_FLAGS})
+  target_link_options(${PYRJ_TARGET} PUBLIC ${ASAN_LINK_FLAGS})
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -142,7 +147,7 @@ if (EXISTS RAPIDJSON_EXACT_VERSION_FILE)
   file(READ ${RAPIDJSON_EXACT_VERSION_FILE} RAPIDJSON_EXACT_VERSION)
   string(STRIP ${RAPIDJSON_EXACT_VERSION} RAPIDJSON_EXACT_VERSION)
   target_compile_options(
-    ${PYRJ_LIBNAME} PUBLIC
+    ${PYRJ_TARGET} PUBLIC
     "-DRAPIDJSON_EXACT_VERSION=${RAPIDJSON_EXACT_VERSION}")
 endif()
 
@@ -150,6 +155,6 @@ if (NOT ${PYTHON_PREFIX}_INSTALL_DIR)
   set(${PYTHON_PREFIX}_INSTALL_DIR ".")
 endif()
 
-install(TARGETS ${PYRJ_LIBNAME}
+install(TARGETS ${PYRJ_TARGET}
         LIBRARY DESTINATION ${${PYTHON_PREFIX}_INSTALL_DIR}
 	RUNTIME DESTINATION ${${PYTHON_PREFIX}_INSTALL_DIR})

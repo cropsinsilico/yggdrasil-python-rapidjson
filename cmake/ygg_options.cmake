@@ -58,7 +58,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (NOT DEFAULT_RAPIDJSON_INCLUDE_DIRS)
-  find_package(YggdrasilRapidJSON)
+  find_package(YggdrasilRapidJSON OPTIONAL)
   if(YggdrasilRapidJSON_FOUND)
     set(DEFAULT_RAPIDJSON_INCLUDE_DIRS YggdrasilRapidJSON_INCLUDE_DIRS)
   else()

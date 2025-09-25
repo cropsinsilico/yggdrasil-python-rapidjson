@@ -1,15 +1,21 @@
 cmake_minimum_required(VERSION 3.5)
-set(YGGDRASIL_REQUIRE_SKBUILD ON)
-set(CMAKE_VERBOSE_MAKEFILE ON)
-if (NOT PYRJ_ALTERNATE_MODULE)
-  set(PYRJ_ALTERNATE_MODULE yggdrasil_rapidjson)
+if(NOT PROJECT_NAME)
+  if(NOT SKBUILD)
+    message(FATAL_ERROR "Must be built via scikit-build-core")
+  endif()
+  PROJECT(${SKBUILD_PROJECT_NAME} VERSION "${SKBUILD_PROJECT_VERSION}")
 endif()
+
+set(PYRJ_ALTERNATE_MODULE "yggdrasil_rapidjson" CACHE STRING "Name of the Python module that should be built")
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/ygg_options.cmake)
 
 find_package(
   ${PYTHON_PREFIX} COMPONENTS
-  Interpreter Development.Module NumPy REQUIRED)
+  Interpreter Development.Module NumPy REQUIRED
+)
 if (${PYTHON_PREFIX}_VERSION VERSION_LESS "3.9.0")
   message(FATAL_ERROR "Only Python 3.9+ is supported.")
 endif()

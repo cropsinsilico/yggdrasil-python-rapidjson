@@ -13,7 +13,7 @@ source:
 
 build:
   number: 0
-  script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
+  script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv --no-build-isolation'
 
 requirements:
   build:
@@ -28,6 +28,7 @@ requirements:
   host:
     - cmake >=3.5
     - hatch-fancy-pypi-readme
+    - ninja
     - numpy >=1.13.0
     - pip
     - python >=3.9

@@ -6,18 +6,14 @@
 Python wrapper around YggdrasilRapidJSON
 ========================================
 
-:Authors: Meagan Lang <langmm.astro@gmail.com>; Ken Robbins <ken@kenrobbins.com>; Lele Gaifax <lele@metapensiero.it>
-:License: `MIT License`__
-
-__ https://raw.githubusercontent.com/cropsinsilico/yggdrasil-python-rapidjson/yggdrasil/LICENSE
+:Authors: Meagan Lang <langmm.astro@gmail.com>; Ken Robbins [RapidJSON] <ken@kenrobbins.com>; Lele Gaifax [RapidJSON] <lele@metapensiero.it>
+:License: `MIT License <https://raw.githubusercontent.com/cropsinsilico/yggdrasil-python-rapidjson/yggdrasil/LICENSE>`_
 
 YggdrasilRapidJSON_ is an extension to RapidJSON_, an extremely fast C++ JSON parser and serialization library. This package
-wraps it into a Python C-extension, duplicating the functions/classes provided by `python-rapidjson`__ and exposing the features added by YggdrasilRapidJSON_ including serialization/deserialization of additional datatypes, unitful scalars/arrays, and schema normalization/comparison.
+wraps it into a Python C-extension, duplicating the functions/classes provided by `python-rapidjson <https://github.com/python-rapidjson/python-rapidjson>`_ and exposing the features added by YggdrasilRapidJSON_ including serialization/deserialization of additional datatypes, unitful scalars/arrays, and schema normalization/comparison.
 
 .. TODO: Documentation link
-
-__ https://github.com/python-rapidjson/python-rapidjson
-__ https://python-rapidjson.readthedocs.io/en/latest
+.. TODO: https://python-rapidjson.readthedocs.io/en/latest
 
 
 Getting Started
@@ -29,13 +25,11 @@ First install ``yggdrasil-python-rapidjson``:
 
     $ pip install yggdrasil-python-rapidjson
 
-or, if you prefer `Conda`__:
+or, if you prefer `Conda <https://conda.io/docs/>`_:
 
 .. code-block:: bash
 
     $ conda install -c conda-forge yggdrasil-python-rapidjson
-
-__ https://conda.io/docs/
 
 Basic usage looks the same as python-rapidjson, with the exception of the package name (example adapted from python-rapidjson README.rst):
 

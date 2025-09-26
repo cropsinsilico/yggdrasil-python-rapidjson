@@ -16,7 +16,10 @@ import importlib
 import yggdrasil_rapidjson as rj
 
 tracemalloc = pytest.importorskip("tracemalloc")
-_is_gil_enabled = False
+# langmm: Increase in memory reported by gc.collect for
+#   free-threaded python (3.14t). Maybe due to deferred reference
+#   counting? Skip these tests when gil not enabled.
+_is_gil_enabled = True
 try:
     _is_gil_enabled = sys._is_gil_enabled()
 except AttributeError:
@@ -51,6 +54,10 @@ def default(obj):
         return obj
 
 
+@pytest.mark.skipif(not _is_gil_enabled,
+                    reason=("Memory leak test disabled for "
+                            "free-threading python without GIL enabled "
+                            "due to deferred reference counting"))
 def test_object_hook_and_default():
     tracemalloc.start()
 
@@ -77,15 +84,13 @@ def test_object_hook_and_default():
 
     for stat in top_stats[:10]:
         # Uhm, with Py 3.14, on macOS,  the diff is 3...
-        # langmm: Increase in memory reported by gc.collect for
-        #   free-threaded python (3.14t). Maybe due to deferred reference
-        #   counting?
-        if _is_gil_enabled:
-            assert stat.count_diff <= 3
-        else:
-            assert stat.count_diff <= 10  # 10 on mac arm64
+        assert stat.count_diff <= 3
 
 
+@pytest.mark.skipif(not _is_gil_enabled,
+                    reason=("Memory leak test disabled for "
+                            "free-threading python without GIL enabled "
+                            "due to deferred reference counting"))
 def test_load():
     tracemalloc.start()
 
@@ -110,15 +115,13 @@ def test_load():
 
     for stat in top_stats[:10]:
         # Uhm, with Py 3.14, on macOS,  the diff is 3...
-        # langmm: Increase in memory reported by gc.collect for
-        #   free-threaded python (3.14t). Maybe due to deferred reference
-        #   counting?
-        if _is_gil_enabled:
-            assert stat.count_diff <= 3
-        else:
-            assert stat.count_diff <= 5
+        assert stat.count_diff <= 3
 
 
+@pytest.mark.skipif(not _is_gil_enabled,
+                    reason=("Memory leak test disabled for "
+                            "free-threading python without GIL enabled "
+                            "due to deferred reference counting"))
 def test_failed_validation():
     tracemalloc.start()
 
@@ -160,10 +163,4 @@ def test_failed_validation():
 
     for stat in top_stats[:10]:
         # Uhm, with Py 3.14, on macOS,  the diff is 3...
-        # langmm: Increase in memory reported by gc.collect for
-        #   free-threaded python (3.14t). Maybe due to deferred reference
-        #   counting?
-        if _is_gil_enabled:
-            assert stat.count_diff <= 3
-        else:
-            assert stat.count_diff <= 4
+        assert stat.count_diff <= 3

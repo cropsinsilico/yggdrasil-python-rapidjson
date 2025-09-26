@@ -14,7 +14,7 @@ source:
 build:
   number: 0
   script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '  # [unix]
-  script: 'set SKBUILD_CMAKE_ARGS="-G Ninja" && {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '  # [win]
+  script: 'set "SKBUILD_CMAKE_ARGS=-G Ninja" && {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '  # [win]
 
 requirements:
   build:

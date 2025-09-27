@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = $(PYTHON) -msphinx
-SPHINXPROJ    = python-rapidjson
+SPHINXPROJ    = yggdrasil-python-rapidjson
 SOURCEDIR     = .
 BUILDDIR      = _build
 

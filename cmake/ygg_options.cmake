@@ -8,7 +8,7 @@ endif()
 set(YGGDRASIL_IS_SUBPROJECT ON)
 
 if (NOT PROJECT_NAME)
-  cmake_minimum_required(VERSION 3.16)
+  cmake_minimum_required(VERSION 3.15)
 endif()
 set(CMAKE_VERBOSE_MAKEFILE ON)
 if (POLICY CMP0048)
@@ -58,8 +58,13 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (NOT DEFAULT_RAPIDJSON_INCLUDE_DIRS)
-  cmake_path(APPEND CMAKE_CURRENT_SOURCE_DIR rapidjson include
-             OUTPUT_VARIABLE DEFAULT_RAPIDJSON_INCLUDE_DIRS)
+  find_package(YggdrasilRapidJSON QUIET)
+  if(YggdrasilRapidJSON_FOUND)
+    set(DEFAULT_RAPIDJSON_INCLUDE_DIRS YggdrasilRapidJSON_INCLUDE_DIRS)
+  else()
+    cmake_path(APPEND CMAKE_CURRENT_SOURCE_DIR rapidjson include
+               OUTPUT_VARIABLE DEFAULT_RAPIDJSON_INCLUDE_DIRS)
+  endif()
 endif()
 
 option(YGGDRASIL_DONT_MANAGE_PYTHON_GIL "Disable any handling of the Python GIL" OFF)

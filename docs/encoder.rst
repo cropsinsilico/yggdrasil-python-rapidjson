@@ -9,11 +9,11 @@
  Encoder class
 ===============
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
-   from rapidjson import Decoder, Encoder, BM_NONE, IM_ONLY_LISTS, MM_ONLY_DICTS
+   from yggdrasil_rapidjson import Decoder, Encoder, BM_NONE, IM_ONLY_LISTS, MM_ONLY_DICTS
 
 .. class:: Encoder(skip_invalid_keys=False, ensure_ascii=True, write_mode=WM_COMPACT, \
                    indent=4, sort_keys=False, number_mode=None, datetime_mode=None, \

@@ -33,7 +33,7 @@ help::
 
 .PHONY: build
 build: virtualenv rapidjson_exact_version.txt
-	$(PYTHON) setup.py build_ext --inplace
+	$(PYTHON) -m pip install . -e
 
 help::
 	@printf "clean\n\tremove rebuildable stuff\n"

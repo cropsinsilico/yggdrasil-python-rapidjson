@@ -9,7 +9,7 @@
  Exposed functions and symbols
 ===============================
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. toctree::
    :maxdepth: 2

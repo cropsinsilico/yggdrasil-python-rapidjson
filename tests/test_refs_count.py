@@ -17,7 +17,7 @@ import uuid
 
 import pytest
 
-import rapidjson as rj
+import yggdrasil_rapidjson as rj
 
 
 class Foo:

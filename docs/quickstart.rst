@@ -15,11 +15,11 @@ This a quick overview of the module.
 Installation
 ------------
 
-First install ``python-rapidjson``:
+First install ``yggdrasil-python-rapidjson``:
 
 .. code-block:: bash
 
-    $ pip install python-rapidjson
+    $ pip install yggdrasil-python-rapidjson
 
 If possible this installs a *binary wheel*, containing the latest version of the package
 already compiled for your system.  Otherwise it will download a *source distribution* and
@@ -28,7 +28,7 @@ will need to install a minimal C++ compiler toolchain on your system.
 
 Alternatively it is also possible to install it using `Conda`__.
 
-__ https://anaconda.org/conda-forge/python-rapidjson
+__ https://anaconda.org/conda-forge/yggdrasil-python-rapidjson
 
 
 Basic examples
@@ -42,7 +42,7 @@ Basic usage looks like this:
 .. doctest::
 
     >>> from pprint import pprint
-    >>> from rapidjson import dumps, loads
+    >>> from yggdrasil_rapidjson import dumps, loads
     >>> data = {'foo': 100, 'bar': 'baz'}
     >>> dumps(data, sort_keys=True) # for doctest
     '{"bar":"baz","foo":100}'
@@ -96,7 +96,7 @@ Values can also be :class:`bytes` or :class:`bytearray` instances, which are enc
     True
     >>> dumps(clef) == dumps(bytes_utf8)
     False
-    >>> from rapidjson import BM_UTF8
+    >>> from yggdrasil_rapidjson import BM_UTF8
     >>> dumps(clef) == dumps(bytes_utf8, bytes_mode=BM_UTF8) == dumps(bytearray, bytes_mode=BM_UTF8) == '"\\uD834\\uDD1E"'
     True
 
@@ -105,7 +105,7 @@ Values can also be :class:`bytes` or :class:`bytearray` instances, which are enc
 .. doctest::
 
     >>> import datetime, decimal, uuid
-    >>> from rapidjson import DM_ISO8601, UM_CANONICAL, NM_DECIMAL
+    >>> from yggdrasil_rapidjson import DM_ISO8601, UM_CANONICAL, NM_DECIMAL
     >>> some_day = datetime.date(2016, 8, 28)
     >>> some_timestamp = datetime.datetime(2016, 8, 28, 13, 14, 15)
     >>> dumps({'a date': some_day, 'a timestamp': some_timestamp})
@@ -154,7 +154,7 @@ The module exposes also a *stream* interface:
 .. doctest::
 
     >>> from io import StringIO
-    >>> from rapidjson import dump, load
+    >>> from yggdrasil_rapidjson import dump, load
     >>> stream = StringIO()
     >>> dump(data, stream)
     >>> stream.seek(0)
@@ -163,15 +163,15 @@ The module exposes also a *stream* interface:
     True
 
 Almost all these functionalities are also available as *classes*. For example, the
-following uses a *relaxed syntax* :class:`~rapidjson.Decoder` instance, that handles
+following uses a *relaxed syntax* :class:`~yggdrasil_rapidjson.Decoder` instance, that handles
 JSONC__ and *trailing commas*:
 
 __ https://jsonc.org/
 
 .. code-block:: python
 
-    >>> from rapidjson import Decoder
-    >>> from rapidjson import PM_COMMENTS, PM_TRAILING_COMMAS
+    >>> from yggdrasil_rapidjson import Decoder
+    >>> from yggdrasil_rapidjson import PM_COMMENTS, PM_TRAILING_COMMAS
     >>> decoder = Decoder(parse_mode=PM_COMMENTS | PM_TRAILING_COMMAS)
     >>> decoder('''
     ... {
@@ -214,13 +214,13 @@ Arbitrary encodings
 
       >>> import datetime
       >>> import json
-      >>> import rapidjson
+      >>> import yggdrasil_rapidjson
       >>>
       >>> class Encoder:
       ...     def __init__(self, *args, **kwargs):
       ...         # Filter/adapt JSON arguments to RapidJSON ones
-      ...         rjkwargs = {'datetime_mode': rapidjson.DM_ISO8601}
-      ...         encoder = rapidjson.Encoder(**rjkwargs)
+      ...         rjkwargs = {'datetime_mode': yggdrasil_rapidjson.DM_ISO8601}
+      ...         encoder = yggdrasil_rapidjson.Encoder(**rjkwargs)
       ...         self.encode = encoder.__call__
       >>>
       >>> json.dumps([1,2,datetime.date(2020, 12, 8)], cls=Encoder)
@@ -229,8 +229,8 @@ Arbitrary encodings
       >>> class Decoder:
       ...     def __init__(self, *args, **kwargs):
       ...         # Filter/adapt JSON arguments to RapidJSON ones
-      ...         rjkwargs = {'datetime_mode': rapidjson.DM_ISO8601}
-      ...         encoder = rapidjson.Decoder(**rjkwargs)
+      ...         rjkwargs = {'datetime_mode': yggdrasil_rapidjson.DM_ISO8601}
+      ...         encoder = yggdrasil_rapidjson.Decoder(**rjkwargs)
       ...         self.decode = encoder.__call__
       >>>
       >>> json.loads('[1,2,"2020-12-08"]', cls=Decoder)
@@ -247,9 +247,9 @@ Arbitrary encodings
 
      >>> def loads(s, object_pairs_hook=None):
      ...     if object_pairs_hook is None:
-     ...         d = rapidjson.Decoder()
+     ...         d = yggdrasil_rapidjson.Decoder()
      ...     else:
-     ...         class KWPairsDecoder(rapidjson.Decoder):
+     ...         class KWPairsDecoder(yggdrasil_rapidjson.Decoder):
      ...             def start_object(self):
      ...                 return []
      ...             def end_object(self, pairs):

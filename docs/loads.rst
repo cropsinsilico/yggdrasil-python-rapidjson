@@ -9,14 +9,14 @@
  loads() function
 ==================
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
-   from rapidjson import (dumps, loads, DM_NONE, DM_ISO8601, DM_UNIX_TIME,
-                          DM_ONLY_SECONDS, DM_IGNORE_TZ, DM_NAIVE_IS_UTC, DM_SHIFT_TO_UTC,
-                          UM_NONE, UM_CANONICAL, UM_HEX, NM_NATIVE, NM_DECIMAL, NM_NAN,
-                          PM_NONE, PM_COMMENTS, PM_TRAILING_COMMAS)
+   from yggdrasil_rapidjson import (dumps, loads, DM_NONE, DM_ISO8601, DM_UNIX_TIME,
+                                    DM_ONLY_SECONDS, DM_IGNORE_TZ, DM_NAIVE_IS_UTC, DM_SHIFT_TO_UTC,
+                                    UM_NONE, UM_CANONICAL, UM_HEX, NM_NATIVE, NM_DECIMAL, NM_NAN,
+                                    PM_NONE, PM_COMMENTS, PM_TRAILING_COMMAS)
 
 .. function:: loads(string, *, object_hook=None, number_mode=None, datetime_mode=None, \
                     uuid_mode=None, parse_mode=None, allow_nan=True)
@@ -86,11 +86,11 @@
       >>> loads('[NaN, Infinity]', number_mode=NM_NATIVE)
       Traceback (most recent call last):
         File "<stdin>", line 1, in <module>
-      rapidjson.JSONDecodeError: Parse error at offset 1: Invalid value.
+      yggdrasil_rapidjson.JSONDecodeError: Parse error at offset 1: Invalid value.
       >>> loads('[NaN, Infinity]', allow_nan=False)
       Traceback (most recent call last):
         File "<stdin>", line 1, in <module>
-      rapidjson.JSONDecodeError: Parse error at offset 1: Invalid value.
+      yggdrasil_rapidjson.JSONDecodeError: Parse error at offset 1: Invalid value.
 
    Normally all floating point literals present in the JSON structure will be loaded as
    Python :class:`float` instances, with :data:`NM_DECIMAL` they will be returned as
@@ -259,11 +259,11 @@
       >>> loads('"foo" // one line of explanation')
       Traceback (most recent call last):
         File "<stdin>", line 1, in <module>
-      rapidjson.JSONDecodeError: Parse error at offset 6: The document root must not be followed by other values.
+      yggdrasil_rapidjson.JSONDecodeError: Parse error at offset 6: The document root must not be followed by other values.
       >>> loads('"bar" /* detailed explanation */')
       Traceback (most recent call last):
         File "<stdin>", line 1, in <module>
-      rapidjson.JSONDecodeError: Parse error at offset 6: The document root must not be followed by other values.
+      yggdrasil_rapidjson.JSONDecodeError: Parse error at offset 6: The document root must not be followed by other values.
       >>> loads('"foo" // one line of explanation', parse_mode=PM_COMMENTS)
       'foo'
       >>> loads('"bar" /* detailed explanation */', parse_mode=PM_COMMENTS)
@@ -276,7 +276,7 @@
       >>> loads('[1,]')
       Traceback (most recent call last):
         File "<stdin>", line 1, in <module>
-      rapidjson.JSONDecodeError: Parse error at offset 3: Invalid value.
+      yggdrasil_rapidjson.JSONDecodeError: Parse error at offset 3: Invalid value.
       >>> loads('[1,]', parse_mode=PM_TRAILING_COMMAS)
       [1]
       >>> loads('{"one": 1,}', parse_mode=PM_TRAILING_COMMAS)
@@ -289,7 +289,7 @@
       >>> loads('[1, /* 2, */ 3,]')
       Traceback (most recent call last):
         ...
-      rapidjson.JSONDecodeError: Parse error at offset 4: Invalid value.
+      yggdrasil_rapidjson.JSONDecodeError: Parse error at offset 4: Invalid value.
       >>> loads('[1, /* 2, */ 3,]', parse_mode=PM_COMMENTS | PM_TRAILING_COMMAS)
       [1, 3]
 

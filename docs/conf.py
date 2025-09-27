@@ -45,7 +45,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'python-rapidjson'
+project = 'yggdrasil-python-rapidjson'
 copyright = '2016—2024, Lele Gaifax'
 author = 'Lele Gaifax'
 

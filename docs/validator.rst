@@ -9,11 +9,11 @@
  Validator class
 =================
 
-.. currentmodule:: rapidjson
+.. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
-   from rapidjson import ValidationError, Validator
+   from yggdrasil_rapidjson import ValidationError, Validator
 
 .. class:: Validator(json_schema)
 
@@ -74,4 +74,4 @@
          >>> validate('[x]')
          Traceback (most recent call last):
            File "<stdin>", line 1, in <module>
-         rapidjson.JSONDecodeError: Invalid JSON when creating a document (expectsString = 0, allowsString = 0)
+         yggdrasil_rapidjson.JSONDecodeError: Invalid JSON when creating a document (expectsString = 0, allowsString = 0)

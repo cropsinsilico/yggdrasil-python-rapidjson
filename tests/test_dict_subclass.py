@@ -7,7 +7,7 @@
 #
 
 from collections import OrderedDict
-from rapidjson import Decoder
+from yggdrasil_rapidjson import Decoder
 
 
 class OrderedDecoder(Decoder):

@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>load() function &#8212; yggdrasil-python-rapidjson 1.17 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Encoder class" href="encoder.html" />
+    <link rel="prev" title="loads() function" href="loads.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="load-function">
+<h1>load() function<a class="headerlink" href="#load-function" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.load">
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_hook</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65536</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode the given Python file-like <cite>stream</cite> containing a <code class="docutils literal notranslate"><span class="pre">JSON</span></code> formatted value
+into Python object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream</strong> – a file-like object</p></li>
+<li><p><strong>object_hook</strong> (<em>callable</em>) – an optional function that will be called with the result
+of any object literal decoded (a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) and should
+return the value to use instead of the <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p></li>
+<li><p><strong>number_mode</strong> (<em>int</em>) – enable particular behaviors in handling numbers</p></li>
+<li><p><strong>datetime_mode</strong> (<em>int</em>) – how should <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code> instances be
+handled</p></li>
+<li><p><strong>uuid_mode</strong> (<em>int</em>) – how should <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> instances be handled</p></li>
+<li><p><strong>parse_mode</strong> (<em>int</em>) – whether the parser should allow non-standard JSON extensions</p></li>
+<li><p><strong>chunk_size</strong> (<em>int</em>) – read the stream in chunks of this size at a time</p></li>
+<li><p><strong>allow_nan</strong> (<em>bool</em>) – <em>compatibility</em> flag equivalent to <code class="docutils literal notranslate"><span class="pre">number_mode=NM_NAN</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An equivalent Python object.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if an invalid argument is given</p></li>
+<li><p><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError" title="yggdrasil_rapidjson.JSONDecodeError"><strong>JSONDecodeError</strong></a> – if <cite>string</cite> is not a valid <code class="docutils literal notranslate"><span class="pre">JSON</span></code> value</p></li>
+</ul>
+</dd>
+</dl>
+<p>The function has the same behaviour as <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a>, except for the kind of the
+first argument that is expected to be file-like object instead of a string:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">load</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&quot;Naïve&quot;&#39;</span><span class="p">))</span>
+<span class="go">&#39;Naïve&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">load</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;[&quot;string&quot;, {&quot;kind&quot;: &quot;object&quot;}, 3.14159]&#39;</span><span class="p">))</span>
+<span class="go">[&#39;string&#39;, {&#39;kind&#39;: &#39;object&#39;}, 3.14159]</span>
+</pre></div>
+</div>
+<p class="rubric"><cite>chunk_size</cite></p>
+<p>The <cite>chunk_size</cite> argument determines the size of the <em>buffer</em> used to load the
+<em>stream</em>: the greater the value, the fewer calls will be made to its <code class="docutils literal notranslate"><span class="pre">read()</span></code>
+method.</p>
+<p>Consult the <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a> documentation for details on all other arguments.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Performance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dumps.html">dumps() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dump.html">dump() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html">loads() function</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">load() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Encoder class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decoder.html">Decoder class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawjson.html">RawJSON class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NONE"><code class="docutils literal notranslate"><span class="pre">DM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ISO8601"><code class="docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_UNIX_TIME"><code class="docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ONLY_SECONDS"><code class="docutils literal notranslate"><span class="pre">DM_ONLY_SECONDS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_IGNORE_TZ"><code class="docutils literal notranslate"><span class="pre">DM_IGNORE_TZ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NAIVE_IS_UTC"><code class="docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_SHIFT_TO_UTC"><code class="docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_NONE"><code class="docutils literal notranslate"><span class="pre">UM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_CANONICAL"><code class="docutils literal notranslate"><span class="pre">UM_CANONICAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_HEX"><code class="docutils literal notranslate"><span class="pre">UM_HEX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NONE"><code class="docutils literal notranslate"><span class="pre">NM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_DECIMAL"><code class="docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NAN"><code class="docutils literal notranslate"><span class="pre">NM_NAN</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NATIVE"><code class="docutils literal notranslate"><span class="pre">NM_NATIVE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_NONE"><code class="docutils literal notranslate"><span class="pre">PM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_COMMENTS"><code class="docutils literal notranslate"><span class="pre">PM_COMMENTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_TRAILING_COMMAS"><code class="docutils literal notranslate"><span class="pre">PM_TRAILING_COMMAS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_NONE"><code class="docutils literal notranslate"><span class="pre">BM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_UTF8"><code class="docutils literal notranslate"><span class="pre">BM_UTF8</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ANY_ITERABLE"><code class="docutils literal notranslate"><span class="pre">IM_ANY_ITERABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ONLY_LISTS"><code class="docutils literal notranslate"><span class="pre">IM_ONLY_LISTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ANY_MAPPING"><code class="docutils literal notranslate"><span class="pre">MM_ANY_MAPPING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ONLY_DICTS"><code class="docutils literal notranslate"><span class="pre">MM_ONLY_DICTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_COERCE_KEYS_TO_STRINGS"><code class="docutils literal notranslate"><span class="pre">MM_COERCE_KEYS_TO_STRINGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SKIP_NON_STRING_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SKIP_NON_STRING_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SORT_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SORT_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError"><code class="docutils literal notranslate"><span class="pre">JSONDecodeError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_COMPACT"><code class="docutils literal notranslate"><span class="pre">WM_COMPACT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_PRETTY"><code class="docutils literal notranslate"><span class="pre">WM_PRETTY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_SINGLE_LINE_ARRAY"><code class="docutils literal notranslate"><span class="pre">WM_SINGLE_LINE_ARRAY</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="loads.html" title="previous chapter">loads() function</a></li>
+      <li>Next: <a href="encoder.html" title="next chapter">Encoder class</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016—2024, Lele Gaifax.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/load.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Validator class &#8212; yggdrasil-python-rapidjson 1.17 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RawJSON class" href="rawjson.html" />
+    <link rel="prev" title="Decoder class" href="decoder.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="validator-class">
+<h1>Validator class<a class="headerlink" href="#validator-class" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Validator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">Validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_schema</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Validator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json_schema</strong> – the <a class="reference external" href="http://json-schema.org/documentation.html">JSON schema</a>, specified as a <code class="docutils literal notranslate"><span class="pre">str</span></code> instance or an <em>UTF-8</em>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>/<code class="xref py py-class docutils literal notranslate"><span class="pre">bytearray</span></code> instance</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError" title="yggdrasil_rapidjson.JSONDecodeError"><strong>JSONDecodeError</strong></a> – if <cite>json_schema</cite> is not a valid <code class="docutils literal notranslate"><span class="pre">JSON</span></code> value</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Validator.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Validator.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> – the <code class="docutils literal notranslate"><span class="pre">JSON</span></code> value, specified as a <code class="docutils literal notranslate"><span class="pre">str</span></code> instance or an <em>UTF-8</em>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>/<code class="xref py py-class docutils literal notranslate"><span class="pre">bytearray</span></code> instance, that will be validated</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError" title="yggdrasil_rapidjson.JSONDecodeError"><strong>JSONDecodeError</strong></a> – if <cite>json</cite> is not a valid <code class="docutils literal notranslate"><span class="pre">JSON</span></code> value</p>
+</dd>
+</dl>
+<p>The given <cite>json</cite> value will be validated accordingly to the <em>schema</em>: a
+<a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationError" title="yggdrasil_rapidjson.ValidationError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code></a> will be raised if the validation fails, and the exception
+will contain three arguments, respectively the type of the error, the position in
+the schema and the position in the <code class="docutils literal notranslate"><span class="pre">JSON</span></code> document where the error occurred:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span> <span class="o">=</span> <span class="n">Validator</span><span class="p">(</span><span class="s1">&#39;{&quot;required&quot;: [&quot;a&quot;, &quot;b&quot;]}&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;{&quot;a&quot;: null, &quot;b&quot;: 1}&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">validate</span><span class="p">(</span><span class="s1">&#39;{&quot;a&quot;: null, &quot;c&quot;: false}&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(&#39;{\n    &quot;message&quot;: &quot;Object is missing the following members required by the schema: \&#39;[\\&quot;b\\&quot;]\&#39;.&quot;,\n    &quot;instanceRef&quot;: &quot;#&quot;,\n    &quot;schemaRef&quot;: &quot;#&quot;\n}&#39;,)</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span> <span class="o">=</span> <span class="n">Validator</span><span class="p">(</span><span class="s1">&#39;{&quot;type&quot;: &quot;array&quot;,&#39;</span>
+<span class="gp">... </span>                     <span class="s1">&#39; &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;},&#39;</span>
+<span class="gp">... </span>                     <span class="s1">&#39; &quot;minItems&quot;: 1}&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;[&quot;foo&quot;, &quot;bar&quot;]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">validate</span><span class="p">(</span><span class="s1">&#39;[]&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(&#39;{\n    &quot;message&quot;: &quot;Array of length \&#39;0\&#39; is shorter than the \&#39;minItems\&#39; value \&#39;1\&#39;.&quot;,\n    &quot;instanceRef&quot;: &quot;#&quot;,\n    &quot;schemaRef&quot;: &quot;#&quot;\n}&#39;,)</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">validate</span><span class="p">(</span><span class="s1">&#39;[1]&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(&#39;{\n    &quot;message&quot;: &quot;Property has a type \&#39;integer\&#39; that is not in the following list: \&#39;[\\&quot;string\\&quot;]\&#39;.&quot;,\n    &quot;instanceRef&quot;: &quot;#/0&quot;,\n    &quot;schemaRef&quot;: &quot;#/items&quot;\n}&#39;,)</span>
+</pre></div>
+</div>
+<p>When <cite>json</cite> is not a valid JSON document, a <a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError" title="yggdrasil_rapidjson.JSONDecodeError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">JSONDecodeError</span></code></a> is raised instead:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;[x]&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">yggdrasil_rapidjson.JSONDecodeError</span>: <span class="n">Invalid JSON when creating a document (expectsString = 0, allowsString = 0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Performance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dumps.html">dumps() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dump.html">dump() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html">loads() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load.html">load() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Encoder class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decoder.html">Decoder class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Validator class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawjson.html">RawJSON class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NONE"><code class="docutils literal notranslate"><span class="pre">DM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ISO8601"><code class="docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_UNIX_TIME"><code class="docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ONLY_SECONDS"><code class="docutils literal notranslate"><span class="pre">DM_ONLY_SECONDS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_IGNORE_TZ"><code class="docutils literal notranslate"><span class="pre">DM_IGNORE_TZ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NAIVE_IS_UTC"><code class="docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_SHIFT_TO_UTC"><code class="docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_NONE"><code class="docutils literal notranslate"><span class="pre">UM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_CANONICAL"><code class="docutils literal notranslate"><span class="pre">UM_CANONICAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_HEX"><code class="docutils literal notranslate"><span class="pre">UM_HEX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NONE"><code class="docutils literal notranslate"><span class="pre">NM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_DECIMAL"><code class="docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NAN"><code class="docutils literal notranslate"><span class="pre">NM_NAN</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NATIVE"><code class="docutils literal notranslate"><span class="pre">NM_NATIVE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_NONE"><code class="docutils literal notranslate"><span class="pre">PM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_COMMENTS"><code class="docutils literal notranslate"><span class="pre">PM_COMMENTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_TRAILING_COMMAS"><code class="docutils literal notranslate"><span class="pre">PM_TRAILING_COMMAS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_NONE"><code class="docutils literal notranslate"><span class="pre">BM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_UTF8"><code class="docutils literal notranslate"><span class="pre">BM_UTF8</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ANY_ITERABLE"><code class="docutils literal notranslate"><span class="pre">IM_ANY_ITERABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ONLY_LISTS"><code class="docutils literal notranslate"><span class="pre">IM_ONLY_LISTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ANY_MAPPING"><code class="docutils literal notranslate"><span class="pre">MM_ANY_MAPPING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ONLY_DICTS"><code class="docutils literal notranslate"><span class="pre">MM_ONLY_DICTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_COERCE_KEYS_TO_STRINGS"><code class="docutils literal notranslate"><span class="pre">MM_COERCE_KEYS_TO_STRINGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SKIP_NON_STRING_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SKIP_NON_STRING_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SORT_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SORT_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError"><code class="docutils literal notranslate"><span class="pre">JSONDecodeError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_COMPACT"><code class="docutils literal notranslate"><span class="pre">WM_COMPACT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_PRETTY"><code class="docutils literal notranslate"><span class="pre">WM_PRETTY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_SINGLE_LINE_ARRAY"><code class="docutils literal notranslate"><span class="pre">WM_SINGLE_LINE_ARRAY</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="decoder.html" title="previous chapter">Decoder class</a></li>
+      <li>Next: <a href="rawjson.html" title="next chapter">RawJSON class</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016—2024, Lele Gaifax.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/validator.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

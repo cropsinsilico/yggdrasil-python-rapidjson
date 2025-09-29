@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Changes &#8212; yggdrasil-python-rapidjson 1.17 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="RawJSON class" href="rawjson.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="changes">
+<h1>Changes<a class="headerlink" href="#changes" title="Permalink to this heading">¶</a></h1>
+<section id="yggdrasil-python-rapidjson">
+<h2>yggdrasil-python-rapidjson<a class="headerlink" href="#yggdrasil-python-rapidjson" title="Permalink to this heading">¶</a></h2>
+<section id="id1">
+<h3>1.21.0.0 (2025-09-29)<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<p>Tag of version with YggdrasilRapidJSON extension features</p>
+<ul class="simple">
+<li><p>Units subpackage containin Units, Quantity &amp; QuantityArray classes for attaching physical units for arthimetic operations and conversions</p></li>
+<li><p>Normalizer class for normalization of JSON against a JSON schema</p></li>
+<li><p>Geometry subpackage containing Ply &amp; ObjWavefront classes for managing 3D meshes</p></li>
+<li><p>Support for Python interface to serialize/deserialize documents containing the added classes as well as numpy arrays, pandas data frames, and trimesh instances</p></li>
+</ul>
+</section>
+</section>
+<section id="python-rapidjson">
+<h2>python-rapidjson<a class="headerlink" href="#python-rapidjson" title="Permalink to this heading">¶</a></h2>
+<section id="id2">
+<h3>1.21 (2025-07-10)<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use <a class="reference external" href="https://github.com/Tencent/rapidjson/compare/ab1842a2dae061284c0a62dca1cc6d5e7e37e346..24b5e7a8b27f42fa16b96fc70aade9106cf7102f">current master</a> version of rapidjson, thanks to Kyle Gottfried (although I didn’t
+merge his <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/224">PR #224</a>)</p>
+</li>
+<li><p>Recompute comparison table with latest versions of other libraries, using Python 3.13</p></li>
+<li><p>Typing stubs: specify default value for <code class="docutils literal notranslate"><span class="pre">stream</span></code> argument of <code class="docutils literal notranslate"><span class="pre">Encoder.__call__()</span></code>
+(<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/215">issue #215</a>)</p>
+</li>
+<li><p>Use more recent OS images on GH Actions to test and build wheels</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>1.20 (2024-08-05)<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Rectify type hints of <code class="docutils literal notranslate"><span class="pre">loads()</span></code> and <code class="docutils literal notranslate"><span class="pre">Decoder.__call__()</span></code> (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/214">issue #214</a>)</p>
+</li>
+<li><p>Ensure <code class="docutils literal notranslate"><span class="pre">Validator</span></code> receives valid UTF-8 <code class="docutils literal notranslate"><span class="pre">bytes</span></code>/<code class="docutils literal notranslate"><span class="pre">bytearray</span></code> arguments</p></li>
+<li><p>Generate wheels on PyPI using Python 3.13.0rc1 release, thanks to cibuildwheel <a class="reference external" href="https://cibuildwheel.pypa.io/en/stable/changelog/#v2200">2.20.0</a></p>
+</li>
+</ul>
+</section>
+<section id="id9">
+<h3>1.19 (2024-07-28)<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Properly dump subclasses of <code class="docutils literal notranslate"><span class="pre">float</span></code> with custom <code class="docutils literal notranslate"><span class="pre">__repr__()</span></code> method ( <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/213">issue #213</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id11">
+<h3>1.18 (2024-06-29)<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Expose PEP-484 typing stubs, thanks to Rodion Kosianenko and GoodWasHere (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/204">PR #204</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id13">
+<h3>1.17 (2024-05-18)<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use <a class="reference external" href="https://github.com/Tencent/rapidjson/compare/5e17dbed34eef33af8f3e734820b5dc547a2a3aa...ab1842a2dae061284c0a62dca1cc6d5e7e37e346">current master</a> version of rapidjson</p>
+</li>
+<li><p>Generate wheels on PyPI using Python 3.13b1 release, thanks to cibuildwheel <a class="reference external" href="https://cibuildwheel.pypa.io/en/stable/changelog/#v2180">2.18.0</a></p>
+</li>
+</ul>
+</section>
+<section id="id16">
+<h3>1.16 (2024-02-28)<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Produce Python 3.8 wheels again, I deactivated it too eagerly, it’s in <em>security fixes
+only</em> mode, not yet reached its <cite>end-of-life</cite> state</p></li>
+</ul>
+</section>
+<section id="id17">
+<h3>1.15 (2024-02-28)<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Honor the <a class="reference external" href="https://docs.python.org/3.12/library/sys.html#sys.setrecursionlimit">recursion limit</a> also at parse time, to avoid attacks as described by
+<a class="reference external" href="https://monicz.dev/CVE-2024-27454">CVE-2024-27454</a></p>
+</li>
+</ul>
+</section>
+<section id="id20">
+<h3>1.14 (2023-12-14)<a class="headerlink" href="#id20" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Produce binary wheels for macOS/arm64, thanks to timothyjlaurent (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/170">PR #195</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id22">
+<h3>1.13 (2023-10-29)<a class="headerlink" href="#id22" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix handling of write_mode in dump functions (problem emerged discussing <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/191">issue #191</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id24">
+<h3>1.12 (2023-10-07)<a class="headerlink" href="#id24" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Generate wheels on PyPI using final Python 3.12 release, thanks to cibuildwheel <a class="reference external" href="https://cibuildwheel.readthedocs.io/en/stable/changelog/#v2162">2.16.2</a></p>
+</li>
+</ul>
+</section>
+<section id="id26">
+<h3>1.11 (2023-09-11)<a class="headerlink" href="#id26" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use <a class="reference external" href="https://github.com/Tencent/rapidjson/compare/083f359f5c36198accc2b9360ce1e32a333231d9...5e17dbed34eef33af8f3e734820b5dc547a2a3aa">current master</a> version of rapidjson</p>
+</li>
+<li><p>Use cibuildwheel <a class="reference external" href="https://cibuildwheel.readthedocs.io/en/stable/changelog/#v2150">2.15.0</a></p>
+</li>
+</ul>
+</section>
+<section id="id29">
+<h3>1.10 (2023-03-15)<a class="headerlink" href="#id29" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use <a class="reference external" href="https://github.com/Tencent/rapidjson/commit/083f359f5c36198accc2b9360ce1e32a333231d9">current master</a> version of rapidjson</p>
+</li>
+<li><p>Produce ppc64le wheels, thanks to mgiessing (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/170">PR #170</a>)</p>
+</li>
+<li><p>Use cibuildwheel <a class="reference external" href="https://cibuildwheel.readthedocs.io/en/stable/changelog/#v2121">2.12.1</a></p>
+</li>
+</ul>
+</section>
+<section id="id33">
+<h3>1.9 (2022-10-17)<a class="headerlink" href="#id33" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Produce Python 3.11 wheels, thanks to <code class="docutils literal notranslate"><span class="pre">cibuildwheel</span></code> <a class="reference external" href="https://cibuildwheel.readthedocs.io/en/stable/changelog/#v2111">2.11.1</a></p>
+</li>
+</ul>
+</section>
+<section id="id35">
+<h3>1.8 (2022-07-07)<a class="headerlink" href="#id35" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix <a class="reference external" href="https://github.com/Tencent/rapidjson/commit/9965ab37f6cfae3d58a0a6e34c76112866ace0b1#commitcomment-77875054">problem on macOS</a> explicitly requiring C++11, thanks to agate-pris (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/166">issue
+#166</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id38">
+<h3>1.7 (2022-07-06)<a class="headerlink" href="#id38" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use <a class="reference external" href="https://github.com/Tencent/rapidjson/commit/232389d4f1012dddec4ef84861face2d2ba85709">current master</a> version of rapidjson</p>
+</li>
+<li><p>Update the test suite to work on Pyston, thanks to Kevin Modzelewski (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/161">PR #161</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id41">
+<h3>1.6 (2022-02-19)<a class="headerlink" href="#id41" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix memory leak when using <code class="docutils literal notranslate"><span class="pre">end_array</span></code> (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/160">issue #160</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id43">
+<h3>1.5 (2021-10-16)<a class="headerlink" href="#id43" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix serialization bug when using DM_UNIX_TIME in a non-C locale context</p></li>
+</ul>
+</section>
+<section id="id44">
+<h3>1.4 (2021-06-25)<a class="headerlink" href="#id44" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Build binary wheel for aarch64, thanks to odidev (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/156">PR #156</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id46">
+<h3>1.3 (2021-06-25)<a class="headerlink" href="#id46" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Yet another attempt to fix automatic wheels upload</p></li>
+</ul>
+</section>
+<section id="id47">
+<h3>1.2 (2021-06-25)<a class="headerlink" href="#id47" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix automatic wheels upload from GH Actions to PyPI</p></li>
+</ul>
+</section>
+<section id="id48">
+<h3>1.1 (2021-06-25)<a class="headerlink" href="#id48" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Reduce decoder memory consumption by uniquifiying keys in the loaded dictionaries</p></li>
+<li><p>Implement an alternative way of transmogrify JSON objects, similar to <code class="docutils literal notranslate"><span class="pre">json</span></code>‘s
+<code class="docutils literal notranslate"><span class="pre">object_pairs_hook</span></code> load option (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/154">issue #154</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id50">
+<h3>1.0 (2020-12-13)<a class="headerlink" href="#id50" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Require Python 3.6 or greater</p></li>
+<li><p>New serialization options, <code class="docutils literal notranslate"><span class="pre">iterable_mode</span></code> and <code class="docutils literal notranslate"><span class="pre">mapping_mode</span></code>, to give some control
+on how generic iterables and mappings get encoded (fix <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/149">issue #149</a> and
+<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/150">issue #150</a>)</p>
+</li>
+<li><p>Internal refactorings, folding “skipkeys” and “sort_keys” arguments into the
+mapping_mode options, respectively as MM_SKIP_NON_STRING_KEYS and MM_SORT_KEYS: “old”
+arguments kept for backward compatibility</p></li>
+<li><p>Bump major version to 1, tag as “production/stable” and switch to a simpler X.Y
+versioning schema</p></li>
+</ul>
+</section>
+<section id="id53">
+<h3>0.9.4 (2020-11-16)<a class="headerlink" href="#id53" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix memory leak loading an invalid JSON (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/148">issue #148</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id55">
+<h3>0.9.3 (2020-10-24)<a class="headerlink" href="#id55" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix access to <code class="docutils literal notranslate"><span class="pre">Encoder</span></code> instance attributes (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/147">issue #147</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id57">
+<h3>0.9.2 (2020-10-24)<a class="headerlink" href="#id57" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use <a class="reference external" href="https://github.com/Tencent/rapidjson/commit/0ccdbf364c577803e2a751f5aededce935314313">current master</a> version of rapidjson</p>
+</li>
+<li><p>Enable GH Actions-based test workflow, thanks to Martin Thoma (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/143">PR #143</a>)</p>
+</li>
+<li><p>Produce Python 3.9 wheels, disable testing under Python &lt; 3.6</p></li>
+<li><p>Make the character used for indentation in pretty mode a parameter (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/135">issue #135</a>)</p>
+</li>
+<li><p>Handle wider precision range in timestamps fractional seconds (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/133">PR 133</a>), thanks to
+Karl Seguin</p>
+</li>
+<li><p>Add comparison benchmarks against orjson and hyperjson (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/130">issue #130</a> and <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/131">PR #131</a>,
+thanks to Sebastian Pipping)</p>
+</li>
+</ul>
+</section>
+<section id="id64">
+<h3>0.9.1 (2019-11-13)<a class="headerlink" href="#id64" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix memory leak in case of failed validation (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/126">issue #126</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id66">
+<h3>0.9.0 (2019-11-13)<a class="headerlink" href="#id66" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Produce Python 3.8 wheels</p></li>
+<li><p>Compatibility fix for Python 3.8 (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/125">issue #125</a>)</p>
+</li>
+<li><p>New dump option <code class="docutils literal notranslate"><span class="pre">write_mode</span></code>, supporting RapidJSON’s <code class="docutils literal notranslate"><span class="pre">kFormatSingleLineArray</span></code> option
+(<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/123">issue #123</a>), thanks to Nguyễn Hồng Quân for the initial implementation (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/124">PR #124</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id70">
+<h3>0.8.0 (2019-08-09)<a class="headerlink" href="#id70" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>New serialization option <code class="docutils literal notranslate"><span class="pre">bytes_mode</span></code> to control how bytes instances get encoded
+(<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/122">issue #122</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id72">
+<h3>0.7.2 (2019-06-09)<a class="headerlink" href="#id72" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Hopefully fix the memory leak when loading from a stream (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/117">issue #117</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id74">
+<h3>0.7.1 (2019-05-11)<a class="headerlink" href="#id74" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Raise a more specific exception on loading errors, <code class="docutils literal notranslate"><span class="pre">JSONDecodeError</span></code>, instead of
+generic <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/118">issue #118</a>)</p>
+</li>
+<li><p>Fix optimization path when using <code class="docutils literal notranslate"><span class="pre">OrderedDict</span></code>s (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/119">issue #119</a>)</p>
+</li>
+<li><p>Fix serialization of <code class="docutils literal notranslate"><span class="pre">IntEnum</span></code>s (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/121">issue #121</a>)</p>
+</li>
+<li><p>I spent <em>quite a lot</em> of time investigating on the memory leak when loading from a
+stream (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/117">issue #117</a>): as I was not able to fully replicate the problem, I cannot be
+sure I solved the problem… sorry!</p>
+</li>
+</ul>
+</section>
+<section id="id79">
+<h3>0.7.0 (2019-02-11)<a class="headerlink" href="#id79" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Raise correct exception in code samples (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/109">PR #109</a>), thanks to Thomas Dähling</p>
+</li>
+<li><p>Fix compilation with system-wide install of rapidjson (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/110">issue #110</a>)</p>
+</li>
+<li><p>Use current master version of rapidjson, that includes a <a class="reference external" href="https://github.com/Tencent/rapidjson/commit/f5e5d47fac0f654749c4d6267015005b74643dff">fix</a> for its <a class="reference external" href="https://github.com/Tencent/rapidjson/issues/1368">issue #1368</a>
+and <a class="reference external" href="https://github.com/Tencent/rapidjson/issues/1336">issue #1336</a>, and cures several compilation warnings as well (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/112">issue #112</a> and
+<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/107">issue #107</a>)</p>
+</li>
+<li><p>Fix memory leak when using <code class="docutils literal notranslate"><span class="pre">object_hook</span></code> (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/115">issue #115</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id88">
+<h3>0.6.3 (2018-07-11)<a class="headerlink" href="#id88" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>No visible changes, but now PyPI carries binary wheels for Python 3.7.</p></li>
+</ul>
+</section>
+<section id="id89">
+<h3>0.6.2 (2018-06-08)<a class="headerlink" href="#id89" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use a more specific ValidationError, to differentiate from invalid JSON</p></li>
+</ul>
+</section>
+<section id="id90">
+<h3>0.6.1 (2018-06-06)<a class="headerlink" href="#id90" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Nothing new, attempt to build Python 3.6 binary wheels on Travis CI</p></li>
+</ul>
+</section>
+<section id="id91">
+<h3>0.6.0 (2018-06-06)<a class="headerlink" href="#id91" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Add a new comparison table involving <code class="docutils literal notranslate"><span class="pre">ensure_ascii</span></code> (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/98">issue #98</a>)</p>
+</li>
+<li><p>Use Python’s <code class="docutils literal notranslate"><span class="pre">repr()</span></code> to emit float values instead of rapidjson’s <code class="docutils literal notranslate"><span class="pre">dtoa()</span></code> (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/101">issue
+#101</a>)</p>
+</li>
+<li><p>Use a newer (although unreleased) version of rapidjson to fix an <a class="reference external" href="https://github.com/Tencent/rapidjson/issues/825">issue</a> with
+JSONSchema validation (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/103">PR #103</a>), thanks to Anthony Miyaguchi</p>
+</li>
+</ul>
+</section>
+<section id="id96">
+<h3>0.5.2 (2018-03-31)<a class="headerlink" href="#id96" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Tiny tweak to restore macOS build on Travis CI</p></li>
+</ul>
+</section>
+<section id="id97">
+<h3>0.5.1 (2018-03-31)<a class="headerlink" href="#id97" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Minor tweaks to CI and PyPI deploy configuration</p></li>
+</ul>
+</section>
+<section id="id98">
+<h3>0.5.0 (2018-03-31)<a class="headerlink" href="#id98" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>New <code class="docutils literal notranslate"><span class="pre">RawJSON</span></code> class, allowing inclusion of <em>pre-serialized</em> content (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/95">PR #95</a> and
+<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/96">PR #96</a>), thanks to Silvio Tomatis</p>
+</li>
+</ul>
+</section>
+<section id="id101">
+<h3>0.4.3 (2018-01-14)<a class="headerlink" href="#id101" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Deserialize from <code class="docutils literal notranslate"><span class="pre">bytes</span></code> and <code class="docutils literal notranslate"><span class="pre">bytearray</span></code> instances, ensuring they
+contain valid UTF-8 data</p></li>
+<li><p>Speed up parsing of floating point numbers, avoiding intermediary conversion
+to a Python string (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/94">PR #94</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id103">
+<h3>0.4.2 (2018-01-09)<a class="headerlink" href="#id103" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix precision handling of DM_UNIX_TIME timestamps</p></li>
+</ul>
+</section>
+<section id="id104">
+<h3>0.4.1 (2018-01-08)<a class="headerlink" href="#id104" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix memory leaks in <code class="docutils literal notranslate"><span class="pre">Decoder()</span></code> and <code class="docutils literal notranslate"><span class="pre">Encoder()</span></code> classes, related to
+bad handling of <code class="docutils literal notranslate"><span class="pre">PyObject_GetAttr()</span></code> result value</p></li>
+<li><p>Fix compatibility with Python 3.7a</p></li>
+</ul>
+</section>
+<section id="id105">
+<h3>0.4.0 (2018-01-05)<a class="headerlink" href="#id105" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Implemented the streaming interface, see <a class="reference external" href="https://python-rapidjson.readthedocs.io/en/latest/load.html">load()</a> and <a class="reference external" href="https://python-rapidjson.readthedocs.io/en/latest/dump.html">dump()</a> (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/80">issue #80</a>)</p>
+<p><strong>Backward incompatibility</strong>: now the <em>flags</em> arguments on all the functions are
+<em>keyword only</em>, to mimic stdlib’s <code class="docutils literal notranslate"><span class="pre">json</span></code> style</p>
+</li>
+</ul>
+</section>
+<section id="id109">
+<h3>0.3.2 (2017-12-21)<a class="headerlink" href="#id109" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Reduce compiler warnings (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/87">issue #87</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id111">
+<h3>0.3.1 (2017-12-20)<a class="headerlink" href="#id111" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix Travis CI recipe to accomodate MacOS</p></li>
+</ul>
+</section>
+<section id="id112">
+<h3>0.3.0 (2017-12-20)<a class="headerlink" href="#id112" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Fix compilation on MacOS (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/78">issue #78</a>)</p>
+</li>
+<li><p>Handle generic iterables (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/89">PR #89</a>)</p>
+<p><strong>Backward incompatibility</strong>: the <code class="docutils literal notranslate"><span class="pre">dumps()</span></code> function and the <code class="docutils literal notranslate"><span class="pre">Encoder()</span></code>
+constructor used to accept a <code class="docutils literal notranslate"><span class="pre">max_recursion_depth</span></code> argument, to control
+the maximum allowed nesting of Python structures; since the underlying
+function is now effectively recursive, it has been replaced by the generic
+<a class="reference external" href="https://docs.python.org/3.6/library/sys.html#sys.setrecursionlimit">sys.setrecursionlimit()</a> mechanism</p>
+</li>
+</ul>
+</section>
+<section id="id116">
+<h3>0.2.7 (2017-12-08)<a class="headerlink" href="#id116" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Restore compatibility with Python &lt; 3.6</p></li>
+</ul>
+</section>
+<section id="id117">
+<h3>0.2.6 (2017-12-08)<a class="headerlink" href="#id117" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix memory leaks when using object_hook/start_object/end_object</p></li>
+</ul>
+</section>
+<section id="id118">
+<h3>0.2.5 (2017-09-30)<a class="headerlink" href="#id118" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix bug where error handling code could raise an exception causing a
+confusing exception to be returned (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/82">PR #82</a>)</p>
+</li>
+<li><p>Fix bug where loads’s <code class="docutils literal notranslate"><span class="pre">object_hook</span></code> and dumps’s <code class="docutils literal notranslate"><span class="pre">default</span></code> arguments
+could not be passed <code class="docutils literal notranslate"><span class="pre">None</span></code> explicitly (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/83">PR #83</a>)</p>
+</li>
+<li><p>Fix crash when dealing with surrogate pairs (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/81">issue #81</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id122">
+<h3>0.2.4 (2017-09-17)<a class="headerlink" href="#id122" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix compatibility with MacOS/clang</p></li>
+</ul>
+</section>
+<section id="id123">
+<h3>0.2.3 (2017-08-24)<a class="headerlink" href="#id123" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Limit the precision of DM_UNIX_TIME timestamps to six decimal digits</p></li>
+</ul>
+</section>
+<section id="id124">
+<h3>0.2.2 (2017-08-24)<a class="headerlink" href="#id124" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Nothing new, attempt to fix production of Python 3.6 binary wheels</p></li>
+</ul>
+</section>
+<section id="id125">
+<h3>0.2.1 (2017-08-24)<a class="headerlink" href="#id125" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Nothing new, attempt to fix production of Python 3.6 binary wheels</p></li>
+</ul>
+</section>
+<section id="id126">
+<h3>0.2.0 (2017-08-24)<a class="headerlink" href="#id126" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>New <code class="docutils literal notranslate"><span class="pre">parse_mode</span></code> option, implementing relaxed JSON syntax (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/73">issue #73</a>)</p>
+</li>
+<li><p>New <code class="docutils literal notranslate"><span class="pre">Encoder</span></code> and <code class="docutils literal notranslate"><span class="pre">Decoder</span></code>, implementing a class-based interface</p></li>
+<li><p>New <code class="docutils literal notranslate"><span class="pre">Validator</span></code>, exposing the underlying <em>JSON schema</em> validation (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/71">issue #71</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id129">
+<h3>0.1.0 (2017-08-16)<a class="headerlink" href="#id129" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Remove beta status</p></li>
+</ul>
+</section>
+<section id="b4-2017-08-14">
+<h3>0.1.0b4 (2017-08-14)<a class="headerlink" href="#b4-2017-08-14" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Make execution of the test suite on Appveyor actually happen</p></li>
+</ul>
+</section>
+<section id="b3-2017-08-12">
+<h3>0.1.0b3 (2017-08-12)<a class="headerlink" href="#b3-2017-08-12" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Exclude CI configurations from the source distribution</p></li>
+</ul>
+</section>
+<section id="b2-2017-08-12">
+<h3>0.1.0b2 (2017-08-12)<a class="headerlink" href="#b2-2017-08-12" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix Powershell wheel upload script in appveyor configuration</p></li>
+</ul>
+</section>
+<section id="b1-2017-08-12">
+<h3>0.1.0b1 (2017-08-12)<a class="headerlink" href="#b1-2017-08-12" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Compilable with somewhat old g++ (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/69">issue #69</a>)</p>
+</li>
+<li><p><strong>Backward incompatibilities</strong>:</p>
+<ul>
+<li><p>all <code class="docutils literal notranslate"><span class="pre">DATETIME_MODE_XXX</span></code> constants have been shortened to <code class="docutils literal notranslate"><span class="pre">DM_XXX</span></code>
+<code class="docutils literal notranslate"><span class="pre">DATETIME_MODE_ISO8601_UTC</span></code> has been renamed to <code class="docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code></p></li>
+<li><p>all <code class="docutils literal notranslate"><span class="pre">UUID_MODE_XXX</span></code> constants have been shortened to <code class="docutils literal notranslate"><span class="pre">UM_XXX</span></code></p></li>
+</ul>
+</li>
+<li><p>New option <code class="docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code> to serialize date, datetime and time values as
+<a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">UNIX timestamps</a> targeting <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/61">issue #61</a></p>
+</li>
+<li><p>New option <code class="docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code> to treat naïve datetime and time values as if
+they were in the UTC timezone (also for issue #61)</p></li>
+<li><p>New keyword argument <code class="docutils literal notranslate"><span class="pre">number_mode</span></code> to use underlying C library numbers</p></li>
+<li><p>Binary wheels for GNU/Linux and Windows on PyPI (one would hope: this is the
+reason for the beta1 release)</p></li>
+</ul>
+</section>
+<section id="id133">
+<h3>0.0.11 (2017-03-05)<a class="headerlink" href="#id133" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix a couple of refcount handling glitches, hopefully targeting <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/48">issue
+#48</a>.</p>
+</li>
+</ul>
+</section>
+<section id="id135">
+<h3>0.0.10 (2017-03-02)<a class="headerlink" href="#id135" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fix source distribution to contain all required stuff (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/64">PR #64</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id137">
+<h3>0.0.9 (2017-03-02)<a class="headerlink" href="#id137" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>CI testing on GitHub</p></li>
+<li><p>Allow using locally installed RapidJSON library (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/60">issue #60</a>)</p>
+</li>
+<li><p>Bug fixes (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/37">issue #37</a>, <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/51">issue #51</a>, <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/57">issue #57</a>)</p>
+</li>
+</ul>
+</section>
+<section id="id142">
+<h3>0.0.8 (2016-12-09)<a class="headerlink" href="#id142" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use unpatched RapidJSON 1.1 (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/46">PR #46</a>)</p>
+</li>
+<li><p>Handle serialization and deserialization of datetime, date and time
+instances (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/35">PR #35</a>) and of UUID instances (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/40">PR #40</a>)</p>
+</li>
+<li><p>Sphinx based documentation (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/44">PR #44</a>)</p>
+</li>
+<li><p>Refresh benchmarks (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/45">PR #45</a>)</p>
+</li>
+<li><p>Bug fixes (<a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/25">issue #25</a>, <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/issues/38">issue #38</a>, <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson/pull/43">PR #43</a>)</p>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Exposed functions and symbols</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil-python-rapidjson">yggdrasil-python-rapidjson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-rapidjson">python-rapidjson</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="rawjson.html" title="previous chapter">RawJSON class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016—2024, Lele Gaifax.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/changes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

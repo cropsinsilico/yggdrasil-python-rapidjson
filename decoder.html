@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Decoder class &#8212; yggdrasil-python-rapidjson 1.17 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Validator class" href="validator.html" />
+    <link rel="prev" title="Encoder class" href="encoder.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="decoder-class">
+<h1>Decoder class<a class="headerlink" href="#decoder-class" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">Decoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class-based <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a>-like functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number_mode</strong> (<em>int</em>) – enable particular <a class="reference internal" href="loads.html#loads-number-mode"><span class="std std-ref">behaviors in handling numbers</span></a></p></li>
+<li><p><strong>datetime_mode</strong> (<em>int</em>) – how should <a class="reference internal" href="loads.html#loads-datetime-mode"><span class="std std-ref">datetime, time and date instances be handled</span></a></p></li>
+<li><p><strong>uuid_mode</strong> (<em>int</em>) – how should <a class="reference internal" href="loads.html#loads-uuid-mode"><span class="std std-ref">UUID instances be handled</span></a></p></li>
+<li><p><strong>parse_mode</strong> (<em>int</em>) – whether the parser should allow <a class="reference internal" href="loads.html#loads-parse-mode"><span class="std std-ref">non-standard JSON
+extensions</span></a></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.datetime_mode">
+<span class="sig-name descname"><span class="pre">datetime_mode</span></span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.datetime_mode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p>The datetime mode, whether and how datetime literals will be recognized.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.number_mode">
+<span class="sig-name descname"><span class="pre">number_mode</span></span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.number_mode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p>The number mode, whether numeric literals will be decoded.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.parse_mode">
+<span class="sig-name descname"><span class="pre">parse_mode</span></span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.parse_mode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p>The parse mode, whether comments and trailing commas are allowed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.uuid_mode">
+<span class="sig-name descname"><span class="pre">uuid_mode</span></span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.uuid_mode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p>The UUID mode, whether and how UUID literals will be recognized.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65536</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json</strong> – either a <code class="docutils literal notranslate"><span class="pre">str</span></code> instance, an <em>UTF-8</em> <code class="docutils literal notranslate"><span class="pre">bytes</span></code> instance or a
+<em>file-like</em> stream, containing the <code class="docutils literal notranslate"><span class="pre">JSON</span></code> to be decoded</p></li>
+<li><p><strong>chunk_size</strong> (<em>int</em>) – in case of a stream, it will be read in chunks of this size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a Python value</p>
+</dd>
+</dl>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">(</span><span class="s1">&#39;&quot;€ 0.50&quot;&#39;</span><span class="p">)</span>
+<span class="go">&#39;€ 0.50&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&quot;€ 0.50&quot;&#39;</span><span class="p">))</span>
+<span class="go">&#39;€ 0.50&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&quot;</span><span class="se">\xe2\x82\xac</span><span class="s1"> 0.50&quot;&#39;</span><span class="p">))</span>
+<span class="go">&#39;€ 0.50&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoder</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&quot;</span><span class="se">\xe2\x82\xac</span><span class="s1"> 0.50&quot;&#39;</span><span class="p">)</span>
+<span class="go">&#39;€ 0.50&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.end_array">
+<span class="sig-name descname"><span class="pre">end_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.end_array" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sequence</strong> – an instance implementing the <em>mutable sequence</em> protocol</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new value</p>
+</dd>
+</dl>
+<p>This is called, if implemented, when a <em>JSON array</em> has been completely parsed, and
+can be used to replace it with an arbitrary different value:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">TupleDecoder</span><span class="p">(</span><span class="n">Decoder</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">end_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">td</span> <span class="o">=</span> <span class="n">TupleDecoder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">td</span><span class="p">(</span><span class="s1">&#39;[{&quot;one&quot;: [1]}, {&quot;two&quot;:[2,3]}]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">{&#39;one&#39;: (1,)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">{&#39;two&#39;: (2, 3)}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.end_object">
+<span class="sig-name descname"><span class="pre">end_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.end_object" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mapping</strong> – an instance representing the JSON object, either one implementing
+the <em>mapping protocol</em> or a list containing <code class="docutils literal notranslate"><span class="pre">(key,</span> <span class="pre">value)</span></code> tuples</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new value</p>
+</dd>
+</dl>
+<p>This is called, if implemented, when a <em>JSON object</em> has been completely parsed, and
+can be used to replace it with an arbitrary different value, like what can be done
+with the <code class="docutils literal notranslate"><span class="pre">object_hook</span></code> argument of the <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a> function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s1">&#39;Point(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">PointDecoder</span><span class="p">(</span><span class="n">Decoder</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">end_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">d</span> <span class="ow">and</span> <span class="s1">&#39;y&#39;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="n">d</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span> <span class="o">=</span> <span class="n">PointDecoder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="p">(</span><span class="s1">&#39;{&quot;x&quot;:1,&quot;y&quot;:2}&#39;</span><span class="p">)</span>
+<span class="go">Point(1, 2)</span>
+</pre></div>
+</div>
+<p>When <a class="reference internal" href="#yggdrasil_rapidjson.Decoder.start_object" title="yggdrasil_rapidjson.Decoder.start_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_object()</span></code></a> returns a <code class="docutils literal notranslate"><span class="pre">list</span></code> instance, then the <cite>mapping</cite> argument
+is actually a list of tuples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.start_object">
+<span class="sig-name descname"><span class="pre">start_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.start_object" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>either a list or mapping instance</p>
+</dd>
+</dl>
+<p>This method, when implemented, is called whenever a new <em>JSON object</em> is found: it
+must return either a list or an instance implementing the <em>mapping protocol</em>.</p>
+<p>It can be used to select a different implementation than the standard <code class="docutils literal notranslate"><span class="pre">dict</span></code> used
+by default:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">OrderedDecoder</span><span class="p">(</span><span class="n">Decoder</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">start_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">od</span> <span class="o">=</span> <span class="n">OrderedDecoder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">od</span><span class="p">(</span><span class="s1">&#39;{&quot;foo&quot;: &quot;bar&quot;}&#39;</span><span class="p">))</span>
+<span class="go">&lt;class &#39;collections.OrderedDict&#39;&gt;</span>
+</pre></div>
+</div>
+<p>By returning a <code class="docutils literal notranslate"><span class="pre">list</span></code> you obtain a different handling of <em>JSON objects</em>: instead
+of translating them into Python maps as soon as they are found, their <em>key-value
+tuples</em> are accumulated in the given list; when the <em>JSON object</em> has been
+completely parsed, then the sequence is passed to the method <a class="reference internal" href="#yggdrasil_rapidjson.Decoder.end_object" title="yggdrasil_rapidjson.Decoder.end_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">end_object()</span></code></a>, if
+implemented, that will reasonably transmogrify it into some kind of dictionary. When
+that method is missing, then the list is kept as is, thus representing all objects
+in the JSON origin as lists of key-value tuples in Python:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">KVPairsDecoder</span><span class="p">(</span><span class="n">Decoder</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">start_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kvpd</span> <span class="o">=</span> <span class="n">KVPairsDecoder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kvpd</span><span class="p">(</span><span class="s1">&#39;{&quot;one&quot;: 1, &quot;two&quot;: 2}&#39;</span><span class="p">)</span>
+<span class="go">[(&#39;one&#39;, 1), (&#39;two&#39;, 2)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.Decoder.string">
+<span class="sig-name descname"><span class="pre">string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.Decoder.string" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> – a <code class="docutils literal notranslate"><span class="pre">str</span></code> instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new value</p>
+</dd>
+</dl>
+<p>This method, when implemented, is called whenever a <em>JSON string</em> has been
+completely parsed, and can be used to replace it with an arbitrary different value:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SwapStringCase</span><span class="p">(</span><span class="n">Decoder</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">swapcase</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ssc</span> <span class="o">=</span> <span class="n">SwapStringCase</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ssc</span><span class="p">(</span><span class="s1">&#39;&quot;Hello World!&quot;&#39;</span><span class="p">)</span>
+<span class="go">&#39;hELLO wORLD!&#39;</span>
+</pre></div>
+</div>
+<p>Note that it is called <strong>after</strong> the recognition of dates and UUIDs, when
+<cite>datetime_mode</cite> and/or <cite>uuid_mode</cite> are specified:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">DDMMYYYY</span><span class="p">(</span><span class="n">Decoder</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+<span class="gp">... </span>      <span class="n">dd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+<span class="gp">... </span>      <span class="n">mm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">... </span>      <span class="n">yyyy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:])</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="p">(</span><span class="n">yyyy</span><span class="p">,</span> <span class="n">mm</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">s</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ddmmyyyy</span> <span class="o">=</span> <span class="n">DDMMYYYY</span><span class="p">(</span><span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_ISO8601</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ddmmyyyy</span><span class="p">(</span><span class="s1">&#39;[&quot;2017-08-21&quot;, &quot;21082017&quot;]&#39;</span><span class="p">)</span>
+<span class="go">[datetime.date(2017, 8, 21), (2017, 8, 21)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Performance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dumps.html">dumps() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dump.html">dump() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html">loads() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load.html">load() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Encoder class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Decoder class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawjson.html">RawJSON class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NONE"><code class="docutils literal notranslate"><span class="pre">DM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ISO8601"><code class="docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_UNIX_TIME"><code class="docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ONLY_SECONDS"><code class="docutils literal notranslate"><span class="pre">DM_ONLY_SECONDS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_IGNORE_TZ"><code class="docutils literal notranslate"><span class="pre">DM_IGNORE_TZ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NAIVE_IS_UTC"><code class="docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_SHIFT_TO_UTC"><code class="docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_NONE"><code class="docutils literal notranslate"><span class="pre">UM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_CANONICAL"><code class="docutils literal notranslate"><span class="pre">UM_CANONICAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_HEX"><code class="docutils literal notranslate"><span class="pre">UM_HEX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NONE"><code class="docutils literal notranslate"><span class="pre">NM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_DECIMAL"><code class="docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NAN"><code class="docutils literal notranslate"><span class="pre">NM_NAN</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NATIVE"><code class="docutils literal notranslate"><span class="pre">NM_NATIVE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_NONE"><code class="docutils literal notranslate"><span class="pre">PM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_COMMENTS"><code class="docutils literal notranslate"><span class="pre">PM_COMMENTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_TRAILING_COMMAS"><code class="docutils literal notranslate"><span class="pre">PM_TRAILING_COMMAS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_NONE"><code class="docutils literal notranslate"><span class="pre">BM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_UTF8"><code class="docutils literal notranslate"><span class="pre">BM_UTF8</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ANY_ITERABLE"><code class="docutils literal notranslate"><span class="pre">IM_ANY_ITERABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ONLY_LISTS"><code class="docutils literal notranslate"><span class="pre">IM_ONLY_LISTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ANY_MAPPING"><code class="docutils literal notranslate"><span class="pre">MM_ANY_MAPPING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ONLY_DICTS"><code class="docutils literal notranslate"><span class="pre">MM_ONLY_DICTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_COERCE_KEYS_TO_STRINGS"><code class="docutils literal notranslate"><span class="pre">MM_COERCE_KEYS_TO_STRINGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SKIP_NON_STRING_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SKIP_NON_STRING_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SORT_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SORT_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError"><code class="docutils literal notranslate"><span class="pre">JSONDecodeError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_COMPACT"><code class="docutils literal notranslate"><span class="pre">WM_COMPACT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_PRETTY"><code class="docutils literal notranslate"><span class="pre">WM_PRETTY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_SINGLE_LINE_ARRAY"><code class="docutils literal notranslate"><span class="pre">WM_SINGLE_LINE_ARRAY</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="encoder.html" title="previous chapter">Encoder class</a></li>
+      <li>Next: <a href="validator.html" title="next chapter">Validator class</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016—2024, Lele Gaifax.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/decoder.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

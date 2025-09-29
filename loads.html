@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>loads() function &#8212; yggdrasil-python-rapidjson 1.17 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="load() function" href="load.html" />
+    <link rel="prev" title="dump() function" href="dump.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="loads-function">
+<h1>loads() function<a class="headerlink" href="#loads-function" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.loads">
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_hook</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode the given <code class="docutils literal notranslate"><span class="pre">JSON</span></code> formatted value into Python object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> – The JSON string to parse, either a Unicode <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> instance or a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">bytearray</span></code> instance containing an <code class="docutils literal notranslate"><span class="pre">UTF-8</span></code>
+encoded value</p></li>
+<li><p><strong>object_hook</strong> (<em>callable</em>) – an optional function that will be called with the result
+of any object literal decoded (a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) and should
+return the value to use instead of the <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p></li>
+<li><p><strong>number_mode</strong> (<em>int</em>) – enable particular behaviors in handling numbers</p></li>
+<li><p><strong>datetime_mode</strong> (<em>int</em>) – how should <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code> instances be
+handled</p></li>
+<li><p><strong>uuid_mode</strong> (<em>int</em>) – how should <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> instances be handled</p></li>
+<li><p><strong>parse_mode</strong> (<em>int</em>) – whether the parser should allow non-standard JSON extensions</p></li>
+<li><p><strong>allow_nan</strong> (<em>bool</em>) – <em>compatibility</em> flag equivalent to <code class="docutils literal notranslate"><span class="pre">number_mode=NM_NAN</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An equivalent Python object.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if an invalid argument is given</p></li>
+<li><p><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError" title="yggdrasil_rapidjson.JSONDecodeError"><strong>JSONDecodeError</strong></a> – if <cite>string</cite> is not a valid <code class="docutils literal notranslate"><span class="pre">JSON</span></code> value</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric"><cite>object_hook</cite></p>
+<p><cite>object_hook</cite> may be used to inject a custom deserializer that can replace any
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> instance found in the JSON structure with a <em>derived</em> object instance:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s1">&#39;Point(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">point_dejsonifier</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">d</span> <span class="ow">and</span> <span class="s1">&#39;y&#39;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<span class="gp">... </span>  <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">d</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;{&quot;x&quot;:1,&quot;y&quot;:2}&#39;</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="n">point_dejsonifier</span><span class="p">)</span>
+<span class="go">Point(1, 2)</span>
+</pre></div>
+</div>
+<p class="rubric" id="loads-number-mode"><cite>number_mode</cite></p>
+<p>The <cite>number_mode</cite> argument selects different behaviors in handling numeric values.</p>
+<p>By default <em>non-numbers</em> (<code class="docutils literal notranslate"><span class="pre">nan</span></code>, <code class="docutils literal notranslate"><span class="pre">inf</span></code>, <code class="docutils literal notranslate"><span class="pre">-inf</span></code>) are recognized, because
+<code class="docutils literal notranslate"><span class="pre">NM_NAN</span></code> is <em>on</em> by default:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[NaN, Infinity]&#39;</span><span class="p">)</span>
+<span class="go">[nan, inf]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[NaN, Infinity]&#39;</span><span class="p">,</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_NAN</span><span class="p">)</span>
+<span class="go">[nan, inf]</span>
+</pre></div>
+</div>
+<p>Explicitly setting <cite>number_mode</cite> or using the compatibility option <cite>allow_nan</cite> you can
+avoid that and obtain a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception instead:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[NaN, Infinity]&#39;</span><span class="p">,</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_NATIVE</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">yggdrasil_rapidjson.JSONDecodeError</span>: <span class="n">Parse error at offset 1: Invalid value.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[NaN, Infinity]&#39;</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">yggdrasil_rapidjson.JSONDecodeError</span>: <span class="n">Parse error at offset 1: Invalid value.</span>
+</pre></div>
+</div>
+<p>Normally all floating point literals present in the JSON structure will be loaded as
+Python <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> instances, with <a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_DECIMAL" title="yggdrasil_rapidjson.NM_DECIMAL"><code class="xref py py-data docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code></a> they will be returned as
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Decimal</span></code> instances instead:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;1.2345&#39;</span><span class="p">)</span>
+<span class="go">1.2345</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;1.2345&#39;</span><span class="p">,</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_DECIMAL</span><span class="p">)</span>
+<span class="go">Decimal(&#39;1.2345&#39;)</span>
+</pre></div>
+</div>
+<p>When you can be sure that all the numeric values are constrained within the
+architecture’s hardware limits you can get a sensible speed gain with the
+<a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NATIVE" title="yggdrasil_rapidjson.NM_NATIVE"><code class="xref py py-data docutils literal notranslate"><span class="pre">NM_NATIVE</span></code></a> flag. While this is quite faster, integer literals that do not fit
+into the underlying C library <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code> limits will be converted (<em>truncated</em>) to
+<code class="docutils literal notranslate"><span class="pre">double</span></code> numbers:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;123456789012345678901234567890&#39;</span><span class="p">)</span>
+<span class="go">123456789012345678901234567890</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;123456789012345678901234567890&#39;</span><span class="p">,</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_NATIVE</span><span class="p">)</span>
+<span class="go">1.2345678901234568e+29</span>
+</pre></div>
+</div>
+<p>These flags can be combined together:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[-1, NaN, 3.1415926535897932384626433832795028841971]&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_DECIMAL</span> <span class="o">|</span> <span class="n">NM_NAN</span><span class="p">)</span>
+<span class="go">[-1, Decimal(&#39;NaN&#39;), Decimal(&#39;3.1415926535897932384626433832795028841971&#39;)]</span>
+</pre></div>
+</div>
+<p>with the exception of <a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NATIVE" title="yggdrasil_rapidjson.NM_NATIVE"><code class="xref py py-data docutils literal notranslate"><span class="pre">NM_NATIVE</span></code></a> and <a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_DECIMAL" title="yggdrasil_rapidjson.NM_DECIMAL"><code class="xref py py-data docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code></a>, that does not make
+sense since there’s little point in creating <code class="xref py py-class docutils literal notranslate"><span class="pre">Decimal</span></code> instances out of possibly
+truncated float literals:</p>
+<p class="rubric" id="loads-datetime-mode"><cite>datetime_mode</cite></p>
+<p>With <cite>datetime_mode</cite> you can enable recognition of string literals containing an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601">ISO
+8601</a> representation as either <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">time</span></code>
+instances:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02T01:02:03+01:00&quot;&#39;</span><span class="p">)</span>
+<span class="go">&#39;2016-01-02T01:02:03+01:00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02T01:02:03+01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_ISO8601</span><span class="p">)</span>
+<span class="go">datetime.datetime(2016, 1, 2, 1, 2, 3, tzinfo=...delta(...3600)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02T01:02:03-01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_ISO8601</span><span class="p">)</span>
+<span class="go">datetime.datetime(2016, 1, 2, 1, 2, 3, tzinfo=...delta(...82800)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_ISO8601</span><span class="p">)</span>
+<span class="go">datetime.date(2016, 1, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;01:02:03+01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_ISO8601</span><span class="p">)</span>
+<span class="go">datetime.time(1, 2, 3, tzinfo=...delta(...3600)))</span>
+</pre></div>
+</div>
+<p>It can be combined with <a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_SHIFT_TO_UTC" title="yggdrasil_rapidjson.DM_SHIFT_TO_UTC"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code></a> to <em>always</em> obtain values in the <a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a>
+timezone:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_ISO8601</span> <span class="o">|</span> <span class="n">DM_SHIFT_TO_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02T01:02:03+01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">datetime.datetime(2016, 1, 2, 0, 2, 3, tzinfo=...utc)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This option is somewhat limited when the value is a non-naïve time literal
+because negative values cannot be represented by the underlying Python
+type, so it cannot adapt such values reliably:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_ISO8601</span> <span class="o">|</span> <span class="n">DM_SHIFT_TO_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;00:01:02+00:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">datetime.time(0, 1, 2, tzinfo=...utc)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;00:01:02+01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">  </span><span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">... Time literal cannot be shifted to UTC: 00:01:02+01:00</span>
+</pre></div>
+</div>
+</div>
+<p>If you combine it with <a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NAIVE_IS_UTC" title="yggdrasil_rapidjson.DM_NAIVE_IS_UTC"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code></a> then all values without a timezone will
+be assumed to be relative to <a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_ISO8601</span> <span class="o">|</span> <span class="n">DM_NAIVE_IS_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02T01:02:03&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">datetime.datetime(2016, 1, 2, 1, 2, 3, tzinfo=...utc)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02T01:02:03+01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">datetime.datetime(2016, 1, 2, 1, 2, 3, tzinfo=...delta(...3600)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;01:02:03&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">datetime.time(1, 2, 3, tzinfo=...utc)</span>
+</pre></div>
+</div>
+<p>Yet another combination is with <a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_IGNORE_TZ" title="yggdrasil_rapidjson.DM_IGNORE_TZ"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_IGNORE_TZ</span></code></a> to ignore the timezone and obtain
+naïve values:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_ISO8601</span> <span class="o">|</span> <span class="n">DM_IGNORE_TZ</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;2016-01-02T01:02:03+01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">datetime.datetime(2016, 1, 2, 1, 2, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;01:02:03+01:00&quot;&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">datetime.time(1, 2, 3)</span>
+</pre></div>
+</div>
+<p id="no-unix-time-loads">The <a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_UNIX_TIME" title="yggdrasil_rapidjson.DM_UNIX_TIME"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a> cannot be used here, because there isn’t a reasonable
+heuristic to disambiguate between plain numbers and timestamps:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[1,2,3]&#39;</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_UNIX_TIME</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">ValueError</span>: <span class="n">Invalid datetime_mode, can deserialize only from ISO8601</span>
+</pre></div>
+</div>
+<p class="rubric" id="loads-uuid-mode"><cite>uuid_mode</cite></p>
+<p>With <cite>uuid_mode</cite> you can enable recognition of string literals containing two different
+representations of <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> values:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&quot;&#39;</span><span class="p">)</span>
+<span class="go">&#39;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&quot;&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">uuid_mode</span><span class="o">=</span><span class="n">UM_CANONICAL</span><span class="p">)</span>
+<span class="go">UUID(&#39;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&quot;&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">uuid_mode</span><span class="o">=</span><span class="n">UM_HEX</span><span class="p">)</span>
+<span class="go">UUID(&#39;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">uuid_mode</span><span class="o">=</span><span class="n">UM_CANONICAL</span><span class="p">)</span>
+<span class="go">&#39;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">uuid_mode</span><span class="o">=</span><span class="n">UM_HEX</span><span class="p">)</span>
+<span class="go">UUID(&#39;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&#39;)</span>
+</pre></div>
+</div>
+<p class="rubric" id="loads-parse-mode"><cite>parse_mode</cite></p>
+<p>With <cite>parse_mode</cite> you can tell the parser to be <em>relaxed</em>, allowing either
+<code class="docutils literal notranslate"><span class="pre">C++</span></code>/<code class="docutils literal notranslate"><span class="pre">JavaScript</span></code> like comments (<a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_COMMENTS" title="yggdrasil_rapidjson.PM_COMMENTS"><code class="xref py py-data docutils literal notranslate"><span class="pre">PM_COMMENTS</span></code></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;foo&quot; // one line of explanation&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">yggdrasil_rapidjson.JSONDecodeError</span>: <span class="n">Parse error at offset 6: The document root must not be followed by other values.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;bar&quot; /* detailed explanation */&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">yggdrasil_rapidjson.JSONDecodeError</span>: <span class="n">Parse error at offset 6: The document root must not be followed by other values.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;foo&quot; // one line of explanation&#39;</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="n">PM_COMMENTS</span><span class="p">)</span>
+<span class="go">&#39;foo&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;&quot;bar&quot; /* detailed explanation */&#39;</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="n">PM_COMMENTS</span><span class="p">)</span>
+<span class="go">&#39;bar&#39;</span>
+</pre></div>
+</div>
+<p>or <em>trailing commas</em> at the end of arrays and objects (<a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_TRAILING_COMMAS" title="yggdrasil_rapidjson.PM_TRAILING_COMMAS"><code class="xref py py-data docutils literal notranslate"><span class="pre">PM_TRAILING_COMMAS</span></code></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[1,]&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">yggdrasil_rapidjson.JSONDecodeError</span>: <span class="n">Parse error at offset 3: Invalid value.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[1,]&#39;</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="n">PM_TRAILING_COMMAS</span><span class="p">)</span>
+<span class="go">[1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;{&quot;one&quot;: 1,}&#39;</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="n">PM_TRAILING_COMMAS</span><span class="p">)</span>
+<span class="go">{&#39;one&#39;: 1}</span>
+</pre></div>
+</div>
+<p>or both:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[1, /* 2, */ 3,]&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">  </span><span class="c">...</span>
+<span class="gr">yggdrasil_rapidjson.JSONDecodeError</span>: <span class="n">Parse error at offset 4: Invalid value.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[1, /* 2, */ 3,]&#39;</span><span class="p">,</span> <span class="n">parse_mode</span><span class="o">=</span><span class="n">PM_COMMENTS</span> <span class="o">|</span> <span class="n">PM_TRAILING_COMMAS</span><span class="p">)</span>
+<span class="go">[1, 3]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Performance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dumps.html">dumps() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dump.html">dump() function</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">loads() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load.html">load() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Encoder class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decoder.html">Decoder class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawjson.html">RawJSON class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NONE"><code class="docutils literal notranslate"><span class="pre">DM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ISO8601"><code class="docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_UNIX_TIME"><code class="docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_ONLY_SECONDS"><code class="docutils literal notranslate"><span class="pre">DM_ONLY_SECONDS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_IGNORE_TZ"><code class="docutils literal notranslate"><span class="pre">DM_IGNORE_TZ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_NAIVE_IS_UTC"><code class="docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.DM_SHIFT_TO_UTC"><code class="docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_NONE"><code class="docutils literal notranslate"><span class="pre">UM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_CANONICAL"><code class="docutils literal notranslate"><span class="pre">UM_CANONICAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.UM_HEX"><code class="docutils literal notranslate"><span class="pre">UM_HEX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NONE"><code class="docutils literal notranslate"><span class="pre">NM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_DECIMAL"><code class="docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NAN"><code class="docutils literal notranslate"><span class="pre">NM_NAN</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NM_NATIVE"><code class="docutils literal notranslate"><span class="pre">NM_NATIVE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_NONE"><code class="docutils literal notranslate"><span class="pre">PM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_COMMENTS"><code class="docutils literal notranslate"><span class="pre">PM_COMMENTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.PM_TRAILING_COMMAS"><code class="docutils literal notranslate"><span class="pre">PM_TRAILING_COMMAS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_NONE"><code class="docutils literal notranslate"><span class="pre">BM_NONE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.BM_UTF8"><code class="docutils literal notranslate"><span class="pre">BM_UTF8</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ANY_ITERABLE"><code class="docutils literal notranslate"><span class="pre">IM_ANY_ITERABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.IM_ONLY_LISTS"><code class="docutils literal notranslate"><span class="pre">IM_ONLY_LISTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ANY_MAPPING"><code class="docutils literal notranslate"><span class="pre">MM_ANY_MAPPING</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_ONLY_DICTS"><code class="docutils literal notranslate"><span class="pre">MM_ONLY_DICTS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_COERCE_KEYS_TO_STRINGS"><code class="docutils literal notranslate"><span class="pre">MM_COERCE_KEYS_TO_STRINGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SKIP_NON_STRING_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SKIP_NON_STRING_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.MM_SORT_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SORT_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.JSONDecodeError"><code class="docutils literal notranslate"><span class="pre">JSONDecodeError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_COMPACT"><code class="docutils literal notranslate"><span class="pre">WM_COMPACT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_PRETTY"><code class="docutils literal notranslate"><span class="pre">WM_PRETTY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.WM_SINGLE_LINE_ARRAY"><code class="docutils literal notranslate"><span class="pre">WM_SINGLE_LINE_ARRAY</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="dump.html" title="previous chapter">dump() function</a></li>
+      <li>Next: <a href="load.html" title="next chapter">load() function</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016—2024, Lele Gaifax.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/loads.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

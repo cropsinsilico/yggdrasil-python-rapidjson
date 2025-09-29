@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>encode_schema() function &#8212; yggdrasil-python-rapidjson 1.21.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=712fa57f" />
+    <script src="_static/documentation_options.js?v=4ab8c9fa"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="compare_schemas() function" href="compare_schemas.html" />
+    <link rel="prev" title="Normalizer class" href="normalizer.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="encode-schema-function">
+<h1>encode_schema() function<a class="headerlink" href="#encode-schema-function" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">encode_schema(obj,</span> <span class="pre">minimal=False,</span> <span class="pre">object_hook=None,</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">number_mode=None,</span> <span class="pre">datetime_mode=None,</span> <span class="pre">uuid_mode=None,</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">bytes_mode=BM_SCALAR,</span> <span class="pre">iterable_mode=IM_ANY_ITERABLE,</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">mapping_mode=MM_ANY_MAPPING,</span> <span class="pre">allow_nan=True)</span></span></dt>
+<dd><blockquote>
+<div><p>Encode given Python <cite>obj</cite> instance into a <code class="docutils literal notranslate"><span class="pre">JSON</span></code> schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param obj<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the value to create a schema for</p>
+</dd>
+<dt class="field-even">param bool minimal<span class="colon">:</span></dt>
+<dd class="field-even"><p>whether the produced schema should be specific or provide minimal type checking properties</p>
+</dd>
+<dt class="field-odd">param callable object_hook<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an optional function that will be called with the result
+of any object literal decoded (a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) and should
+return the value to use instead of the <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+<dt class="field-even">param int number_mode<span class="colon">:</span></dt>
+<dd class="field-even"><p>enable particular behaviors in handling numbers</p>
+</dd>
+<dt class="field-odd">param int datetime_mode<span class="colon">:</span></dt>
+<dd class="field-odd"><p>how should <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">time</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code> instances be handled</p>
+</dd>
+<dt class="field-even">param int uuid_mode<span class="colon">:</span></dt>
+<dd class="field-even"><p>how should <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> instances be handled</p>
+</dd>
+<dt class="field-odd">param int bytes_mode<span class="colon">:</span></dt>
+<dd class="field-odd"><p>how should <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> instances be handled</p>
+</dd>
+<dt class="field-even">param int iterable_mode<span class="colon">:</span></dt>
+<dd class="field-even"><p>how should <cite>iterable</cite> values be handled</p>
+</dd>
+<dt class="field-odd">param int mapping_mode<span class="colon">:</span></dt>
+<dd class="field-odd"><p>how should <cite>mapping</cite> values be handled</p>
+</dd>
+<dt class="field-even">param bool allow_nan<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>compatibility</em> flag equivalent to <code class="docutils literal notranslate"><span class="pre">number_mode=NM_NAN</span></code></p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Python <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> instance containing the schema.</p>
+</dd>
+</dl>
+<p class="rubric" id="minimal"><cite>minimal</cite></p>
+<p>If <cite>minimal</cite> is true (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>), then the resulting schema will be limited in the properties that are specified. This primarily impacts the schema encoded for scalar strings where a full schema will include the string precision and the minimal schema will not.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">str_</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encode_schema</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+<span class="go">{&#39;type&#39;: &#39;scalar&#39;, &#39;subtype&#39;: &#39;string&#39;, &#39;precision&#39;: 20, &#39;encoding&#39;: &#39;UCS4&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encode_schema</span><span class="p">(</span><span class="n">json</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">{&#39;type&#39;: &#39;scalar&#39;, &#39;subtype&#39;: &#39;string&#39;, &#39;encoding&#39;: &#39;UCS4&#39;}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Descriptions of the remaining arguments are taken from the <a class="reference external" href="https://python-rapidjson.readthedocs.io/en/latest/dumps.html">python-rapidjson dumps documentation</a>.</p>
+<blockquote>
+<div><p class="rubric"><cite>default</cite></p>
+<p>The <cite>default</cite> argument may be used to specify a custom serializer for otherwise not
+handled objects. If specified, it should be a function that gets called for such
+objects and returns a JSON encodable version of the object itself or raise a
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">&lt;....Point object at ...&gt; is not JSON serializable even with yggdrasil extension</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">point_jsonifier</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Point</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">y</span><span class="p">}</span>
+<span class="gp">... </span>  <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not JSON serializable&#39;</span> <span class="o">%</span> <span class="n">obj</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">point_jsonifier</span><span class="p">)</span>
+<span class="go">&#39;{&quot;x&quot;:1,&quot;y&quot;:2}&#39;</span>
+</pre></div>
+</div>
+<p class="rubric" id="dumps-number-mode"><cite>number_mode</cite></p>
+<p>The <cite>number_mode</cite> argument selects different behaviors in handling numeric values.</p>
+<p>By default <em>non-numbers</em> (<code class="docutils literal notranslate"><span class="pre">nan</span></code>, <code class="docutils literal notranslate"><span class="pre">inf</span></code>, <code class="docutils literal notranslate"><span class="pre">-inf</span></code>) will be serialized as their
+JavaScript equivalents (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>, <code class="docutils literal notranslate"><span class="pre">Infinity</span></code>, <code class="docutils literal notranslate"><span class="pre">-Infinity</span></code>), because <code class="docutils literal notranslate"><span class="pre">NM_NAN</span></code> is
+<em>on</em> by default (<strong>NB</strong>: this is <em>not</em> compliant with the <code class="docutils literal notranslate"><span class="pre">JSON</span></code> standard):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">nan</span><span class="p">,</span> <span class="n">inf</span><span class="p">])</span>
+<span class="go">&#39;[NaN,Infinity]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">nan</span><span class="p">,</span> <span class="n">inf</span><span class="p">],</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_NAN</span><span class="p">)</span>
+<span class="go">&#39;[NaN,Infinity]&#39;</span>
+</pre></div>
+</div>
+<p>Explicitly setting <cite>number_mode</cite> or using the compatibility option <cite>allow_nan</cite> you can
+avoid that and obtain a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception instead:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">nan</span><span class="p">,</span> <span class="n">inf</span><span class="p">],</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_NATIVE</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">ValueError</span>: <span class="n">Out of range float values are not JSON compliant</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">nan</span><span class="p">,</span> <span class="n">inf</span><span class="p">],</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">ValueError</span>: <span class="n">Out of range float values are not JSON compliant</span>
+</pre></div>
+</div>
+<p>Likewise <code class="xref py py-class docutils literal notranslate"><span class="pre">Decimal</span></code> instances cause a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> exception:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pi</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;3.1415926535897932384626433832795028841971&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">Decimal(...) is not JSON serializable</span>
+</pre></div>
+</div>
+<p>while using <code class="xref py py-data docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code> they will be serialized as their textual representation
+like any other float value:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_DECIMAL</span><span class="p">)</span>
+<span class="go">&#39;3.1415926535897932384626433832795028841971&#39;</span>
+</pre></div>
+</div>
+<p>Yet another possible flag affects how numeric values are passed to the underlying
+<a class="reference external" href="https://github.com/cropsinsilico/yggdrasil-rapidjson">YggdrasilRapidJSON</a> library: by default they are serialized to their string representation by
+the module itself, so they are virtually of unlimited precision:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="mi">123456789012345678901234567890</span><span class="p">)</span>
+<span class="go">&#39;123456789012345678901234567890&#39;</span>
+</pre></div>
+</div>
+<p>With <code class="xref py py-data docutils literal notranslate"><span class="pre">NM_NATIVE</span></code> their binary values will be passed directly instead: this is
+somewhat faster, it is subject to the underlying C library <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code> and <code class="docutils literal notranslate"><span class="pre">double</span></code>
+limits:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="mi">123456789012345678901234567890</span><span class="p">,</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">NM_NATIVE</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">OverflowError</span>: <span class="n">int too big to convert</span>
+</pre></div>
+</div>
+<p>These flags can be combined together:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fast_and_precise</span> <span class="o">=</span> <span class="n">NM_NATIVE</span> <span class="o">|</span> <span class="n">NM_DECIMAL</span> <span class="o">|</span> <span class="n">NM_NAN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">pi</span><span class="p">],</span> <span class="n">number_mode</span><span class="o">=</span><span class="n">fast_and_precise</span><span class="p">)</span>
+<span class="go">&#39;[-1,NaN,3.1415926535897932384626433832795028841971]&#39;</span>
+</pre></div>
+</div>
+<p class="rubric" id="dumps-datetime-mode"><cite>datetime_mode</cite></p>
+<p>By default <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">time</span></code> instances are not
+serializable:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">right_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">277256</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">right_now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span> <span class="o">=</span> <span class="n">right_now</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">right_now</span><span class="p">})</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">datetime.date(...) is not JSON serializable</span>
+</pre></div>
+</div>
+<p>When <cite>datetime_mode</cite> is set to <code class="xref py py-data docutils literal notranslate"><span class="pre">DM_ISO8601</span></code> those values are serialized using the
+common <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="n">right_now</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_ISO8601</span><span class="p">)</span>
+<span class="go">&#39;[&quot;date&quot;,&quot;2016-08-28&quot;,&quot;time&quot;,&quot;13:14:52.277256&quot;,&quot;timestamp&quot;,&quot;2016-08-28T13:14:52.277256&quot;]&#39;</span>
+</pre></div>
+</div>
+<p>The <cite>right_now</cite> value is a naïve datetime (because it does not carry the timezone
+information) and is normally assumed to be in the local timezone, whatever your system
+thinks it is. When you instead <em>know</em> that your value, even being naïve are actually in
+the <a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a> timezone, you can use the <code class="xref py py-data docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code> flag to inform YggdrasilRapidJSON
+about that:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_ISO8601</span> <span class="o">|</span> <span class="n">DM_NAIVE_IS_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="n">right_now</span><span class="p">],</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">&#39;[&quot;time&quot;,&quot;13:14:52.277256+00:00&quot;,&quot;timestamp&quot;,&quot;2016-08-28T13:14:52.277256+00:00&quot;]&#39;</span>
+</pre></div>
+</div>
+<p>A variant is <code class="xref py py-data docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code>, that <em>shifts</em> all datetime values to the <a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a>
+timezone before serializing them:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">here</span> <span class="o">=</span> <span class="n">timezone</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">84418</span><span class="p">,</span> <span class="n">here</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">DM_ISO8601</span><span class="p">)</span>
+<span class="go">&#39;&quot;2016-08-28T20:31:11.084418+02:00&quot;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_ISO8601</span> <span class="o">|</span> <span class="n">DM_SHIFT_TO_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">&#39;&quot;2016-08-28T18:31:11.084418+00:00&quot;&#39;</span>
+</pre></div>
+</div>
+<p>With <code class="xref py py-data docutils literal notranslate"><span class="pre">DM_IGNORE_TZ</span></code> the timezone, if present, is simply omitted:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_ISO8601</span> <span class="o">|</span> <span class="n">DM_IGNORE_TZ</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">&#39;&quot;2016-08-28T20:31:11.084418&quot;&#39;</span>
+</pre></div>
+</div>
+<p>Another one-way only alternative format is <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a>:
+with <code class="xref py py-data docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">time</span></code> instances
+are serialized as a number of seconds, respectively since the <code class="docutils literal notranslate"><span class="pre">EPOCH</span></code> for the first
+two kinds and since midnight for the latter:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_UNIX_TIME</span> <span class="o">|</span> <span class="n">DM_NAIVE_IS_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">now</span><span class="o">.</span><span class="n">time</span><span class="p">()],</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">&#39;[1472409071.084418,1472342400.0,73871.084418]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unixtime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unixtime</span><span class="p">,</span> <span class="n">here</span><span class="p">)</span> <span class="o">==</span> <span class="n">now</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Combining it with the <code class="xref py py-data docutils literal notranslate"><span class="pre">DM_ONLY_SECONDS</span></code> will produce integer values instead,
+dropping <em>microseconds</em>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_UNIX_TIME</span> <span class="o">|</span> <span class="n">DM_NAIVE_IS_UTC</span> <span class="o">|</span> <span class="n">DM_ONLY_SECONDS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">now</span><span class="o">.</span><span class="n">time</span><span class="p">()],</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">&#39;[1472409071,1472342400,73871]&#39;</span>
+</pre></div>
+</div>
+<p>It can be used combined with <code class="xref py py-data docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code> to obtain the timestamp of the
+corresponding <a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a> time:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_UNIX_TIME</span> <span class="o">|</span> <span class="n">DM_SHIFT_TO_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">&#39;1472409071.084418&#39;</span>
+</pre></div>
+</div>
+<p>As above, when you know that your values are in the <a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a> timezone, you can use the
+<code class="xref py py-data docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code> flag to get the right result:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_long_time_ago</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1968</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">DM_UNIX_TIME</span> <span class="o">|</span> <span class="n">DM_NAIVE_IS_UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">a_long_time_ago</span><span class="p">,</span> <span class="n">a_long_time_ago</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">a_long_time_ago</span><span class="o">.</span><span class="n">time</span><span class="p">()],</span>
+<span class="gp">... </span>      <span class="n">datetime_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+<span class="go">&#39;[-56472600.0,-56505600.0,33000.0]&#39;</span>
+</pre></div>
+</div>
+<p class="rubric" id="dumps-uuid-mode"><cite>uuid_mode</cite></p>
+<p>Likewise, to handle <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> instances there are two modes that can be specified
+with the <cite>uuid_mode</cite> argument, that will use the string representation of their values:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">uuid4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random_uuid</span> <span class="o">=</span> <span class="n">uuid4</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">random_uuid</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">UUID(...) is not JSON serializable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">random_uuid</span><span class="p">,</span> <span class="n">uuid_mode</span><span class="o">=</span><span class="n">UM_CANONICAL</span><span class="p">)</span>
+<span class="go">&#39;&quot;be576345-65b5-4fc2-92c5-94e2f82e38fd&quot;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">random_uuid</span><span class="p">,</span> <span class="n">uuid_mode</span><span class="o">=</span><span class="n">UM_HEX</span><span class="p">)</span>
+<span class="go">&#39;&quot;be57634565b54fc292c594e2f82e38fd&quot;&#39;</span>
+</pre></div>
+</div>
+<p class="rubric" id="dumps-bytes-mode"><cite>bytes_mode</cite></p>
+<p>By default all <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> instances are serialized as raw memory (this differs from the way the original rapidjson extension operates):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ascii_string</span> <span class="o">=</span> <span class="s1">&#39;ciao&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bytes_string</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;cio</span><span class="se">\xc3\xa8</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unicode_string</span> <span class="o">=</span> <span class="s1">&#39;cioè&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">ascii_string</span><span class="p">,</span> <span class="n">bytes_string</span><span class="p">,</span> <span class="n">unicode_string</span><span class="p">])</span>
+<span class="go">&#39;[&quot;ciao&quot;,&quot;-YGG-eyJ0eXBlIjoic2NhbGFyIiwic3VidHlwZSI6InN0cmluZyIsInByZWNpc2lvbiI6NX0=-YGG-Y2lvw6g=-YGG-&quot;,&quot;cio\\u00E8&quot;]&#39;</span>
+</pre></div>
+</div>
+<p>If you prefer that <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> instances are assumed to be <code class="docutils literal notranslate"><span class="pre">UTF-8</span></code> encoded strings, you can pass the <code class="xref py py-data docutils literal notranslate"><span class="pre">BM_UTF8</span></code> mode:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ascii_string</span> <span class="o">=</span> <span class="s1">&#39;ciao&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bytes_string</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;cio</span><span class="se">\xc3\xa8</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unicode_string</span> <span class="o">=</span> <span class="s1">&#39;cioè&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">ascii_string</span><span class="p">,</span> <span class="n">bytes_string</span><span class="p">,</span> <span class="n">unicode_string</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="n">bytes_mode</span><span class="o">=</span><span class="n">BM_UTF8</span><span class="p">)</span>
+<span class="go">&#39;[&quot;ciao&quot;,&quot;cio\\u00E8&quot;,&quot;cio\\u00E8&quot;]&#39;</span>
+</pre></div>
+</div>
+<p>Sometime you may prefer a different approach, explicitly disabling that behavior using
+the <code class="xref py py-data docutils literal notranslate"><span class="pre">BM_NONE</span></code> mode:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">ascii_string</span><span class="p">,</span> <span class="n">bytes_string</span><span class="p">,</span> <span class="n">unicode_string</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="n">bytes_mode</span><span class="o">=</span><span class="n">BM_NONE</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">b&#39;cio\xc3\xa8&#39; is not JSON serializable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_bytes_handler</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">ascii_string</span><span class="p">,</span> <span class="n">bytes_string</span><span class="p">,</span> <span class="n">unicode_string</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="n">bytes_mode</span><span class="o">=</span><span class="n">BM_NONE</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">my_bytes_handler</span><span class="p">)</span>
+<span class="go">&#39;[&quot;ciao&quot;,&quot;CIO\\u00C8&quot;,&quot;cio\\u00E8&quot;]&#39;</span>
+</pre></div>
+</div>
+<p class="rubric"><cite>iterable_mode</cite></p>
+<p>By default a value that implements the <cite>iterable</cite> protocol gets encoded as a <code class="docutils literal notranslate"><span class="pre">JSON</span></code>
+array:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">localtime</span><span class="p">,</span> <span class="n">struct_time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lt</span> <span class="o">=</span> <span class="n">localtime</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">lt</span><span class="p">)</span>
+<span class="go">&#39;[2020,11,28,19,55,40,5,333,0]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">MyList</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ml</span> <span class="o">=</span> <span class="n">MyList</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">ml</span><span class="p">)</span>
+<span class="go">&#39;[1,2,3]&#39;</span>
+</pre></div>
+</div>
+<p>When that’s not appropriate, for example because you want to use a different way to
+encode them, you may specify <cite>iterable_mode</cite> to <code class="docutils literal notranslate"><span class="pre">IM_ONLY_LISTS</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="n">iterable_mode</span><span class="o">=</span><span class="n">IM_ONLY_LISTS</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">time.struct_time(...) is not JSON serializable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">ml</span><span class="p">,</span> <span class="n">iterable_mode</span><span class="o">=</span><span class="n">IM_ONLY_LISTS</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">  </span><span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">[1, 2, 3] is not JSON serializable</span>
+</pre></div>
+</div>
+<p>and thus you can use the <cite>default</cite> argument:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">ts_or_ml</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">struct_time</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;__class__&#39;</span><span class="p">:</span> <span class="s1">&#39;time.struct_time&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">)}</span>
+<span class="gp">... </span>  <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">MyList</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+<span class="gp">... </span>  <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not JSON serializable&#39;</span> <span class="o">%</span> <span class="n">obj</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="n">iterable_mode</span><span class="o">=</span><span class="n">IM_ONLY_LISTS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">ts_or_ml</span><span class="p">)</span>
+<span class="go">&#39;{&quot;__class__&quot;:&quot;time.struct_time&quot;,&quot;__init__&quot;:[2020,11,28,19,55,40,5,333,0]}&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">ml</span><span class="p">,</span> <span class="n">iterable_mode</span><span class="o">=</span><span class="n">IM_ONLY_LISTS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">ts_or_ml</span><span class="p">)</span>
+<span class="go">&#39;[2,4,6]&#39;</span>
+</pre></div>
+</div>
+<p>Obviously, in such case the value returned by the <cite>default</cite> callable <strong>must not</strong>
+be or contain a <code class="docutils literal notranslate"><span class="pre">tuple</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">bad_timestruct</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">struct_time</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;__class__&#39;</span><span class="p">:</span> <span class="s1">&#39;time.struct_time&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">obj</span><span class="p">)}</span>
+<span class="gp">... </span>  <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not JSON serializable&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">lt</span><span class="p">,</span> <span class="n">iterable_mode</span><span class="o">=</span><span class="n">IM_ONLY_LISTS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">bad_timestruct</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">ValueError</span>: <span class="n">(...) is not JSON serializable</span>
+</pre></div>
+</div>
+<p class="rubric"><cite>mapping_mode</cite></p>
+<p>By default a value that implements the <cite>mapping</cite> protocol gets encoded as a <code class="docutils literal notranslate"><span class="pre">JSON</span></code>
+object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">([</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
+<span class="go">&#39;[{&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3},{&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3}]&#39;</span>
+</pre></div>
+</div>
+<p>When that’s not appropriate, for example because you want to use a different way to
+encode them, you may specify <cite>mapping_mode</cite> to <code class="docutils literal notranslate"><span class="pre">MM_ONLY_DICTS</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">mapping_mode</span><span class="o">=</span><span class="n">MM_ONLY_DICTS</span><span class="p">)</span>
+<span class="go">&#39;{&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3}&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">mapping_mode</span><span class="o">=</span><span class="n">MM_ONLY_DICTS</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">Counter(...) is not JSON serializable</span>
+</pre></div>
+</div>
+<p>and thus you can use the <cite>default</cite> argument:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">counter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Counter</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;__class__&#39;</span><span class="p">:</span> <span class="s1">&#39;collections.Counter&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">obj</span><span class="p">)}</span>
+<span class="gp">... </span>  <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not JSON serializable&#39;</span> <span class="o">%</span> <span class="n">obj</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">mapping_mode</span><span class="o">=</span><span class="n">MM_ONLY_DICTS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">counter</span><span class="p">)</span>
+<span class="go">&#39;{&quot;__class__&quot;:&quot;collections.Counter&quot;,&quot;__init__&quot;:{&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3}}&#39;</span>
+</pre></div>
+</div>
+<p>Obviously, in such case the value returned by the <cite>default</cite> callable <strong>must not</strong>
+be or contain mappings other than plain <code class="docutils literal notranslate"><span class="pre">dict</span></code>s:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">bad_counter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Counter</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;__class__&#39;</span><span class="p">:</span> <span class="s1">&#39;time.struct_time&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">obj</span><span class="p">)}</span>
+<span class="gp">... </span>  <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not JSON serializable&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">mapping_mode</span><span class="o">=</span><span class="n">MM_ONLY_DICTS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">bad_counter</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">ValueError</span>: <span class="n">OrderedDict([(&#39;a&#39;, 1), (&#39;b&#39;, 2), (&#39;c&#39;, 3)]) is not JSON serializable</span>
+</pre></div>
+</div>
+<p>Normally, dumping a dictionary containing <em>non-string</em> keys raises a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>
+exception:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">({</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;minus-one&#39;</span><span class="p">})</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">TypeError</span>: <span class="n">{-1: &#39;minus-one&#39;} is not JSON serializable</span>
+</pre></div>
+</div>
+<p>Setting <cite>mapping_mode</cite> to <code class="docutils literal notranslate"><span class="pre">MM_COERCE_KEYS_TO_STRINGS</span></code> such keys will be converted to
+their string representation:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">({</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;minus-one&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">:</span> <span class="s2">&quot;good&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s2">&quot;bad&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">:</span> <span class="s2">&quot;ugly&quot;</span><span class="p">},</span>
+<span class="gp">... </span>      <span class="n">mapping_mode</span><span class="o">=</span><span class="n">MM_COERCE_KEYS_TO_STRINGS</span><span class="p">)</span>
+<span class="go">&#39;{&quot;-1&quot;:&quot;minus-one&quot;,&quot;True&quot;:&quot;good&quot;,&quot;False&quot;:&quot;bad&quot;,&quot;None&quot;:&quot;ugly&quot;}&#39;</span>
+</pre></div>
+</div>
+<p>Alternatively, by providing a <cite>default</cite> function you can have finer control on how they
+should be encoded. For example the following mimics the default behaviour of the
+standard library <code class="docutils literal notranslate"><span class="pre">json</span></code> module:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">mimic_stdlib_json</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>      <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;false&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>      <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;null&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>      <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>      <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;keys must be str, int, float, bool or None&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">result</span>
+<span class="gp">... </span>  <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1"> is not JSON serializable&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">({</span><span class="kc">True</span><span class="p">:</span> <span class="s1">&#39;good&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s1">&#39;bad&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">:</span> <span class="s1">&#39;ugly&#39;</span><span class="p">},</span>
+<span class="gp">... </span>      <span class="n">default</span><span class="o">=</span><span class="n">mimic_stdlib_json</span><span class="p">)</span>
+<span class="go">&#39;{&quot;true&quot;:&quot;good&quot;,&quot;false&quot;:&quot;bad&quot;,&quot;null&quot;:&quot;ugly&quot;}&#39;</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This can lead to an infinite recursion error, if the <cite>default</cite> function
+returns a dictionary that still contains <em>non-string</em> keys:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dumps</span><span class="p">({</span><span class="kc">True</span><span class="p">:</span> <span class="s1">&#39;vero&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s1">&#39;falso&#39;</span><span class="p">},</span>
+<span class="gp">... </span>      <span class="n">default</span><span class="o">=</span><span class="k">lambda</span> <span class="nb">map</span><span class="p">:</span> <span class="nb">map</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">RecursionError</span>: <span class="n">maximum recursion depth exceeded</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yggdrasil.html">Yggdrasil Types</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="normalizer.html">Normalizer class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">encode_schema() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compare_schemas.html">compare_schemas() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generate_data.html">generate_data() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="as_pure_json.html">as_pure_json() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_BASE64"><code class="docutils literal notranslate"><span class="pre">YM_BASE64</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_READABLE"><code class="docutils literal notranslate"><span class="pre">YM_READABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_PICKLE"><code class="docutils literal notranslate"><span class="pre">YM_PICKLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NormalizationError"><code class="docutils literal notranslate"><span class="pre">NormalizationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ComparisonError"><code class="docutils literal notranslate"><span class="pre">ComparisonError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.GenerateError"><code class="docutils literal notranslate"><span class="pre">GenerateError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationWarning"><code class="docutils literal notranslate"><span class="pre">ValidationWarning</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NormalizationWarning"><code class="docutils literal notranslate"><span class="pre">NormalizationWarning</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="normalizer.html" title="previous chapter">Normalizer class</a></li>
+      <li>Next: <a href="compare_schemas.html" title="next chapter">compare_schemas() function</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Meagan lang; 2016—2024, Lele Gaifax (python-rapidjson).
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/encode_schema.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

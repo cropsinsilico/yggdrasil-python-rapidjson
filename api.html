@@ -1,29 +1,27 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Exposed functions and symbols &#8212; yggdrasil-python-rapidjson 1.21.0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=712fa57f" />
+    <script src="_static/documentation_options.js?v=4ab8c9fa"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dumps() function" href="dumps.html" />
-    <link rel="prev" title="Performance" href="benchmarks.html" />
+    <link rel="next" title="Units" href="units.html" />
+    <link rel="prev" title="Yggdrasil Types" href="yggdrasil.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -36,315 +34,116 @@
           <div class="body" role="main">
             
   <section id="exposed-functions-and-symbols">
-<h1>Exposed functions and symbols<a class="headerlink" href="#exposed-functions-and-symbols" title="Permalink to this heading">¶</a></h1>
+<h1>Exposed functions and symbols<a class="headerlink" href="#exposed-functions-and-symbols" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dumps.html">dumps() function</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps"><code class="docutils literal notranslate"><span class="pre">dumps()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="units.html#scalars">Scalars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html#arrays">Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html#operations">Operations</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dump.html">dump() function</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dump.html#yggdrasil_rapidjson.dump"><code class="docutils literal notranslate"><span class="pre">dump()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="loads.html">loads() function</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads"><code class="docutils literal notranslate"><span class="pre">loads()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="load.html">load() function</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="load.html#yggdrasil_rapidjson.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="encoder.html">Encoder class</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html#yggdrasil_rapidjson.Encoder"><code class="docutils literal notranslate"><span class="pre">Encoder</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="decoder.html">Decoder class</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="decoder.html#yggdrasil_rapidjson.Decoder"><code class="docutils literal notranslate"><span class="pre">Decoder</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#objwavefront">ObjWavefront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#ply">Ply</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="validator.html">Validator class</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="validator.html#yggdrasil_rapidjson.Validator"><code class="docutils literal notranslate"><span class="pre">Validator</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rawjson.html">RawJSON class</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rawjson.html#yggdrasil_rapidjson.RawJSON"><code class="docutils literal notranslate"><span class="pre">RawJSON</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="normalizer.html">Normalizer class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="normalizer.html#yggdrasil_rapidjson.Normalizer"><code class="docutils literal notranslate"><span class="pre">Normalizer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="encode_schema.html">encode_schema() function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare_schemas.html">compare_schemas() function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compare_schemas.html#yggdrasil_rapidjson.compare_schemas"><code class="docutils literal notranslate"><span class="pre">compare_schemas()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generate_data.html">generate_data() function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generate_data.html#yggdrasil_rapidjson.generate_data"><code class="docutils literal notranslate"><span class="pre">generate_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="as_pure_json.html">as_pure_json() function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="as_pure_json.html#yggdrasil_rapidjson.as_pure_json"><code class="docutils literal notranslate"><span class="pre">as_pure_json()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </div>
 <dl class="py data">
 <dt class="sig sig-object py" id="yggdrasil_rapidjson.__author__">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__author__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__author__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__author__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__author__" title="Link to this definition">¶</a></dt>
 <dd><p>The authors of the module.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="yggdrasil_rapidjson.__version__">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__version__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__version__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__version__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__version__" title="Link to this definition">¶</a></dt>
 <dd><p>The version of the module.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="yggdrasil_rapidjson.__rapidjson_version__">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__rapidjson_version__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__rapidjson_version__" title="Permalink to this definition">¶</a></dt>
-<dd><p>The version of the <a class="reference external" href="http://rapidjson.org/">RapidJSON</a> library this module is built with.</p>
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__rapidjson_version__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__rapidjson_version__" title="Link to this definition">¶</a></dt>
+<dd><p>The version of the <a class="reference external" href="https://github.com/cropsinsilico/yggdrasil-rapidjson">YggdrasilRapidJSON</a> library this module is built with.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="yggdrasil_rapidjson.__rapidjson_exact_version__">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__rapidjson_exact_version__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__rapidjson_exact_version__" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <em>exact</em> version of the RapidJSON library, as determined by <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code>.</p>
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">__rapidjson_exact_version__</span></span><a class="headerlink" href="#yggdrasil_rapidjson.__rapidjson_exact_version__" title="Link to this definition">¶</a></dt>
+<dd><p>The <em>exact</em> version of the YggdrasilRapidJSON library, as determined by <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code>.</p>
 </dd></dl>
 
-<p class="rubric"><cite>datetime_mode</cite> related constants</p>
+<p class="rubric"><cite>yggdrasil_mode</cite> related constants</p>
 <dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.DM_NONE">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">DM_NONE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.DM_NONE" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the default <cite>datetime_mode</cite>: <em>neither</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code> <em>nor</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code>
-<em>nor</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">time</span></code> instances are recognized by <a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps" title="yggdrasil_rapidjson.dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code></a> and <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a>.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.DM_ISO8601">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">DM_ISO8601</span></span><a class="headerlink" href="#yggdrasil_rapidjson.DM_ISO8601" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this <cite>datetime_mode</cite> mode <a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps" title="yggdrasil_rapidjson.dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code></a> and <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a> handle <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code>,
-<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code> <em>and</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code> instances representing those values using the
-<a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</p>
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.YM_BASE64">
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">YM_BASE64</span></span><a class="headerlink" href="#yggdrasil_rapidjson.YM_BASE64" title="Link to this definition">¶</a></dt>
+<dd><p>This is the default <cite>yggdrasil_mode</cite>: <code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code> handle YggdrasilRapidJSON extension types as strings with a schema header using base64 encoding.</p>
 </dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.DM_UNIX_TIME">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">DM_UNIX_TIME</span></span><a class="headerlink" href="#yggdrasil_rapidjson.DM_UNIX_TIME" title="Permalink to this definition">¶</a></dt>
-<dd><p>This mode tells RapidJSON to serialize <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code> and
-<code class="xref py py-class docutils literal notranslate"><span class="pre">time</span></code> as <em>numeric timestamps</em>: for the formers it is exactly the result of
-their <code class="xref py py-meth docutils literal notranslate"><span class="pre">timestamp()</span></code> method, that is as the number of seconds passed since
-<code class="docutils literal notranslate"><span class="pre">EPOCH</span></code>; <code class="docutils literal notranslate"><span class="pre">date</span></code> instances are serialized as the corresponding <code class="docutils literal notranslate"><span class="pre">datetime</span></code> instance
-with all the <cite>time</cite> slots set to 0; <code class="docutils literal notranslate"><span class="pre">time</span></code> instances are serialized as the number of
-seconds since midnight.</p>
-<p>Since this is obviously <em>irreversible</em>, this flag is usable <strong>only</strong> for <a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps" title="yggdrasil_rapidjson.dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code></a>:
-an error is raised when passed to <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a>.</p>
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.YM_READABLE">
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">YM_READABLE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.YM_READABLE" title="Link to this definition">¶</a></dt>
+<dd><p>In this <cite>yggdrasil_mode</cite> mode <code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code> handle YggdrasilRapidJSON extension types as human readable JSON documents.</p>
 </dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.DM_ONLY_SECONDS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">DM_ONLY_SECONDS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.DM_ONLY_SECONDS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is usable in combination with <a class="reference internal" href="#yggdrasil_rapidjson.DM_UNIX_TIME" title="yggdrasil_rapidjson.DM_UNIX_TIME"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a> so that an integer
-representation is used, ignoring <em>microseconds</em>.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.DM_IGNORE_TZ">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">DM_IGNORE_TZ</span></span><a class="headerlink" href="#yggdrasil_rapidjson.DM_IGNORE_TZ" title="Permalink to this definition">¶</a></dt>
-<dd><p>This can be used combined with <a class="reference internal" href="#yggdrasil_rapidjson.DM_ISO8601" title="yggdrasil_rapidjson.DM_ISO8601"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a> or <a class="reference internal" href="#yggdrasil_rapidjson.DM_UNIX_TIME" title="yggdrasil_rapidjson.DM_UNIX_TIME"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a>, to ignore
-the value’s timezones.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.DM_NAIVE_IS_UTC">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">DM_NAIVE_IS_UTC</span></span><a class="headerlink" href="#yggdrasil_rapidjson.DM_NAIVE_IS_UTC" title="Permalink to this definition">¶</a></dt>
-<dd><p>This can be used combined with <a class="reference internal" href="#yggdrasil_rapidjson.DM_ISO8601" title="yggdrasil_rapidjson.DM_ISO8601"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a> or <a class="reference internal" href="#yggdrasil_rapidjson.DM_UNIX_TIME" title="yggdrasil_rapidjson.DM_UNIX_TIME"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a>, to tell
-RapidJSON that the naïve values (that is, without an explicit timezone) are already in
-<a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a> timezone.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.DM_SHIFT_TO_UTC">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">DM_SHIFT_TO_UTC</span></span><a class="headerlink" href="#yggdrasil_rapidjson.DM_SHIFT_TO_UTC" title="Permalink to this definition">¶</a></dt>
-<dd><p>This can be used combined with <a class="reference internal" href="#yggdrasil_rapidjson.DM_ISO8601" title="yggdrasil_rapidjson.DM_ISO8601"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a> or <a class="reference internal" href="#yggdrasil_rapidjson.DM_UNIX_TIME" title="yggdrasil_rapidjson.DM_UNIX_TIME"><code class="xref py py-data docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a>, to always
-<em>shift</em> values the <a class="reference external" href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a> timezone.</p>
-</dd></dl>
-
-<p class="rubric"><cite>uuid_mode</cite> related constants</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.UM_NONE">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">UM_NONE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.UM_NONE" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the default <cite>uuid_mode</cite>: <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> instances are <em>not</em> recognized by
-<a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps" title="yggdrasil_rapidjson.dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code></a> and <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a>.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.UM_CANONICAL">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">UM_CANONICAL</span></span><a class="headerlink" href="#yggdrasil_rapidjson.UM_CANONICAL" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this <cite>uuid_mode</cite>, <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a> recognizes string values containing the
-<code class="docutils literal notranslate"><span class="pre">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></code> canonical representation as <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code>
-instances; <a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps" title="yggdrasil_rapidjson.dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code></a> emits same kind of representation for <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> instances
-as a string value.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.UM_HEX">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">UM_HEX</span></span><a class="headerlink" href="#yggdrasil_rapidjson.UM_HEX" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this <cite>uuid_mode</cite> <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a> recognizes string values containing exactly 32 hex
-digits <em>or</em> the <code class="docutils literal notranslate"><span class="pre">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></code> canonical representation as
-<code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code> instances; <a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps" title="yggdrasil_rapidjson.dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code></a> emits the 32 hex digits of <code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code>
-instances as a string value.</p>
-</dd></dl>
-
-<p class="rubric"><cite>number_mode</cite> related constants</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.NM_NONE">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">NM_NONE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.NM_NONE" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the default <cite>number_mode</cite>: numeric values can be as wide as the memory allows.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.NM_DECIMAL">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">NM_DECIMAL</span></span><a class="headerlink" href="#yggdrasil_rapidjson.NM_DECIMAL" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this <cite>number_mode</cite> <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a> will return floating point values as
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Decimal</span></code> instances instead of <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>; <a class="reference internal" href="dumps.html#yggdrasil_rapidjson.dumps" title="yggdrasil_rapidjson.dumps"><code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code></a> will serialize
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Decimal</span></code> instances like any other <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> number.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.NM_NAN">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">NM_NAN</span></span><a class="headerlink" href="#yggdrasil_rapidjson.NM_NAN" title="Permalink to this definition">¶</a></dt>
-<dd><p>This enables <em>non-numbers</em> (i.e. <code class="docutils literal notranslate"><span class="pre">nan</span></code>, <code class="docutils literal notranslate"><span class="pre">+inf</span></code> and <code class="docutils literal notranslate"><span class="pre">-inf</span></code>) handling in both
-directions.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.NM_NATIVE">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">NM_NATIVE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.NM_NATIVE" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this alternative <cite>number_mode</cite> numeric values must fit into the underlying C library
-limits, with a considerable speed benefit.</p>
-</dd></dl>
-
-<p class="rubric"><cite>parse_mode</cite> related constants</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.PM_NONE">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">PM_NONE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.PM_NONE" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the default <cite>parse_mode</cite>: with the exception of the <em>NaN and Infinite</em>
-recognition active by default, the parser is in <em>strict mode</em>.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.PM_COMMENTS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">PM_COMMENTS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.PM_COMMENTS" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this <cite>parse_mode</cite>, the parser allows and ignores one-line <code class="docutils literal notranslate"><span class="pre">//</span> <span class="pre">...</span></code> and multi-line
-<code class="docutils literal notranslate"><span class="pre">/*</span> <span class="pre">...</span> <span class="pre">*/</span></code> comments</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.PM_TRAILING_COMMAS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">PM_TRAILING_COMMAS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.PM_TRAILING_COMMAS" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this <cite>parse_mode</cite>, the parser allows and ignores trailing commas at the end of
-<em>arrays</em> and <em>objects</em>.</p>
-</dd></dl>
-
-<p class="rubric"><cite>bytes_mode</cite> related constants</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.BM_NONE">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">BM_NONE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.BM_NONE" title="Permalink to this definition">¶</a></dt>
-<dd><p>This disables the default handling mode (<a class="reference internal" href="#yggdrasil_rapidjson.BM_UTF8" title="yggdrasil_rapidjson.BM_UTF8"><code class="xref py py-data docutils literal notranslate"><span class="pre">BM_UTF8</span></code></a>) of <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> instances:
-they won’t be treated in any special way and will raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> exception when
-encountered. On the other hand, in this mode they can be managed by a <cite>default</cite>
-handler.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.BM_UTF8">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">BM_UTF8</span></span><a class="headerlink" href="#yggdrasil_rapidjson.BM_UTF8" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the default setting for <cite>bytes_mode</cite>: any <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> instance will be
-assumed to be an <code class="docutils literal notranslate"><span class="pre">UTF-8</span></code> encoded string, and decoded accordingly.</p>
-</dd></dl>
-
-<p class="rubric"><cite>iterable_mode</cite> related constants</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.IM_ANY_ITERABLE">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">IM_ANY_ITERABLE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.IM_ANY_ITERABLE" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the default setting for <cite>iterable_mode</cite>: any iterable will be dumped as a
-<code class="docutils literal notranslate"><span class="pre">JSON</span></code> array.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.IM_ONLY_LISTS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">IM_ONLY_LISTS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.IM_ONLY_LISTS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This disables the default handling mode (<a class="reference internal" href="#yggdrasil_rapidjson.IM_ANY_ITERABLE" title="yggdrasil_rapidjson.IM_ANY_ITERABLE"><code class="xref py py-data docutils literal notranslate"><span class="pre">IM_ANY_ITERABLE</span></code></a>) of <cite>iterable</cite> values
-(with the exception of <code class="docutils literal notranslate"><span class="pre">str</span></code>ings and <code class="docutils literal notranslate"><span class="pre">list</span></code>s): they won’t be treated in any
-special way and will raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> exception when encountered. On the other
-hand, in this mode they can be managed by a <cite>default</cite> handler.</p>
-</dd></dl>
-
-<p class="rubric" id="mapping-mode"><cite>mapping_mode</cite> related constants</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.MM_ANY_MAPPING">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">MM_ANY_MAPPING</span></span><a class="headerlink" href="#yggdrasil_rapidjson.MM_ANY_MAPPING" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the default setting for <cite>mapping_mode</cite>: any mapping will be dumped as a
-<code class="docutils literal notranslate"><span class="pre">JSON</span></code> object.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.MM_ONLY_DICTS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">MM_ONLY_DICTS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.MM_ONLY_DICTS" title="Permalink to this definition">¶</a></dt>
-<dd><p>This disables the default handling mode (<a class="reference internal" href="#yggdrasil_rapidjson.MM_ANY_MAPPING" title="yggdrasil_rapidjson.MM_ANY_MAPPING"><code class="xref py py-data docutils literal notranslate"><span class="pre">MM_ANY_MAPPING</span></code></a>) of generic <cite>mapping</cite>
-values, they won’t be treated like <code class="docutils literal notranslate"><span class="pre">dict</span></code>s and will raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> exception
-when encountered. On the other hand, in this mode they can be managed by a <cite>default</cite>
-handler.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.MM_COERCE_KEYS_TO_STRINGS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">MM_COERCE_KEYS_TO_STRINGS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.MM_COERCE_KEYS_TO_STRINGS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Since <code class="docutils literal notranslate"><span class="pre">JSON</span></code> objects require that all keys must be of type string, when a mapping
-contains <em>non-string</em> keys, it will be processed by the <cite>default</cite> handler if available,
-otherwise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> exception is raised.</p>
-<p>Alternatively, you can use the this option to automatically render such keys as their
-<code class="docutils literal notranslate"><span class="pre">str()</span></code> representation.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.MM_SKIP_NON_STRING_KEYS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">MM_SKIP_NON_STRING_KEYS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.MM_SKIP_NON_STRING_KEYS" title="Permalink to this definition">¶</a></dt>
-<dd><p>In this mode, dict keys that are not of a basic type (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>,
-<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>) will be skipped instead of raising a
-<code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.MM_SORT_KEYS">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">MM_SORT_KEYS</span></span><a class="headerlink" href="#yggdrasil_rapidjson.MM_SORT_KEYS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alphabetically order dictionary keys.</p>
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.YM_PICKLE">
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">YM_PICKLE</span></span><a class="headerlink" href="#yggdrasil_rapidjson.YM_PICKLE" title="Link to this definition">¶</a></dt>
+<dd><p>In this <cite>yggdrasil_mode</cite> mode <code class="xref py py-func docutils literal notranslate"><span class="pre">dumps()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code> will pickle/unpickle unsupported Python objects.</p>
 </dd></dl>
 
 <p class="rubric">Exceptions</p>
 <dl class="py exception">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.JSONDecodeError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">JSONDecodeError</span></span><a class="headerlink" href="#yggdrasil_rapidjson.JSONDecodeError" title="Permalink to this definition">¶</a></dt>
-<dd><p>A subclass of <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code>, raised when trying to parse an invalid <code class="docutils literal notranslate"><span class="pre">JSON</span></code>,
-either by <a class="reference internal" href="validator.html#yggdrasil_rapidjson.Validator" title="yggdrasil_rapidjson.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Validator</span></code></a> objects or by <a class="reference internal" href="loads.html#yggdrasil_rapidjson.loads" title="yggdrasil_rapidjson.loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">loads()</span></code></a> function.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.ValidationError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">ValidationError</span></span><a class="headerlink" href="#yggdrasil_rapidjson.ValidationError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception raised by <a class="reference internal" href="validator.html#yggdrasil_rapidjson.Validator" title="yggdrasil_rapidjson.Validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Validator</span></code></a> objects, a subclass of <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.NormalizationError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">NormalizationError</span></span><a class="headerlink" href="#yggdrasil_rapidjson.NormalizationError" title="Link to this definition">¶</a></dt>
+<dd><p>Exception raised by <a class="reference internal" href="normalizer.html#yggdrasil_rapidjson.Normalizer" title="yggdrasil_rapidjson.Normalizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Normalizer</span></code></a> objects, a subclass of <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
 <p>Its <cite>args</cite> attribute is a tuple with three string values, respectively the <em>schema
 keyword</em> that generated the failure, its <em>JSON pointer</em> and a <em>JSON pointer</em> to the
 error location in the (invalid) document.</p>
 </dd></dl>
 
-<p class="rubric"><cite>write_mode</cite> related constants</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.WM_COMPACT">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">WM_COMPACT</span></span><a class="headerlink" href="#yggdrasil_rapidjson.WM_COMPACT" title="Permalink to this definition">¶</a></dt>
-<dd><p>The default dump mode, without any extra whitespace.</p>
-</dd></dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.ComparisonError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">ComparisonError</span></span><a class="headerlink" href="#yggdrasil_rapidjson.ComparisonError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.WM_PRETTY">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">WM_PRETTY</span></span><a class="headerlink" href="#yggdrasil_rapidjson.WM_PRETTY" title="Permalink to this definition">¶</a></dt>
-<dd><p>This selects the RapidJSON <code class="docutils literal notranslate"><span class="pre">PrettyWriter</span></code>, to produce more readable <code class="docutils literal notranslate"><span class="pre">JSON</span></code>: each
-array’s item and object’s key will be preceded by a newline, and nested structures will
-be indented.</p>
-</dd></dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.GenerateError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">GenerateError</span></span><a class="headerlink" href="#yggdrasil_rapidjson.GenerateError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="yggdrasil_rapidjson.WM_SINGLE_LINE_ARRAY">
-<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">WM_SINGLE_LINE_ARRAY</span></span><a class="headerlink" href="#yggdrasil_rapidjson.WM_SINGLE_LINE_ARRAY" title="Permalink to this definition">¶</a></dt>
-<dd><p>This tells the <code class="docutils literal notranslate"><span class="pre">PrettyWriter</span></code> to emit arrays on a single line, instead of separating
-items with a newline.</p>
-</dd></dl>
+<p class="rubric">Warnings</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.ValidationWarning">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">ValidationWarning</span></span><a class="headerlink" href="#yggdrasil_rapidjson.ValidationWarning" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.NormalizationWarning">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">NormalizationWarning</span></span><a class="headerlink" href="#yggdrasil_rapidjson.NormalizationWarning" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 
@@ -353,7 +152,7 @@ items with a newline.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
 
@@ -367,51 +166,28 @@ items with a newline.</p>
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yggdrasil.html">Yggdrasil Types</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Exposed functions and symbols</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dumps.html">dumps() function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dump.html">dump() function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="loads.html">loads() function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="load.html">load() function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html">Encoder class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="decoder.html">Decoder class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rawjson.html">RawJSON class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="normalizer.html">Normalizer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encode_schema.html">encode_schema() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compare_schemas.html">compare_schemas() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generate_data.html">generate_data() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="as_pure_json.html">as_pure_json() function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.DM_NONE"><code class="docutils literal notranslate"><span class="pre">DM_NONE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.DM_ISO8601"><code class="docutils literal notranslate"><span class="pre">DM_ISO8601</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.DM_UNIX_TIME"><code class="docutils literal notranslate"><span class="pre">DM_UNIX_TIME</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.DM_ONLY_SECONDS"><code class="docutils literal notranslate"><span class="pre">DM_ONLY_SECONDS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.DM_IGNORE_TZ"><code class="docutils literal notranslate"><span class="pre">DM_IGNORE_TZ</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.DM_NAIVE_IS_UTC"><code class="docutils literal notranslate"><span class="pre">DM_NAIVE_IS_UTC</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.DM_SHIFT_TO_UTC"><code class="docutils literal notranslate"><span class="pre">DM_SHIFT_TO_UTC</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.UM_NONE"><code class="docutils literal notranslate"><span class="pre">UM_NONE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.UM_CANONICAL"><code class="docutils literal notranslate"><span class="pre">UM_CANONICAL</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.UM_HEX"><code class="docutils literal notranslate"><span class="pre">UM_HEX</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.NM_NONE"><code class="docutils literal notranslate"><span class="pre">NM_NONE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.NM_DECIMAL"><code class="docutils literal notranslate"><span class="pre">NM_DECIMAL</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.NM_NAN"><code class="docutils literal notranslate"><span class="pre">NM_NAN</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.NM_NATIVE"><code class="docutils literal notranslate"><span class="pre">NM_NATIVE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.PM_NONE"><code class="docutils literal notranslate"><span class="pre">PM_NONE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.PM_COMMENTS"><code class="docutils literal notranslate"><span class="pre">PM_COMMENTS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.PM_TRAILING_COMMAS"><code class="docutils literal notranslate"><span class="pre">PM_TRAILING_COMMAS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.BM_NONE"><code class="docutils literal notranslate"><span class="pre">BM_NONE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.BM_UTF8"><code class="docutils literal notranslate"><span class="pre">BM_UTF8</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.IM_ANY_ITERABLE"><code class="docutils literal notranslate"><span class="pre">IM_ANY_ITERABLE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.IM_ONLY_LISTS"><code class="docutils literal notranslate"><span class="pre">IM_ONLY_LISTS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.MM_ANY_MAPPING"><code class="docutils literal notranslate"><span class="pre">MM_ANY_MAPPING</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.MM_ONLY_DICTS"><code class="docutils literal notranslate"><span class="pre">MM_ONLY_DICTS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.MM_COERCE_KEYS_TO_STRINGS"><code class="docutils literal notranslate"><span class="pre">MM_COERCE_KEYS_TO_STRINGS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.MM_SKIP_NON_STRING_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SKIP_NON_STRING_KEYS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.MM_SORT_KEYS"><code class="docutils literal notranslate"><span class="pre">MM_SORT_KEYS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.JSONDecodeError"><code class="docutils literal notranslate"><span class="pre">JSONDecodeError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.WM_COMPACT"><code class="docutils literal notranslate"><span class="pre">WM_COMPACT</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.WM_PRETTY"><code class="docutils literal notranslate"><span class="pre">WM_PRETTY</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.WM_SINGLE_LINE_ARRAY"><code class="docutils literal notranslate"><span class="pre">WM_SINGLE_LINE_ARRAY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.YM_BASE64"><code class="docutils literal notranslate"><span class="pre">YM_BASE64</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.YM_READABLE"><code class="docutils literal notranslate"><span class="pre">YM_READABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.YM_PICKLE"><code class="docutils literal notranslate"><span class="pre">YM_PICKLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.NormalizationError"><code class="docutils literal notranslate"><span class="pre">NormalizationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.ComparisonError"><code class="docutils literal notranslate"><span class="pre">ComparisonError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.GenerateError"><code class="docutils literal notranslate"><span class="pre">GenerateError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.ValidationWarning"><code class="docutils literal notranslate"><span class="pre">ValidationWarning</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yggdrasil_rapidjson.NormalizationWarning"><code class="docutils literal notranslate"><span class="pre">NormalizationWarning</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
@@ -421,12 +197,12 @@ items with a newline.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="benchmarks.html" title="previous chapter">Performance</a></li>
-      <li>Next: <a href="dumps.html" title="next chapter">dumps() function</a></li>
+      <li>Previous: <a href="yggdrasil.html" title="previous chapter">Yggdrasil Types</a></li>
+      <li>Next: <a href="units.html" title="next chapter">Units</a></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -434,7 +210,7 @@ items with a newline.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -449,11 +225,11 @@ items with a newline.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2016—2024, Lele Gaifax.
+      &#169;2025, Meagan lang; 2016—2024, Lele Gaifax (python-rapidjson).
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="_sources/api.rst.txt"

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Units &#8212; yggdrasil-python-rapidjson 1.21.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=712fa57f" />
+    <script src="_static/documentation_options.js?v=4ab8c9fa"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Geometry" href="geometry.html" />
+    <link rel="prev" title="Exposed functions and symbols" href="api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="units">
+<h1>Units<a class="headerlink" href="#units" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://github.com/cropsinsilico/yggdrasil-rapidjson">YggdrasilRapidJSON</a> added support for attaching units to scalars and arrays that can be tracked during arithmetic operations. The <code class="docutils literal notranslate"><span class="pre">yggdrasil_rapidjson.units</span></code> submodule wraps the <a class="reference external" href="https://github.com/cropsinsilico/yggdrasil-rapidjson">YggdrasilRapidJSON</a> units classes. Unit expressions are parsed from provided strings. Available units and expression can be found in the <a class="reference external" href="TODO">YggdrasilRapidJSON documentation</a>. Both the scalar (<code class="docutils literal notranslate"><span class="pre">yggdrasil_rapidjson.units.Quantity</span></code>) and array classes (<code class="docutils literal notranslate"><span class="pre">yggdrasil_rapidjson.units.QuantityArray</span></code>) are built on Numpy arrays and can be used with Numpy methods in the ways that Numpy arrays can including <a class="reference external" href="https://numpy.org/doc/stable/reference/ufuncs.html">Numpy ufuncs</a>.</p>
+<section id="scalars">
+<h2>Scalars<a class="headerlink" href="#scalars" title="Link to this heading">¶</a></h2>
+<p>Scalar unit quantities can be created from built-in number classes</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">yggdrasil_rapidjson</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or numpy scalars</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="arrays">
+<h2>Arrays<a class="headerlink" href="#arrays" title="Link to this heading">¶</a></h2>
+<p>Array unit quantities can be created from lists or numpy arrays</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">QuantityArray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;cm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or numpy arrays</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yarr</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">QuantityArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int8&#39;</span><span class="p">),</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="operations">
+<h2>Operations<a class="headerlink" href="#operations" title="Link to this heading">¶</a></h2>
+<p>Arithmetic operations can be performed between quantities and scalars,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span>
+<span class="go">Quantity(15, &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">/</span> <span class="mi">3</span>
+<span class="go">Quantity(1.66666667, &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span>
+<span class="go">Quantity(1, &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+<span class="go">Quantity(9, dtype=int8, units=&#39;s**2&#39;)</span>
+</pre></div>
+</div>
+<p>between quantities and other quantities,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+<span class="go">Quantity(15, &#39;cm*s&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+<span class="go">Quantity(1.66666667, &#39;cm*(s**-1)&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+<span class="go">Quantity(0.0125, &#39;&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;mm&#39;</span><span class="p">)</span>
+<span class="go">Quantity(5.4, &#39;cm&#39;)</span>
+</pre></div>
+</div>
+<p>between quantity arrays and scalars or arrays with the same shape,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="o">*</span> <span class="n">xarr</span>
+<span class="go">QuantityArray([ 3,  6,  9, 12], &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">%</span> <span class="mi">2</span>
+<span class="go">QuantityArray([1, 0, 1, 0], &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yarr</span><span class="o">**</span><span class="mi">2</span>
+<span class="go">QuantityArray([[1, 1, 1],</span>
+<span class="go">       [1, 1, 1],</span>
+<span class="go">       [1, 1, 1]], dtype=int8, units=&#39;s**2&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="go">QuantityArray([0.1, 0.8, 6. , 0. ], &#39;cm&#39;)</span>
+</pre></div>
+</div>
+<p>between quantity arrays and quantity scalars</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">*</span> <span class="n">x</span>
+<span class="go">Quantity([ 5, 10, 15, 20], &#39;cm**2&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">/</span> <span class="n">y</span>
+<span class="go">Quantity([0.33333333, 0.66666667, 1.        , 1.33333333], &#39;cm*(s**-1)&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">%</span> <span class="n">x</span>
+<span class="go">Quantity([1, 2, 3, 4], &#39;cm&#39;)</span>
+</pre></div>
+</div>
+<p>and between quantity arrays of the same shape</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">/</span> <span class="n">yarr</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">ValueError</span>: <span class="n">operands could not be broadcast together with shapes (4,) (3,3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">/</span> <span class="p">(</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="p">)))</span>
+<span class="go">QuantityArray([ 3.33333333,  6.66666667, 10.        , 13.33333333], &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xarr</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">QuantityArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="p">)),</span> <span class="s1">&#39;kg&#39;</span><span class="p">)</span>
+<span class="go">QuantityArray([1., 2., 3., 4.], &#39;cm*(kg**-1)&#39;)</span>
+</pre></div>
+</div>
+<p>Some operations are only valid between quantities with compatible units. If the units are not compatible, a <code class="docutils literal notranslate"><span class="pre">yggdrasil_rapidjson.units.UnitsError</span></code> will be raised.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">UnitsError</span>: <span class="n">Incompatible units: &#39;&#39; and &#39;cm&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;mm&#39;</span><span class="p">)</span>
+<span class="go">Quantity(5.2, &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">UnitsError</span>: <span class="n">Incompatible units: &#39;s&#39; and &#39;cm&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">%</span> <span class="n">y</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">UnitsError</span>: <span class="n">Incompatible units: &#39;s&#39; and &#39;cm&#39;</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://numpy.org/doc/stable/reference/ufuncs.html">Numpy ufuncs</a> can also be used on both scalar and array quantities</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">Quantity(2.23606798, &#39;cm**0.5&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xarr</span><span class="p">)</span>
+<span class="go">QuantityArray([1.        , 1.41421356, 1.73205081, 2.        ], &#39;cm**0.5&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="go">Quantity(11.18033989, &#39;cm**1.5&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">Quantity(5, &#39;cm&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">Quantity(0, &#39;cm**-1&#39;)</span>
+</pre></div>
+</div>
+<p>Trigonometric functions are only valid on quantities that have angular units. Inverse trigonometric functions are only valid on quantities that are dimensionless.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">UnitsError</span>: <span class="n">Incompatible units: &#39;cm&#39; and &#39;rad&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;radians&#39;</span><span class="p">))</span>
+<span class="go">Quantity(1., &#39;&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="s1">&#39;degrees&#39;</span><span class="p">))</span>
+<span class="go">Quantity(-1., &#39;&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">UnitsError</span>: <span class="n">Incompatible units: &#39;cm&#39; and &#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="go">Quantity(3.14159265, &#39;rad&#39;)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yggdrasil.html">Yggdrasil Types</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="normalizer.html">Normalizer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encode_schema.html">encode_schema() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compare_schemas.html">compare_schemas() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generate_data.html">generate_data() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="as_pure_json.html">as_pure_json() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_BASE64"><code class="docutils literal notranslate"><span class="pre">YM_BASE64</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_READABLE"><code class="docutils literal notranslate"><span class="pre">YM_READABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_PICKLE"><code class="docutils literal notranslate"><span class="pre">YM_PICKLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NormalizationError"><code class="docutils literal notranslate"><span class="pre">NormalizationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ComparisonError"><code class="docutils literal notranslate"><span class="pre">ComparisonError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.GenerateError"><code class="docutils literal notranslate"><span class="pre">GenerateError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationWarning"><code class="docutils literal notranslate"><span class="pre">ValidationWarning</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NormalizationWarning"><code class="docutils literal notranslate"><span class="pre">NormalizationWarning</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Exposed functions and symbols</a></li>
+      <li>Next: <a href="geometry.html" title="next chapter">Geometry</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Meagan lang; 2016—2024, Lele Gaifax (python-rapidjson).
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/units.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

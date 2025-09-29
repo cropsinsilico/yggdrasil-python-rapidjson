@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>yggdrasil-python-rapidjson &#8212; yggdrasil-python-rapidjson 1.21.0.1 documentation</title>
+    <title>as_pure_json() function &#8212; yggdrasil-python-rapidjson 1.21.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=712fa57f" />
@@ -14,7 +14,8 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quick start" href="quickstart.html" />
+    <link rel="next" title="Changes" href="changes.html" />
+    <link rel="prev" title="generate_data() function" href="generate_data.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -32,22 +33,54 @@
 
           <div class="body" role="main">
             
-  <section id="yggdrasil-python-rapidjson">
-<h1>yggdrasil-python-rapidjson<a class="headerlink" href="#yggdrasil-python-rapidjson" title="Link to this heading">¶</a></h1>
-<section id="python-wrapper-around-yggdrasilrapidjson">
-<h2>Python Wrapper around <a class="reference external" href="https://github.com/cropsinsilico/yggdrasil-rapidjson">YggdrasilRapidJSON</a><a class="headerlink" href="#python-wrapper-around-yggdrasilrapidjson" title="Link to this heading">¶</a></h2>
-<p>This module implements a Python C-extension wrapper around <a class="reference external" href="https://github.com/cropsinsilico/yggdrasil-rapidjson">YggdrasilRapidJSON</a>, which is an extension to <a class="reference external" href="http://rapidjson.org/">RapidJSON</a>, an extremely fast
-C++ <a class="reference external" href="https://www.json.org/">JSON</a> serialization library. This package was adapted from the <a class="reference external" href="https://github.com/python-rapidjson/python-rapidjson">python-rapidjson</a> package. This documentation serves to describe features added onto the python-rapidjson functionality. For information on the classes and methods implemented by python-rapidjson (which are included in yggdrasil-python-rapidjson), please refer to the <a class="reference external" href="https://python-rapidjson.readthedocs.io/en/latest/index.html">python-rapidjson documentation</a>). All of the examples will be the same for yggdrasil-python-rapidjson, which the exception that the package is named <code class="docutils literal notranslate"><span class="pre">yggdrasil_rapidjson</span></code> instead of <code class="docutils literal notranslate"><span class="pre">rapidjson</span></code>.</p>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-examples">Basic examples</a></li>
-</ul>
-</li>
+  <section id="as-pure-json-function">
+<h1>as_pure_json() function<a class="headerlink" href="#as-pure-json-function" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.as_pure_json">
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">as_pure_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.as_pure_json" title="Link to this definition">¶</a></dt>
+<dd><p>Convert a JSON document containing yggdrasil extension values to pure JSON. This can result in the loss of information that cannot be expressed in pure JSON (e.g. units, value precision, complex numbers)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>as_pure_json</strong> (<em>str</em><em>, </em><em>dict</em>) – JSON document to convert to a pure JSON instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted docuemnt.</p>
+</dd>
+</dl>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">as_pure_json</span><span class="p">(</span><span class="mf">3.2</span><span class="o">+</span><span class="mf">4.1</span><span class="n">j</span><span class="p">)</span>
+<span class="go">[3.2, 4.1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">as_pure_json</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">))</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">as_pure_json</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="go">[0, 1, 2, 3]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="yggdrasil.html">Yggdrasil Types</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
@@ -55,7 +88,7 @@ C++ <a class="reference external" href="https://www.json.org/">JSON</a> serializ
 <li class="toctree-l2"><a class="reference internal" href="encode_schema.html">encode_schema() function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compare_schemas.html">compare_schemas() function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generate_data.html">generate_data() function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="as_pure_json.html">as_pure_json() function</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">as_pure_json() function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
@@ -70,52 +103,17 @@ C++ <a class="reference external" href="https://www.json.org/">JSON</a> serializ
 <li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NormalizationWarning"><code class="docutils literal notranslate"><span class="pre">NormalizationWarning</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changes.html#yggdrasil-python-rapidjson">yggdrasil-python-rapidjson</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changes.html#python-rapidjson">python-rapidjson</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<section id="indices-and-tables">
-<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-</section>
-</section>
-</section>
-
-
-          </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">yggdrasil-python-rapidjson</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="yggdrasil.html">Yggdrasil Types</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Exposed functions and symbols</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="quickstart.html" title="next chapter">Quick start</a></li>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="generate_data.html" title="previous chapter">generate_data() function</a></li>
+      <li>Next: <a href="changes.html" title="next chapter">Changes</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -149,7 +147,7 @@ C++ <a class="reference external" href="https://www.json.org/">JSON</a> serializ
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
-      <a href="_sources/index.rst.txt"
+      <a href="_sources/as_pure_json.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

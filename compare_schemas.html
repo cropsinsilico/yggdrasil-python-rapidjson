@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>compare_schemas() function &#8212; yggdrasil-python-rapidjson 1.21.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=712fa57f" />
+    <script src="_static/documentation_options.js?v=4ab8c9fa"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="generate_data() function" href="generate_data.html" />
+    <link rel="prev" title="encode_schema() function" href="encode_schema.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="compare-schemas-function">
+<h1>compare_schemas() function<a class="headerlink" href="#compare-schemas-function" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="yggdrasil_rapidjson.compare_schemas">
+<span class="sig-prename descclassname"><span class="pre">yggdrasil_rapidjson.</span></span><span class="sig-name descname"><span class="pre">compare_schemas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schemaA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schemaB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dont_raise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yggdrasil_rapidjson.compare_schemas" title="Link to this definition">¶</a></dt>
+<dd><p>Compare two JSON schemas for compatibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>schemaA</strong> (<em>str</em><em>, </em><em>dict</em>) – first JSON schema for comparison</p></li>
+<li><p><strong>schemaB</strong> (<em>str</em><em>, </em><em>dict</em>) – second JSON schema for comparison</p></li>
+<li><p><strong>dont_raise</strong> (<em>bool</em>) – if True, an error will not be raised if the
+schemas are incompatible.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the schemas are compatible, False otherwise.</p>
+</dd>
+</dl>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">compare_schemas</span><span class="p">(</span><span class="s1">&#39;{&quot;type&quot;: &quot;number&quot;}&#39;</span><span class="p">,</span> <span class="s1">&#39;{&quot;type&quot;: [&quot;number&quot;, &quot;schema&quot;]}&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compare_schemas</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;schema&quot;</span><span class="p">]})</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p class="rubric" id="dont-raise"><cite>dont_raise</cite></p>
+<p>If <cite>dont_raise</cite> is True (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>), then the comparison will return False when the two schemas are incompatible rather than raising an error.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">compare_schemas</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">})</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">ComparisonError</span>: <span class="n">{</span>
+<span class="x">    &quot;message&quot;: &quot;Incompatible schema property &#39;type&#39;: [\&quot;number\&quot;] vs [\&quot;string\&quot;].&quot;,</span>
+<span class="x">    &quot;schemaIteratorRef&quot;: &quot;#&quot;,</span>
+<span class="x">    &quot;schemaHandlerRef&quot;: &quot;#&quot;</span>
+<span class="x">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compare_schemas</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span> <span class="n">dont_raise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">yggdrasil-python-rapidjson</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yggdrasil.html">Yggdrasil Types</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Exposed functions and symbols</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validator.html">Validator class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="normalizer.html">Normalizer class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encode_schema.html">encode_schema() function</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">compare_schemas() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generate_data.html">generate_data() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="as_pure_json.html">as_pure_json() function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.__rapidjson_exact_version__"><code class="docutils literal notranslate"><span class="pre">__rapidjson_exact_version__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_BASE64"><code class="docutils literal notranslate"><span class="pre">YM_BASE64</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_READABLE"><code class="docutils literal notranslate"><span class="pre">YM_READABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.YM_PICKLE"><code class="docutils literal notranslate"><span class="pre">YM_PICKLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NormalizationError"><code class="docutils literal notranslate"><span class="pre">NormalizationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ComparisonError"><code class="docutils literal notranslate"><span class="pre">ComparisonError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.GenerateError"><code class="docutils literal notranslate"><span class="pre">GenerateError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.ValidationWarning"><code class="docutils literal notranslate"><span class="pre">ValidationWarning</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#yggdrasil_rapidjson.NormalizationWarning"><code class="docutils literal notranslate"><span class="pre">NormalizationWarning</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Exposed functions and symbols</a><ul>
+      <li>Previous: <a href="encode_schema.html" title="previous chapter">encode_schema() function</a></li>
+      <li>Next: <a href="generate_data.html" title="next chapter">generate_data() function</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Meagan lang; 2016—2024, Lele Gaifax (python-rapidjson).
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/compare_schemas.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

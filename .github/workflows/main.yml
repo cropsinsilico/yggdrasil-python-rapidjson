@@ -169,22 +169,22 @@ jobs:
 
   upload_wheels:
     name: Upload wheels & sdist to PyPI
-    needs: [build_sdist, build_wheels]
+    needs: [build_sdist]  #, build_wheels]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       id-token: write
 
     # Upload to PyPI on every tag starting with 'v'
-    # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           path: dist
           pattern: wheels-for-*
           merge-multiple: true
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           path: dist
           pattern: sdist
@@ -192,5 +192,5 @@ jobs:
 
       - name: Check downloaded artifacts
         run: ls dist
-      # - name: Publish package distributions to PyPI
-      #   uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

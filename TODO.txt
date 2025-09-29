@@ -5,7 +5,7 @@ rapidjson
 python-rapidjson
 * Add numpy tile array method
 * Update rapidjson in yggdrasil-python-rapidjson
-* Publish sdist to PyPI
+* Publish sdist to PyPI (update main.yml recipe, delete tag, re-make tag)
 * Create yggdrasil-python-rapidjson feedstock on conda-forge
 * Update yggdrasil-python-rapidjson recipe w/ yggdrasil-rapidjson dependency
 * Fill in missing docs

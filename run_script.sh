@@ -1,14 +1,20 @@
 set -e
 
 DONT_BUILD=""
+DONT_TEST=""
 WITH_ASAN=""
 BUILD_ARGS=""
 BUILD_DIR=""
+BUILD_DOCS=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
 	--dont-build )
 	    DONT_BUILD="TRUE"
+	    shift # past argument with no value
+	    ;;
+	--dont-test )
+	    DONT_TEST="TRUE"
 	    shift # past argument with no value
 	    ;;
 	--with-asan )
@@ -20,8 +26,26 @@ while [[ $# -gt 0 ]]; do
 	    shift
 	    shift # past argument with value
 	    ;;
+        --build-docs )
+            BUILD_DOCS="TRUE"
+            DONT_BUILD="TRUE"
+            DONT_TEST="TRUE"
+            shift # past argument with no value
+            ;;
     esac
 done
+
+if [ -n "$BUILD_DOCS" ]; then
+    if [ ! -n "$BUILD_DIR" ]; then
+        BUILD_DIR="build_docs"
+    fi
+    rm -rf $BUILD_DIR
+    mkdir $BUILD_DIR
+    cd $BUILD_DIR
+    cmake .. -DPYRJ_BUILD_DOCS_FOR_PUBLISH=ON
+    cmake --build .
+    cd ..
+fi
 
 if [ -n "$WITH_ASAN" ]; then
     export ASAN_OPTIONS=symbolize=1
@@ -40,5 +64,7 @@ if [ -n "$WITH_ASAN" ]; then
     export DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan_osx_dynamic.dylib)
 fi
 
-python -m pytest -sv tests/ --doctest-glob="docs/*.rst" --doctest-modules docs
-# make -C docs doctest -e PYTHON=$(python -c "import sys; import pathlib; print(pathlib.Path(sys.executable).resolve(strict=True))") -e DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan_osx_dynamic.dylib)
+if [ ! -n "$DONT_TEST" ]; then
+    python -m pytest -sv tests/ --doctest-glob="docs/*.rst" --doctest-modules docs
+    # make -C docs doctest -e PYTHON=$(python -c "import sys; import pathlib; print(pathlib.Path(sys.executable).resolve(strict=True))") -e DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan_osx_dynamic.dylib)
+fi

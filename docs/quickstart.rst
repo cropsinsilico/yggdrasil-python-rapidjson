@@ -9,7 +9,7 @@
  Quick start
 =============
 
-This a quick overview of the module.
+This a quick overview of the module adapted from the `python-rapidjson quickstart documentation <https://python-rapidjson.readthedocs.io/en/latest/quickstart.html>`_.
 
 
 Installation
@@ -34,10 +34,10 @@ __ https://anaconda.org/conda-forge/yggdrasil-python-rapidjson
 Basic examples
 --------------
 
-``python-rapidjson`` tries to be compatible with the standard library ``json.dumps()`` and
-``json.loads()`` functions (but see the incompatibilities_).
+``yggdrasil-python-rapidjson`` makes use of the ``python-rapidjson`` method wrappers that try to be compatible with the standard library ``json.dumps()`` and
+``json.loads()`` functions.
 
-Basic usage looks like this:
+Basic usage looks like this (adapted from the python-rapidjson documentation):
 
 .. doctest::
 
@@ -85,180 +85,51 @@ Python's lists, tuples and iterators get serialized as JSON arrays:
     >>> dumps(names_t) == dumps(names_l) == dumps(names_i) == dumps(names_g())
     True
 
-Values can also be :class:`bytes` or :class:`bytearray` instances, which are encoded as raw bytes with a header unless bytes_mode is set to :data:`BM_UTF8`:
+From ``python-rapidjson``, ``yggdrasil-python-rapidjson`` can also handle some other commonly used data types (e.g. :class:`bytes`, :class:`datetime.datetime`, :class:`uuid.UUID`, :class:`decimal.Decimal`). ``yggdrasil-python-rapidjson`` adds support for some additional types including `numpy <https://numpy.org/>`_ arrays, `pandas <https://pandas.pydata.org/>`_ dataframes, Python classes, Python functions, and the added wrapper classes for the YggdrasilRapidJSON_ extension types (``yggdrasil_rapidjson.units.Quantity``, ``yggdrasil_rapidjson.units.QuantityArray``, ``yggdrasil_rapidjson.geometry.Ply``, ``yggdrasil_rapidjson.geometry.ObjWavefront``):
 
 .. doctest::
 
-    >>> clef = "\N{MUSICAL SYMBOL G CLEF}"
-    >>> bytes_utf8 = clef.encode('utf-8')
-    >>> bytearray = bytearray(bytes_utf8)
-    >>> dumps(bytes_utf8) == dumps(bytearray)
-    True
-    >>> dumps(clef) == dumps(bytes_utf8)
-    False
-    >>> from yggdrasil_rapidjson import BM_UTF8
-    >>> dumps(clef) == dumps(bytes_utf8, bytes_mode=BM_UTF8) == dumps(bytearray, bytes_mode=BM_UTF8) == '"\\uD834\\uDD1E"'
-    True
-
-``python-rapidjson`` can optionally handle also a few other commonly used data types:
-
-.. doctest::
-
-    >>> import datetime, decimal, uuid
-    >>> from yggdrasil_rapidjson import DM_ISO8601, UM_CANONICAL, NM_DECIMAL
-    >>> some_day = datetime.date(2016, 8, 28)
-    >>> some_timestamp = datetime.datetime(2016, 8, 28, 13, 14, 15)
-    >>> dumps({'a date': some_day, 'a timestamp': some_timestamp})
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    TypeError: datetime.date(2016, 8, 28) is not JSON serializable
-    >>> dumps({'a date': some_day, 'a timestamp': some_timestamp},
-    ...       datetime_mode=DM_ISO8601,
-    ...       sort_keys=True) # for doctests
-    '{"a date":"2016-08-28","a timestamp":"2016-08-28T13:14:15"}'
+    >>> import numpy as np
+    >>> import pandas as pd
+    >>> from yggdrasil_rapidjson import units, geometry
+    >>> some_array = np.array([[0, 1, 2, 3], [4, 5, 6, 7]], dtype='int8')
+    >>> dumps(some_array)
+    '"-YGG-eyJ0eXBlIjoibmRhcnJheSIsInN1YnR5cGUiOiJpbnQiLCJwcmVjaXNpb24iOjEsInNoYXBlIjpbMiw0XX0=-YGG-AAECAwQFBgc=-YGG-"'
     >>> as_json = _
     >>> pprint(loads(as_json))
-    {'a date': '2016-08-28', 'a timestamp': '2016-08-28T13:14:15'}
-    >>> pprint(loads(as_json, datetime_mode=DM_ISO8601))
-    {'a date': datetime.date(2016, 8, 28),
-     'a timestamp': datetime.datetime(2016, 8, 28, 13, 14, 15)}
-    >>> some_uuid = uuid.uuid5(uuid.NAMESPACE_DNS, 'python.org')
-    >>> dumps(some_uuid)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    TypeError: UUID('...') is not JSON serializable
-    >>> dumps(some_uuid, uuid_mode=UM_CANONICAL)
-    '"886313e1-3b8a-5372-9b90-0c9aee199e5d"'
+    array([[0, 1, 2, 3],
+           [4, 5, 6, 7]], dtype=int8)
+    >>> some_structured_array = np.array([('Rex', 9, 81.0), ('Fido', 3, 27.0)], dtype=[('name', 'U10'), ('age', 'i4'), ('weight', 'f4')])
+    >>> dumps(some_structured_array)
+    '["-YGG-eyJ0eXBlIjoibmRhcnJheSIsInN1YnR5cGUiOiJzdHJpbmciLCJwcmVjaXNpb24iOjQwLCJzaGFwZSI6WzJdLCJlbmNvZGluZyI6IlVDUzQiLCJ0aXRsZSI6Im5hbWUifQ==-YGG-UgAAAGUAAAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEYAAABpAAAAZAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=-YGG-","-YGG-eyJ0eXBlIjoibmRhcnJheSIsInN1YnR5cGUiOiJpbnQiLCJwcmVjaXNpb24iOjQsInNoYXBlIjpbMl0sInRpdGxlIjoiYWdlIn0=-YGG-CQAAAAMAAAA=-YGG-","-YGG-eyJ0eXBlIjoibmRhcnJheSIsInN1YnR5cGUiOiJmbG9hdCIsInByZWNpc2lvbiI6NCwic2hhcGUiOlsyXSwidGl0bGUiOiJ3ZWlnaHQifQ==-YGG-AACiQgAA2EE=-YGG-"]'
     >>> as_json = _
-    >>> loads(as_json)
-    '886313e1-3b8a-5372-9b90-0c9aee199e5d'
-    >>> loads(as_json, uuid_mode=UM_CANONICAL)
-    UUID('886313e1-3b8a-5372-9b90-0c9aee199e5d')
-    >>> pi = decimal.Decimal('3.1415926535897932384626433832795028841971')
-    >>> dumps(pi)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    TypeError: Decimal(...) is not JSON serializable
-    >>> dumps(pi, number_mode=NM_DECIMAL)
-    '3.1415926535897932384626433832795028841971'
+    >>> pprint(loads(as_json))
+    array([('Rex', 9, 81.), ('Fido', 3, 27.)],
+          dtype=[('name', '<U10'), ('age', '<i4'), ('weight', '<f4')])
+    >>> some_dataframe = pd.DataFrame(some_structured_array)
+    >>> dumps(some_dataframe)
+    '["-YGG-eyJ0eXBlIjoibmRhcnJheSIsInN1YnR5cGUiOiJzdHJpbmciLCJwcmVjaXNpb24iOjE2LCJzaGFwZSI6WzJdLCJlbmNvZGluZyI6IlVDUzQiLCJ0aXRsZSI6Im5hbWUifQ==-YGG-UgAAAGUAAAB4AAAAAAAAAEYAAABpAAAAZAAAAG8AAAA=-YGG-","-YGG-eyJ0eXBlIjoibmRhcnJheSIsInN1YnR5cGUiOiJpbnQiLCJwcmVjaXNpb24iOjQsInNoYXBlIjpbMl0sInRpdGxlIjoiYWdlIn0=-YGG-CQAAAAMAAAA=-YGG-","-YGG-eyJ0eXBlIjoibmRhcnJheSIsInN1YnR5cGUiOiJmbG9hdCIsInByZWNpc2lvbiI6NCwic2hhcGUiOlsyXSwidGl0bGUiOiJ3ZWlnaHQifQ==-YGG-AACiQgAA2EE=-YGG-"]'
     >>> as_json = _
-    >>> loads(as_json)
-    3.141592653589793
-    >>> type(loads(as_json))
-    <class 'float'>
-    >>> loads(as_json, number_mode=NM_DECIMAL)
-    Decimal('3.1415926535897932384626433832795028841971')
+    >>> pprint(loads(as_json))
+    array([('Rex', 9, 81.), ('Fido', 3, 27.)],
+          dtype=[('name', '<U4'), ('age', '<i4'), ('weight', '<f4')])
+    >>> some_speed = units.Quantity(3.2, 'cm/s')
+    >>> dumps({'a speed': some_speed})
+    '{"a speed":"-YGG-eyJ0eXBlIjoic2NhbGFyIiwic3VidHlwZSI6ImZsb2F0IiwicHJlY2lzaW9uIjo4LCJ1bml0cyI6ImNtKihzKiotMSkifQ==-YGG-mpmZmZmZCUA=-YGG-"}'
+    >>> as_json = _
+    >>> pprint(loads(as_json))
+    {'a speed': Quantity(3.2, 'cm*(s**-1)')}
+    >>> vertices = np.array([[0, 0, 0, 0], [0, 0, 1, 1], [0, 1, 1, 0]])
+    >>> faces =  np.array([[0, 0], [1, 2], [2, 3]])
+    >>> some_geometry = geometry.ObjWavefront()
+    >>> some_geometry.add_elements('vertices', vertices)
+    >>> some_geometry.add_elements('faces', faces)
+    >>> dumps(some_geometry)
+    '"-YGG-eyJ0eXBlIjoib2JqIn0=-YGG-diAwLjAgMC4wIDAuMCAwLjAKdiAwLjAgMC4wIDEuMCAxLjAKdiAwLjAgMS4wIDEuMCAwLjAKZiAxIDEKZiAyIDMKZiAzIDQK-YGG-"'
+    >>> as_json = _
+    >>> pprint(loads(as_json)) # doctest: +ELLIPSIS
+    <yggdrasil_rapidjson.geometry.ObjWavefront object at ...>
 
-The module exposes also a *stream* interface:
-
-.. doctest::
-
-    >>> from io import StringIO
-    >>> from yggdrasil_rapidjson import dump, load
-    >>> stream = StringIO()
-    >>> dump(data, stream)
-    >>> stream.seek(0)
-    0
-    >>> load(stream) == data
-    True
-
-Almost all these functionalities are also available as *classes*. For example, the
-following uses a *relaxed syntax* :class:`~yggdrasil_rapidjson.Decoder` instance, that handles
-JSONC__ and *trailing commas*:
-
-__ https://jsonc.org/
-
-.. code-block:: python
-
-    >>> from yggdrasil_rapidjson import Decoder
-    >>> from yggdrasil_rapidjson import PM_COMMENTS, PM_TRAILING_COMMAS
-    >>> decoder = Decoder(parse_mode=PM_COMMENTS | PM_TRAILING_COMMAS)
-    >>> decoder('''
-    ... {
-    ...     "bar": /* Block comment */ "baz",
-    ...     "foo":100, // Trailing comma and comment
-    ... }
-    ... ''')
-    {'bar': 'baz', 'foo': 100}
-
-
-Incompatibilities
------------------
-
-Here are things in the standard ``json`` library that we have decided not to support:
-
-``separators`` argument
-  This is mostly used for pretty printing and not supported by RapidJSON_ so it isn't a
-  high priority. We do support ``indent`` kwarg that would get you nice looking JSON
-  anyways.
-
-Coercing keys when dumping
-  ``json`` will stringify a ``True`` dictionary key as ``"true"`` if you dump it out but
-  when you load it back in it'll still be a string. We want the dump and load to return
-  the exact same objects so we have decided not to do this coercion by default; you can
-  however use ``MM_COERCE_KEYS_TO_STRINGS`` or a ``default`` function to mimic that.
-
-Arbitrary encodings
-  ``json.loads()`` accepts an ``encoding`` kwarg determining the encoding of its input,
-  when that is a ``bytes`` or ``bytearray`` instance. Although ``RapidJSON`` is able to
-  cope with several different encodings, we currently supports only the recommended one,
-  ``UTF-8``.
-
-``cls`` argument to ``loads()`` and ``dumps()``
-  The ``json`` top level functions accept a ``cls`` parameter that allows to specify
-  custom encoder/decoder class. If you must use that approach, that is you have to use the
-  standard ``json`` top level functions but want to use ``RapidJSON`` functionalities, the
-  following snippet shows a reasonably simple way to do that:
-
-  .. doctest::
-
-      >>> import datetime
-      >>> import json
-      >>> import yggdrasil_rapidjson
-      >>>
-      >>> class Encoder:
-      ...     def __init__(self, *args, **kwargs):
-      ...         # Filter/adapt JSON arguments to RapidJSON ones
-      ...         rjkwargs = {'datetime_mode': yggdrasil_rapidjson.DM_ISO8601}
-      ...         encoder = yggdrasil_rapidjson.Encoder(**rjkwargs)
-      ...         self.encode = encoder.__call__
-      >>>
-      >>> json.dumps([1,2,datetime.date(2020, 12, 8)], cls=Encoder)
-      '[1,2,"2020-12-08"]'
-      >>>
-      >>> class Decoder:
-      ...     def __init__(self, *args, **kwargs):
-      ...         # Filter/adapt JSON arguments to RapidJSON ones
-      ...         rjkwargs = {'datetime_mode': yggdrasil_rapidjson.DM_ISO8601}
-      ...         encoder = yggdrasil_rapidjson.Decoder(**rjkwargs)
-      ...         self.decode = encoder.__call__
-      >>>
-      >>> json.loads('[1,2,"2020-12-08"]', cls=Decoder)
-      [1, 2, datetime.date(2020, 12, 8)]
-
-``object_pairs_hook`` argument
-  ``json`` decoding functions accept an ``object_pairs_hook`` kwarg, a variant of
-  ``object_hook`` that selects a different way to translate JSON objects into Python
-  dictionaries by first collecting their content into a sequence of *key-value pairs* and
-  eventually passing that sequence to the hook function. That behaviour may be easily
-  simulated:
-
-  .. doctest::
-
-     >>> def loads(s, object_pairs_hook=None):
-     ...     if object_pairs_hook is None:
-     ...         d = yggdrasil_rapidjson.Decoder()
-     ...     else:
-     ...         class KWPairsDecoder(yggdrasil_rapidjson.Decoder):
-     ...             def start_object(self):
-     ...                 return []
-     ...             def end_object(self, pairs):
-     ...                 return object_pairs_hook(pairs)
-     ...         d = KWPairsDecoder()
-     ...     return d(s)
-     >>>
-     >>> loads('{"foo": "bar"}', lambda pairs: ','.join(f'{k}={v}' for k, v in pairs))
-     'foo=bar'
-
+.. _YggdrasilRapidJSON: https://github.com/cropsinsilico/yggdrasil-rapidjson
 .. _JSON: https://www.json.org/
 .. _RapidJSON: http://rapidjson.org/

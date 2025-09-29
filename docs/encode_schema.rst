@@ -1,44 +1,25 @@
-.. -*- coding: utf-8 -*-
-.. :Project:   python-rapidjson -- dumps function documentation
-.. :Author:    Lele Gaifax <lele@metapensiero.it>
-.. :License:   MIT License
-.. :Copyright: © 2016, 2017, 2018, 2019, 2020, 2022, 2023 Lele Gaifax
-..
-
-==================
- dumps() function
-==================
+=========================
+ encode_schema() function
+=========================
 
 .. currentmodule:: yggdrasil_rapidjson
 
 .. testsetup::
 
-   from yggdrasil_rapidjson import (dumps, loads, BM_NONE, BM_UTF8, BM_SCALAR, DM_NONE, DM_ISO8601,
-                          DM_UNIX_TIME, DM_ONLY_SECONDS, DM_IGNORE_TZ, DM_NAIVE_IS_UTC,
-                          DM_SHIFT_TO_UTC, IM_ANY_ITERABLE, IM_ONLY_LISTS, MM_ANY_MAPPING,
-                          MM_ONLY_DICTS, MM_COERCE_KEYS_TO_STRINGS, MM_SORT_KEYS,
-                          NM_NATIVE, NM_DECIMAL, NM_NAN, PM_NONE, PM_COMMENTS,
-                          PM_TRAILING_COMMAS, UM_NONE, UM_CANONICAL, UM_HEX, WM_COMPACT,
-                          WM_PRETTY, WM_SINGLE_LINE_ARRAY)
+   from yggdrasil_rapidjson import encode_schema
 
-.. function:: dumps(obj, *, skipkeys=False, ensure_ascii=True, write_mode=WM_COMPACT, \
-                    indent=4, default=None, sort_keys=False, number_mode=None, \
-                    datetime_mode=None, uuid_mode=None, bytes_mode=BM_SCALAR, \
-                    iterable_mode=IM_ANY_ITERABLE, mapping_mode=MM_ANY_MAPPING, \
-                    allow_nan=True)
+.. function:: encode_schema(obj, minimal=False, object_hook=None,
+                            number_mode=None, datetime_mode=None, uuid_mode=None, \
+                            bytes_mode=BM_SCALAR, iterable_mode=IM_ANY_ITERABLE, \
+                            mapping_mode=MM_ANY_MAPPING, allow_nan=True)
 
-   Encode given Python `obj` instance into a ``JSON`` string.
+   Encode given Python `obj` instance into a ``JSON`` schema.
 
-   :param obj: the value to be serialized
-   :param bool skipkeys: whether invalid :class:`dict` keys will be skipped
-   :param bool ensure_ascii: whether the output should contain only ASCII
-                             characters
-   :param int write_mode: enable particular pretty print behaviors
-   :param indent: indentation width or string to produce pretty printed JSON
-   :param callable default: a function that gets called for objects that can't
-                            otherwise be serialized
-   :param bool sort_keys: whether dictionary keys should be sorted
-                          alphabetically
+   :param obj: the value to create a schema for
+   :param bool minimal: whether the produced schema should be specific or provide minimal type checking properties
+   :param callable object_hook: an optional function that will be called with the result
+                                of any object literal decoded (a :class:`dict`) and should
+                                return the value to use instead of the :class:`dict`
    :param int number_mode: enable particular behaviors in handling numbers
    :param int datetime_mode: how should :class:`datetime`, :class:`time` and
                              :class:`date` instances be handled
@@ -47,152 +28,25 @@
    :param int iterable_mode: how should `iterable` values be handled
    :param int mapping_mode: how should `mapping` values be handled
    :param bool allow_nan: *compatibility* flag equivalent to ``number_mode=NM_NAN``
-   :returns: A Python :class:`str` instance.
+   :returns: A Python :class:`dict` instance containing the schema.
 
 
-   .. _skip-invalid-keys:
-   .. rubric:: `skipkeys`
+   .. _minimal:
+   .. rubric:: `minimal`
 
-   If `skipkeys` is true (default: ``False``), then dict keys that are not of a basic type
-   (:class:`str`, :class:`int`, :class:`float`, :class:`bool`, ``None``) will be skipped
-   instead of raising a :exc:`TypeError`:
+   If `minimal` is true (default: ``False``), then the resulting schema will be limited in the properties that are specified. This primarily impacts the schema encoded for scalar strings where a full schema will include the string precision and the minimal schema will not.
 
    .. doctest::
 
-      >>> dumps({(0,): 'empty tuple', True: 'a true value'})
-      Traceback (most recent call last):
-        File "<stdin>", line 1, in <module>
-      TypeError: {(0,): 'empty tuple', True: 'a true value'} is not JSON serializable
-      >>> dumps({(0,): 'empty tuple', True: 'a true value'}, skipkeys=True)
-      '{}'
-
-   .. note:: `skipkeys` is a backward compatible alias of new
-             ``MM_SKIP_NON_STRING_KEYS`` :ref:`mapping mode <mapping_mode>`.
-
-   .. _ensure-ascii:
-   .. rubric:: `ensure_ascii`
-
-   If `ensure_ascii` is true (the default), the output is guaranteed to have all incoming
-   non-ASCII characters escaped.  If `ensure_ascii` is false, these characters will be
-   output as-is:
-
-   .. doctest::
-
-      >>> dumps('The symbol for the Euro currency is €')
-      '"The symbol for the Euro currency is \\u20AC"'
-      >>> dumps('The symbol for the Euro currency is €',
-      ...       ensure_ascii=False)
-      '"The symbol for the Euro currency is €"'
+      >>> import numpy as np
+      >>> json = np.str_('hello')
+      >>> encode_schema(json)
+      {'type': 'scalar', 'subtype': 'string', 'precision': 20, 'encoding': 'UCS4'}
+      >>> encode_schema(json, minimal=True)
+      {'type': 'scalar', 'subtype': 'string', 'encoding': 'UCS4'}
 
 
-   .. _write-mode:
-   .. rubric:: `write_mode`
-
-   The `write_mode` controls how ``python-rapidjson`` emits JSON: by default it is
-   :data:`WM_COMPACT`, that produces the most compact JSON representation:
-
-   .. doctest::
-
-      >>> dumps([1, 2, {'three': 3, 'four': 4}])
-      '[1,2,{"three":3,"four":4}]'
-
-   With :data:`WM_PRETTY` it will use ``RapidJSON``\ 's ``PrettyWriter``, with a default
-   `indent` (see below) of four spaces:
-
-   .. doctest::
-
-      >>> print(dumps([1, 2, {'three': 3, 'four': 4}],
-      ...       write_mode=WM_PRETTY))
-      [
-          1,
-          2,
-          {
-              "three": 3,
-              "four": 4
-          }
-      ]
-
-   With :data:`WM_SINGLE_LINE_ARRAY` arrays will be kept on a single line:
-
-   .. doctest::
-
-      >>> print(dumps([1, 2, 'three', [4, 5]],
-      ...       write_mode=WM_SINGLE_LINE_ARRAY))
-      [1, 2, "three", [4, 5]]
-      >>> print(dumps([1, 2, {'three': 3, 'four': 4}],
-      ...       write_mode=WM_SINGLE_LINE_ARRAY))
-      [1, 2, {
-              "three": 3,
-              "four": 4
-          }]
-
-
-   .. rubric:: `indent`
-
-   The `indent` parameter may be either a positive integer number or a string: in the
-   former case it specifies a number of spaces, while in the latter the string may contain
-   zero or more ASCII *whitespace* characters (space, tab ``\t``, newline ``\n`` and
-   carriage-return ``\r``), all equals (that is, ``"\n\t"`` is not accepted).
-
-   The integer number or the length of the string determine how many spaces (or the
-   characters composing the string) will be used to indent nested structures, when the
-   `write_mode` above is not :data:`WM_COMPACT`, and it defaults to 4. Specifying a value
-   different from ``None`` automatically sets `write_mode` to :data:`WM_PRETTY`, if not
-   explicited.
-
-   By setting `indent` to 0 each array item (when `write_mode` is not
-   :data:`WM_SINGLE_LINE_MODE`) and each dictionary value will be followed by a newline. A
-   positive integer means that each *level* will be indented by that many spaces:
-
-   .. doctest::
-
-      >>> print(dumps([1, 2, {'three': 3, 'four': 4}], indent=0))
-      [
-      1,
-      2,
-      {
-      "three": 3,
-      "four": 4
-      }
-      ]
-      >>> print(dumps([1, 2, {'three': 3, 'four': 4}], indent=2))
-      [
-        1,
-        2,
-        {
-          "three": 3,
-          "four": 4
-        }
-      ]
-      >>> print(dumps([1, 2, {'three': 3, 'four': 4}], indent=""))
-      [
-      1,
-      2,
-      {
-      "three": 3,
-      "four": 4
-      }
-      ]
-      >>> print(dumps([1, 2, {'three': 3, 'four': 4}], indent="  "))
-      [
-        1,
-        2,
-        {
-          "three": 3,
-          "four": 4
-        }
-      ]
-      >>> print(dumps([1, 2, {'three': 3, 'four': 4}],
-      ...       indent="\t").replace('\t', '→ '))
-      [
-      → 1,
-      → 2,
-      → {
-      → → "three": 3,
-      → → "four": 4
-      → }
-      ]
-
+  Descriptions of the remaining arguments are taken from the `python-rapidjson dumps documentation <https://python-rapidjson.readthedocs.io/en/latest/dumps.html>`_.
 
    .. rubric:: `default`
 
@@ -221,38 +75,6 @@
       ...
       >>> dumps(point, default=point_jsonifier)
       '{"x":1,"y":2}'
-
-
-   .. _sort-keys:
-   .. rubric:: `sort_keys`
-
-   When `sort_keys` is true (default: ``False``), the JSON representation of Python
-   dictionaries is sorted by key:
-
-   .. doctest::
-
-      >>> data = {'a': 'A', 'c': 'C', 'i': 'I', 'd': 'D'}
-      >>> dumps(data, sort_keys=True)
-      '{"a":"A","c":"C","d":"D","i":"I"}'
-
-   .. note:: `sort_keys` is a backward compatible alias of new ``MM_SORT_KEYS``
-             :ref:`mapping mode <mapping_mode>`.
-
-   .. doctest::
-
-      >>> dumps(data, mapping_mode=MM_SORT_KEYS)
-      '{"a":"A","c":"C","d":"D","i":"I"}'
-
-   The default setting, on modern snakes (that is, on `Python >= 3.7`__), preserves
-   original dictionary insertion order:
-
-   .. doctest::
-
-      >>> dumps(data)
-      '{"a":"A","c":"C","i":"I","d":"D"}'
-
-   __ https://mail.python.org/pipermail/python-dev/2017-December/151283.html
-
 
    .. _dumps-number-mode:
    .. rubric:: `number_mode`
@@ -306,7 +128,7 @@
       '3.1415926535897932384626433832795028841971'
 
    Yet another possible flag affects how numeric values are passed to the underlying
-   RapidJSON_ library: by default they are serialized to their string representation by
+   YggdrasilRapidJSON_ library: by default they are serialized to their string representation by
    the module itself, so they are virtually of unlimited precision:
 
    .. doctest::
@@ -363,7 +185,7 @@
    The `right_now` value is a naïve datetime (because it does not carry the timezone
    information) and is normally assumed to be in the local timezone, whatever your system
    thinks it is. When you instead *know* that your value, even being naïve are actually in
-   the UTC_ timezone, you can use the :data:`DM_NAIVE_IS_UTC` flag to inform RapidJSON
+   the UTC_ timezone, you can use the :data:`DM_NAIVE_IS_UTC` flag to inform YggdrasilRapidJSON
    about that:
 
    .. doctest::
@@ -394,7 +216,7 @@
       >>> dumps(now, datetime_mode=mode)
       '"2016-08-28T20:31:11.084418"'
 
-   Another :ref:`one-way only <no-unix-time-loads>` alternative format is `Unix time`_:
+   Another one-way only alternative format is `Unix time`_:
    with :data:`DM_UNIX_TIME` :class:`date`, :class:`datetime` and :class:`time` instances
    are serialized as a number of seconds, respectively since the ``EPOCH`` for the first
    two kinds and since midnight for the latter:
@@ -668,6 +490,7 @@
                      File "<stdin>", line 1, in <module>
                    RecursionError: maximum recursion depth exceeded
 
+.. _YggdrasilRapidJSON: https://github.com/cropsinsilico/yggdrasil-rapidjson
 .. _ISO 8601: https://en.wikipedia.org/wiki/ISO_8601
 .. _RapidJSON: http://rapidjson.org/
 .. _UTC: https://en.wikipedia.org/wiki/Coordinated_Universal_Time

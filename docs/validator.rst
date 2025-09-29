@@ -1,3 +1,5 @@
+TODO: Update with just yggdrasil validation errors
+
 .. -*- coding: utf-8 -*-
 .. :Project:   python-rapidjson -- Validator class documentation
 .. :Author:    Lele Gaifax <lele@metapensiero.it>

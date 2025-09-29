@@ -1,6 +1,6 @@
 context:
   name: "yggdrasil-python-rapidjson"
-  version: "1.21.0.0"
+  version: "1.21.0.1"
 
 package:
   name: ${{ name|lower }}
@@ -72,7 +72,7 @@ about:
     A Python wrapper around YggdrasilRapidJSON. YggdrasilRapidJSON is a
     header-only C++ library for JSON operation extended for use with
     yggdrasil
-  # documentation:
+  documentation: https://cropsinsilico.github.io/yggdrasil-python-rapidjson/
 
 extra:
   recipe-maintainers:

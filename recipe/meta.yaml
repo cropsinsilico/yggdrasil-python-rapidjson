@@ -1,5 +1,5 @@
 {% set name = "yggdrasil-python-rapidjson" %}
-{% set version = "1.21.0.0" %}
+{% set version = "1.21.0.1" %}
 # {% set version = os.getenv("VERSION_OVERRIDE") or GIT_DESCRIBE_TAG %}
 {% set PY_VER_MAJOR = PY_VER.split('.')[0] %}
 {% set PY_VER_MINOR = PY_VER.split('.')[1] %}
@@ -63,7 +63,7 @@ about:
     A Python wrapper around YggdrasilRapidJSON. YggdrasilRapidJSON is a
     header-only C++ library for JSON operation extended for use with
     yggdrasil
-  # doc_url: 
+  doc_url: https://cropsinsilico.github.io/yggdrasil-python-rapidjson/
   dev_url: https://github.com/cropsinsilico/yggdrasil-python-rapidjson
 
 extra:

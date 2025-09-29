@@ -1,17 +1,14 @@
 rapidjson
-* Move tests against install conda package into conda recipe & update conda recipe workflow
-* Check README
-* Tag yggdrasil-rapidjson
 * Create yggdrasil-rapidjson feedstock
-* Docs build (add link to docs in conda recipe & update README)
+* Fill in missing docs
 
 python-rapidjson
 * Add numpy tile array method
 * Update rapidjson in yggdrasil-python-rapidjson
-* Finish conda recipe & rename
-* Merge rename into yggdrasil-python-rapidjson
+* Publish sdist to PyPI
+* Create yggdrasil-python-rapidjson feedstock on conda-forge
 * Update yggdrasil-python-rapidjson recipe w/ yggdrasil-rapidjson dependency
-* Docs build (add link to docs in conda recipe & update README)
+* Fill in missing docs
 
 yggdrasil
 * Update dependencies

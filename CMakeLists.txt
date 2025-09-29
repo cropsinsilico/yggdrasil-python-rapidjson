@@ -1,12 +1,20 @@
 cmake_minimum_required(VERSION 3.15)
 if(NOT PROJECT_NAME)
-  if(NOT SKBUILD)
+  if(SKBUILD)
+    PROJECT(${SKBUILD_PROJECT_NAME} VERSION "${SKBUILD_PROJECT_VERSION}")
+  elseif(PYRJ_BUILD_DOCS OR PYRJ_BUILD_DOCS_FOR_PUBLISH)
+    PROJECT(yggdrasil-python-rapidjson VERSION "1.21.0.1")
+  else()
     message(FATAL_ERROR "Must be built via scikit-build-core")
   endif()
-  PROJECT(${SKBUILD_PROJECT_NAME} VERSION "${SKBUILD_PROJECT_VERSION}")
 endif()
 
+option(PYRJ_BUILD_DOCS "Build the docs" OFF)
+option(PYRJ_BUILD_DOCS_FOR_PUBLISH "Build documentation and prepare the html directory for publication to gh-pages branch" OFF)
 set(PYRJ_ALTERNATE_MODULE "yggdrasil_rapidjson" CACHE STRING "Name of the Python module that should be built")
+if(PYRJ_BUILD_DOCS_FOR_PUBLISH)
+  set(PYRJ_BUILD_DOCS ON)
+endif()
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -22,6 +30,14 @@ endif()
 
 set(PYRJ_TARGET "yggdrasil_python_rapidjson")
 set(PYRJ_SRC "${CMAKE_CURRENT_SOURCE_DIR}/rapidjson.cpp")
+
+if(PYRJ_BUILD_DOCS)
+  add_subdirectory(docs)
+endif()
+
+if(NOT SKBUILD)
+  return()
+endif()
 
 if (PYRJ_ALTERNATE_MODULE)
   if (NOT PYRJ_LIBNAME)

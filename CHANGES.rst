@@ -1,6 +1,22 @@
 Changes
 -------
 
+yggdrasil-python-rapidjson
+==========================
+
+1.21.0.0 (2025-09-29)
+~~~~~~~~~~~~~~~~~~~~~
+
+Tag of version with YggdrasilRapidJSON extension features
+
+* Units subpackage containin Units, Quantity & QuantityArray classes for attaching physical units for arthimetic operations and conversions
+* Normalizer class for normalization of JSON against a JSON schema
+* Geometry subpackage containing Ply & ObjWavefront classes for managing 3D meshes
+* Support for Python interface to serialize/deserialize documents containing the added classes as well as numpy arrays, pandas data frames, and trimesh instances
+
+python-rapidjson
+================
+
 1.21 (2025-07-10)
 ~~~~~~~~~~~~~~~~~
 

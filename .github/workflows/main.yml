@@ -86,27 +86,9 @@ jobs:
       - run: |
           pytest -sv tests
 
-  build_wheels:
-    name: Build wheels on ${{matrix.arch}} for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - ubuntu-24.04
-          - macos-13
-          - windows-2025
-        arch:
-          - auto
-        include:
-          - os: ubuntu-24.04
-            arch: aarch64
-          # - os: ubuntu-24.04
-          #   arch: ppc64le
-          - os: macos-14
-            arch: arm64
-        python-version: [3.11]
-      fail-fast: false
-            
+  build_sdist:
+    name: Build sdist
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v5
@@ -116,36 +98,78 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
 
-      - uses: docker/setup-qemu-action@v3
-        if:  ${{ matrix.arch == 'aarch64' || matrix.arch == 'ppc64le' }}
-        name: Set up QEMU
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v3.2.0
-        env:
-          CIBW_ARCHS_LINUX: ${{ matrix.arch }}
-          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
-          CIBW_TEST_REQUIRES: "pytest pytest-benchmark pytz"
-          CIBW_TEST_COMMAND: "pytest -sv {project}/tests"
-          CIBW_SKIP: "cp2* cp33* cp34* cp35* cp36* cp38* pp* cp310-manylinux_i686 cp311-manylinux_i686 cp312-manylinux_i686 *-musllinux_*"
-          # Skip tests on emulated hardware, take too long or not supported
-          CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le} *-macosx_*:arm64"
-          CIBW_ENABLE: cpython-prerelease
-          CIBW_ENVIRONMENT: "PIP_ONLY_BINARY=numpy"
-          # CIBW_BEFORE_BUILD: python -m pip install oldest-supported-numpy
-
-
+      - name: Install pypa/build
+        run: python -m pip install build
+      - name: Build a binary wheel and a source tarball
+        run: python -m build --sdist
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-for-${{ matrix.os }}-${{ matrix.arch }}
-          path: ./wheelhouse/*.whl
+          name: sdist
+          path: dist/*.tar.gz
+
+  # build_wheels:
+  #   name: Build wheels on ${{matrix.arch}} for ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os:
+  #         - ubuntu-24.04
+  #         - macos-13
+  #         - windows-2025
+  #       arch:
+  #         - auto
+  #       include:
+  #         - os: ubuntu-24.04
+  #           arch: aarch64
+  #         # - os: ubuntu-24.04
+  #         #   arch: ppc64le
+  #         - os: macos-14
+  #           arch: arm64
+  #       python-version: [3.11]
+  #     fail-fast: false
+            
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v5
+  #       with:
+  #         submodules: true
+
+  #     - name: Install Python
+  #       uses: actions/setup-python@v6
+  #       with:
+  #         python-version: ${{ matrix.python-version }}
+
+  #     - uses: docker/setup-qemu-action@v3
+  #       if:  ${{ matrix.arch == 'aarch64' || matrix.arch == 'ppc64le' }}
+  #       name: Set up QEMU
+
+  #     - name: Build wheels
+  #       uses: pypa/cibuildwheel@v3.2.0
+  #       env:
+  #         CIBW_ARCHS_LINUX: ${{ matrix.arch }}
+  #         CIBW_ARCHS_MACOS: ${{ matrix.arch }}
+  #         CIBW_TEST_REQUIRES: "pytest pytest-benchmark pytz"
+  #         CIBW_TEST_COMMAND: "pytest -sv {project}/tests"
+  #         CIBW_SKIP: "cp2* cp33* cp34* cp35* cp36* cp38* pp* cp310-manylinux_i686 cp311-manylinux_i686 cp312-manylinux_i686 *-musllinux_*"
+  #         # Skip tests on emulated hardware, take too long or not supported
+  #         CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le} *-macosx_*:arm64"
+  #         CIBW_ENABLE: cpython-prerelease
+  #         CIBW_ENVIRONMENT: "PIP_ONLY_BINARY=numpy"
+  #         # CIBW_BEFORE_BUILD: python -m pip install oldest-supported-numpy
+
+
+  #     - name: Upload artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: wheels-for-${{ matrix.os }}-${{ matrix.arch }}
+  #         path: ./wheelhouse/*.whl
 
   upload_wheels:
-    name: Upload wheels to PyPI
-    needs: build_wheels
+    name: Upload wheels & sdist to PyPI
+    needs: [build_sdist]  #, build_wheels]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -155,11 +179,18 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
 
     steps:
-      - uses: actions/download-artifact@v4
+      # - uses: actions/download-artifact@v5
+      #   with:
+      #     path: dist
+      #     pattern: wheels-for-*
+      #     merge-multiple: true
+      - uses: actions/download-artifact@v5
         with:
           path: dist
-          pattern: wheels-for-*
+          pattern: sdist
           merge-multiple: true
 
+      - name: Check downloaded artifacts
+        run: ls dist
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

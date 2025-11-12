@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# :Project:   python-rapidjson -- Github Actions configuration
+# :Project:   yggdrasil-python-rapidjson -- Github Actions configuration
 # :Created:   Fri Oct 2 06:52:59 2020 CEST
 # :Author:    Martin Thoma <info@martin-thoma.de>
 # :License:   MIT License
@@ -81,7 +81,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements-test.txt
-          pip install --config-settings=cmake.build-type="Debug" --config-settings=cmake.define.RAPIDJSON_CHECK_PYREFS:BOOL=ON -v .
+          pip install --config-settings=cmake.build-type="Debug" --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_CHECK_PYREFS:BOOL=ON -v .
 
       - run: |
           pytest -sv tests

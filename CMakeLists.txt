@@ -21,7 +21,7 @@ if (${PYTHON_PREFIX}_VERSION VERSION_LESS "3.9.0")
 endif()
 
 set(PYRJ_TARGET "yggdrasil_python_rapidjson")
-set(PYRJ_SRC "${CMAKE_CURRENT_SOURCE_DIR}/rapidjson.cpp")
+set(PYRJ_SRC "${CMAKE_CURRENT_SOURCE_DIR}/yggdrasil_rapidjson.cpp")
 
 if (PYRJ_ALTERNATE_MODULE)
   if (NOT PYRJ_LIBNAME)
@@ -70,7 +70,7 @@ if (PYRJ_ALTERNATE_MODULE)
 	        -P "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake"
 	        DEPENDS "${src}" "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake")
     endforeach()
-    set(PYRJ_SRC "${CMAKE_CURRENT_BINARY_DIR}/rapidjson.cpp")
+    set(PYRJ_SRC "${CMAKE_CURRENT_BINARY_DIR}/yggdrasil_rapidjson.cpp")
     add_custom_target(alt_rapidjson DEPENDS ${ALT_PYRJ_CPP})
   endif()
 endif()
@@ -108,7 +108,9 @@ target_compile_options(
   -DYGGDRASIL_RAPIDJSON_PYTHON_WRAPPER
   -DYGGDRASIL_RAPIDJSON_HAS_STDSTRING
   -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
-  -D_USE_MATH_DEFINES)
+  -D_USE_MATH_DEFINES
+  -DYGGDRASIL_RAPIDJSON_PYTHON_VERSION=${CMAKE_PROJECT_VERSION}
+)
 if (YGGDRASIL_RAPIDJSON_EXACT_VERSION)
   target_compile_options(
     ${PYRJ_TARGET} PUBLIC

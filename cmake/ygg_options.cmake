@@ -78,7 +78,7 @@ option(YGGDRASIL_RAPIDJSON_CHECK_PYREFS "Turn on reference counting in rapidjson
 
 message(STATUS "YGGDRASIL_RAPIDJSON_INCLUDE_DIRS = ${YGGDRASIL_RAPIDJSON_INCLUDE_DIRS}")
 if (NOT EXISTS ${YGGDRASIL_RAPIDJSON_INCLUDE_DIRS})
-  message(FATAL_ERROR "RapidJSON sources not found: if you cloned "
+  message(FATAL_ERROR "YggdrasilRapidJSON sources not found: if you cloned "
                       " the git repository, you should initialize"
                       " the rapidjson submodule as explained in the"
                       " README.rst; in all other cases you may"

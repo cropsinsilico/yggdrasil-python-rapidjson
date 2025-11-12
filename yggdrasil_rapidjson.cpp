@@ -13,7 +13,7 @@
 #include <locale.h>
 
 #include <Python.h>
-#include "rapidjson/pythoncapi_compat.h"
+#include "yggdrasil_rapidjson/pythoncapi_compat.h"
 #include <datetime.h>
 #include <structmember.h>
 
@@ -28,13 +28,13 @@
 #endif // YGGDRASIL_RAPIDJSON_PYTHON_WRAPPER
 #define PYRJ_TWO_PHASE_INIT
 // #define YGG_ENSURE_PY_GIL
-#include "rapidjson/pyrj.h"
-#include "rapidjson/reader.h"
-#include "rapidjson/schema.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/error/en.h"
+#include "yggdrasil_rapidjson/pyrj.h"
+#include "yggdrasil_rapidjson/reader.h"
+#include "yggdrasil_rapidjson/schema.h"
+#include "yggdrasil_rapidjson/stringbuffer.h"
+#include "yggdrasil_rapidjson/writer.h"
+#include "yggdrasil_rapidjson/prettywriter.h"
+#include "yggdrasil_rapidjson/error/en.h"
 #include "units.cpp"
 #include "geometry.cpp"
 
@@ -7095,7 +7095,7 @@ module_exec(PyObject* m)
 	|| PyModule_AddIntConstant(m, "SIZE_OF_SIZE_T", SIZE_OF_SIZE_T)
 
         || PyModule_AddStringConstant(m, "__version__",
-                                      STRINGIFY(YGGDRASIL_PYTHON_RAPIDJSON_VERSION))
+                                      STRINGIFY(YGGDRASIL_RAPIDJSON_PYTHON_VERSION))
         || PyModule_AddStringConstant(m, "__author__",
                                       "Meagan Lang <langmm@illinois.edu> [yggdrasil-rapidjson]"
                                       ", Ken Robbins <ken@kenrobbins.com> [rapidjson]"

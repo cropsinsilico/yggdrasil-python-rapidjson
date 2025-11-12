@@ -10,10 +10,10 @@
 
 #include <Python.h>
 
-#include "rapidjson/ply.h"
-#include "rapidjson/obj.h"
-#include "rapidjson/precision.h"
-#include "rapidjson/rapidjson.h"
+#include "yggdrasil_rapidjson/ply.h"
+#include "yggdrasil_rapidjson/obj.h"
+#include "yggdrasil_rapidjson/precision.h"
+#include "yggdrasil_rapidjson/yggdrasil_rapidjson.h"
 
 
 using namespace yggdrasil_rapidjson;
@@ -3845,7 +3845,7 @@ geom_module_exec(PyObject* m)
 #define XSTRINGIFY(x) #x
 
     if (PyModule_AddStringConstant(m, "__version__",
-				   STRINGIFY(YGGDRASIL_PYTHON_RAPIDJSON_VERSION))
+				   STRINGIFY(YGGDRASIL_RAPIDJSON_PYTHON_VERSION))
         || PyModule_AddStringConstant(m, "__author__",
 				      "Meagan Lang <langmm.astro@gmail.com>")
         || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_version__",

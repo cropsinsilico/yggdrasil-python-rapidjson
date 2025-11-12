@@ -32,19 +32,19 @@ jobs:
     name: All tests, on current Python
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [${{ env.PYTHONVERSION_STD }}]
+    # strategy:
+    #   matrix:
+    #     python-version: [${{ env.PYTHONVERSION_STD }}]
 
     steps:
       - uses: actions/checkout@v5
         with:
           submodules: recursive
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ env.PYTHONVERSION_STD }}
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.PYTHONVERSION_STD }}
 
       - name: Install dependencies
         run: |
@@ -67,9 +67,9 @@ jobs:
     name: Memory leak tests, on current debug build Python
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [${{ env.PYTHONVERSION_STD }}]
+    # strategy:
+    #   matrix:
+    #     python-version: [${{ env.PYTHONVERSION_STD }}]
 
     steps:
       - uses: actions/checkout@v5
@@ -78,7 +78,7 @@ jobs:
 
       - uses: deadsnakes/action@v3.2.0
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.PYTHONVERSION_STD }}
           debug: true
 
       - name: Install dependencies
@@ -127,14 +127,10 @@ jobs:
         include:
           - os: ubuntu-24.04
             arch: aarch64
-            python-version: ${{ env.PYTHONVERSION_STD }}
           # - os: ubuntu-24.04
           #   arch: ppc64le
-          #   python-version: ${{ env.PYTHONVERSION_STD }}
           - os: macos-14
             arch: arm64
-            python-version: ${{ env.PYTHONVERSION_STD }}
-        python-version: [${{ env.PYTHONVERSION_STD }}]
       fail-fast: false
             
     steps:
@@ -146,7 +142,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.PYTHONVERSION_STD }}
 
       - uses: docker/setup-qemu-action@v3
         if:  ${{ matrix.arch == 'aarch64' || matrix.arch == 'ppc64le' }}

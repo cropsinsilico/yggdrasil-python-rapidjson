@@ -36,38 +36,43 @@ if (PYRJ_ALTERNATE_MODULE)
       )
     endif()
   endif()
-  file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake"
-  [=[
-  file(READ "${SOURCE}" TEXT)
-  string(REPLACE "\"rapidjson\"" "\"${PYRJ_ALTERNATE_MODULE}\"" TEXT "${TEXT}")
-  string(REPLACE "\"rapidjson." "\"${PYRJ_ALTERNATE_MODULE}." TEXT "${TEXT}")
-  string(REPLACE ":rapidjson." ":${PYRJ_ALTERNATE_MODULE}." TEXT "${TEXT}")
-  string(REPLACE "PyInit_rapidjson" "PyInit_${PYRJ_LIBNAME}" TEXT "${TEXT}")
-  file(WRITE "${TARGET}" "${TEXT}")
-  ]=])
+  if((PYRJ_ALTERNATE_MODULE STREQUAL "yggdrasil_rapidjson") AND
+     (PYRJ_LIBNAME STREQUAL "yggdrasil_rapidjson"))
+    set(ALT_PYRJ_CPP)
+  else()
+    file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake"
+    [=[
+    file(READ "${SOURCE}" TEXT)
+    string(REPLACE "\"yggdrasil_rapidjson\"" "\"${PYRJ_ALTERNATE_MODULE}\"" TEXT "${TEXT}")
+    string(REPLACE "\"yggdrasil_rapidjson." "\"${PYRJ_ALTERNATE_MODULE}." TEXT "${TEXT}")
+    string(REPLACE ":yggdrasil_rapidjson." ":${PYRJ_ALTERNATE_MODULE}." TEXT "${TEXT}")
+    string(REPLACE "PyInit_yggdrasil_rapidjson" "PyInit_${PYRJ_LIBNAME}" TEXT "${TEXT}")
+    file(WRITE "${TARGET}" "${TEXT}")
+    ]=])
 
-  file(GLOB PYRJ_CPP LIST_DIRECTORIES false
-       "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-  message(STATUS "PYRJ_CPP = ${PYRJ_CPP}")
-  foreach(src IN LISTS PYRJ_CPP)
-    set(base)
-    cmake_path(GET src FILENAME base)
-    cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${base}
-               OUTPUT_VARIABLE dst)
-    message(STATUS "Vendoring ${base} from ${src} to ${dst}")
-    list(APPEND ALT_PYRJ_CPP ${dst})
-    add_custom_command(
-      OUTPUT "${dst}"
-      COMMAND "${CMAKE_COMMAND}"
-              "-DSOURCE=${src}"
-	      "-DTARGET=${dst}"
-	      "-DPYRJ_ALTERNATE_MODULE=${PYRJ_ALTERNATE_MODULE}"
-              "-DPYRJ_LIBNAME=${PYRJ_LIBNAME}"
-	      -P "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake"
-	      DEPENDS "${src}" "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake")
-  endforeach()
-  set(PYRJ_SRC "${CMAKE_CURRENT_BINARY_DIR}/rapidjson.cpp")
-  add_custom_target(alt_rapidjson DEPENDS ${ALT_PYRJ_CPP})
+    file(GLOB PYRJ_CPP LIST_DIRECTORIES false
+         "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+    message(STATUS "PYRJ_CPP = ${PYRJ_CPP}")
+    foreach(src IN LISTS PYRJ_CPP)
+      set(base)
+      cmake_path(GET src FILENAME base)
+      cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${base}
+                 OUTPUT_VARIABLE dst)
+      message(STATUS "Vendoring ${base} from ${src} to ${dst}")
+      list(APPEND ALT_PYRJ_CPP ${dst})
+      add_custom_command(
+        OUTPUT "${dst}"
+        COMMAND "${CMAKE_COMMAND}"
+                "-DSOURCE=${src}"
+	        "-DTARGET=${dst}"
+	        "-DPYRJ_ALTERNATE_MODULE=${PYRJ_ALTERNATE_MODULE}"
+                "-DPYRJ_LIBNAME=${PYRJ_LIBNAME}"
+	        -P "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake"
+	        DEPENDS "${src}" "${CMAKE_CURRENT_BINARY_DIR}/replace_module.cmake")
+    endforeach()
+    set(PYRJ_SRC "${CMAKE_CURRENT_BINARY_DIR}/rapidjson.cpp")
+    add_custom_target(alt_rapidjson DEPENDS ${ALT_PYRJ_CPP})
+  endif()
 endif()
 
 if (NOT PYRJ_LIBNAME)
@@ -87,7 +92,7 @@ set_target_properties(
   ${PYRJ_TARGET} PROPERTIES OUTPUT_NAME ${PYRJ_LIBNAME}
 )
 
-if (PYRJ_ALTERNATE_MODULE)
+if (PYRJ_ALTERNATE_MODULE AND ALT_PYRJ_CPP)
   add_dependencies(${PYRJ_TARGET} alt_rapidjson)
   target_include_directories(
     ${PYRJ_TARGET} PUBLIC

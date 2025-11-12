@@ -167,9 +167,22 @@ jobs:
           name: wheels-for-${{ matrix.os }}-${{ matrix.arch }}
           path: ./wheelhouse/*.whl
 
+  all_tests_passed:
+    runs-on: ubuntu-latest
+    name: All tests passed
+    needs: [tests, debug-tests, build_sdist, build_wheels]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: exit 0
+      - name: Some tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
   upload_wheels:
     name: Upload wheels & sdist to PyPI
-    needs: [build_sdist]  #, build_wheels]
+    needs: [build_sdist, build_wheels]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:

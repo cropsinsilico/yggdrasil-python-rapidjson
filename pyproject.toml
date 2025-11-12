@@ -66,9 +66,7 @@ content-type = "text/x-rst"
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 path = "README.rst"
 
-[tool.pytest.ini]
+[tool.pytest]
 norecursedirs = ["*.egg", ".tox", "rapidjson"]
 addopts = ["--verbose", "-s", "--ignore=rapidjson/thirdparty"]
-
-[tool.pytest.ini_options]
 filterwarnings = ["error"]

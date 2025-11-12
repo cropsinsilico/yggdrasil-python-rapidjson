@@ -16,8 +16,8 @@
 #include <numpy/arrayobject.h>
 #include <numpy/ufuncobject.h>
 
-using namespace rapidjson;
-using namespace rapidjson::units;
+using namespace yggdrasil_rapidjson;
+using namespace yggdrasil_rapidjson::units;
 
 
 static PyObject* units_error = NULL;
@@ -2711,14 +2711,14 @@ units_module_exec(PyObject* m)
 #define XSTRINGIFY(x) #x
 
     if (PyModule_AddStringConstant(m, "__version__",
-				   STRINGIFY(PYTHON_RAPIDJSON_VERSION))
+				   STRINGIFY(YGGDRASIL_PYTHON_RAPIDJSON_VERSION))
         || PyModule_AddStringConstant(m, "__author__",
 				      "Meagan Lang <langmm.astro@gmail.com>")
-        || PyModule_AddStringConstant(m, "__rapidjson_version__",
-                                      RAPIDJSON_VERSION_STRING)
-#ifdef RAPIDJSON_EXACT_VERSION
-        || PyModule_AddStringConstant(m, "__rapidjson_exact_version__",
-                                      STRINGIFY(RAPIDJSON_EXACT_VERSION))
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_version__",
+                                      YGGDRASIL_RAPIDJSON_VERSION_STRING)
+#ifdef YGGDRASIL_RAPIDJSON_EXACT_VERSION
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_exact_version__",
+                                      STRINGIFY(YGGDRASIL_RAPIDJSON_EXACT_VERSION))
 #endif
         )
         return -1;

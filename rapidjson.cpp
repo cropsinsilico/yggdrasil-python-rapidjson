@@ -23,6 +23,7 @@
 #include <vector>
 
 #define YGGDRASIL_RAPIDJSON_FORCE_IMPORT_ARRAY
+#define YGGDRASIL_RAPIDJSON_PYTHON_WRAPPER
 #define PYRJ_TWO_PHASE_INIT
 // #define YGG_ENSURE_PY_GIL
 #include "rapidjson/pyrj.h"

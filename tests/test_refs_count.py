@@ -88,6 +88,13 @@ def test_leaks(value, dumps_options, loads_options):
     rc0 = sys.gettotalrefcount()
     for _ in range(1000):
         asjson = rj.dumps(value, **dumps_options)
+        del asjson
+    rc1 = sys.gettotalrefcount()
+    assert (rc1 - rc0) < THRESHOLD
+
+    rc0 = sys.gettotalrefcount()
+    for _ in range(1000):
+        asjson = rj.dumps(value, **dumps_options)
         aspython = rj.loads(asjson, **loads_options)
         del asjson
         del aspython

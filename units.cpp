@@ -10,14 +10,14 @@
 
 #include <Python.h>
 
-#include "rapidjson/units.h"
-#include "rapidjson/precision.h"
-#include "rapidjson/rapidjson.h"
+#include "yggdrasil_rapidjson/units.h"
+#include "yggdrasil_rapidjson/precision.h"
+#include "yggdrasil_rapidjson/yggdrasil_rapidjson.h"
 #include <numpy/arrayobject.h>
 #include <numpy/ufuncobject.h>
 
-using namespace rapidjson;
-using namespace rapidjson::units;
+using namespace yggdrasil_rapidjson;
+using namespace yggdrasil_rapidjson::units;
 
 
 static PyObject* units_error = NULL;
@@ -262,7 +262,7 @@ static PyNumberMethods units_number_methods = {
 
 static PyTypeObject Units_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.units.Units",        /* tp_name */
+    "yggdrasil_rapidjson.units.Units",        /* tp_name */
     sizeof(UnitsObject),            /* tp_basicsize */
     0,                              /* tp_itemsize */
     (destructor) units_dealloc,     /* tp_dealloc */
@@ -540,7 +540,7 @@ static PyObject* do_units_op(PyObject* a, PyObject *b, BinaryOps op,
 			     bool inplace=false) {
     if (!(PyObject_IsInstance(a, (PyObject*)&Units_Type) &&
 	  PyObject_IsInstance(b, (PyObject*)&Units_Type))) {
-	PyErr_SetString(PyExc_TypeError, "This operation is only valid for two rapidjson.units.Units instances.");
+	PyErr_SetString(PyExc_TypeError, "This operation is only valid for two yggdrasil_rapidjson.units.Units instances.");
 	return NULL;
     }
     PyObject* out;
@@ -570,7 +570,7 @@ static PyObject* do_units_op(PyObject* a, PyObject *b, BinaryOps op,
     }
     default: {
         Py_DECREF(out);
-	PyErr_SetString(PyExc_NotImplementedError, "rapidjson.units.Units do not support this operation.");
+	PyErr_SetString(PyExc_NotImplementedError, "yggdrasil_rapidjson.units.Units do not support this operation.");
 	return NULL;
     }
     }
@@ -580,7 +580,7 @@ static PyObject* do_units_op(PyObject* a, PyObject *b, BinaryOps op,
 static PyObject* do_units_pow(PyObject* a, PyObject *b, PyObject* mod,
 			      bool inplace=false) {
     if (PyObject_IsInstance(b, (PyObject*)&Units_Type)) {
-	PyErr_SetString(PyExc_TypeError, "Cannot raise to a rapidjson.units.Units power");
+	PyErr_SetString(PyExc_TypeError, "Cannot raise to a yggdrasil_rapidjson.units.Units power");
 	return NULL;
     }
     if (!PyObject_IsInstance(a, (PyObject*)&Units_Type)) {
@@ -588,7 +588,7 @@ static PyObject* do_units_pow(PyObject* a, PyObject *b, PyObject* mod,
 	return NULL;
     }
     if (mod != Py_None) {
-	PyErr_SetString(PyExc_NotImplementedError, "'mod' power argument not supported for rapidjson.units.Units instances.");
+	PyErr_SetString(PyExc_NotImplementedError, "'mod' power argument not supported for yggdrasil_rapidjson.units.Units instances.");
 	return NULL;
     }
     PyObject* exp = PyNumber_Float(b);
@@ -708,7 +708,7 @@ static PyMethodDef quantity_array_methods[] = {
 
 static PyGetSetDef quantity_array_properties[] = {
     {"units", quantity_array_units_get, quantity_array_units_set,
-     "The rapidjson.units.Units units for the quantity.", NULL},
+     "The yggdrasil_rapidjson.units.Units units for the quantity.", NULL},
     {"value", quantity_array_value_get, quantity_array_value_set,
      "The quantity's value (in the current unit system).", NULL},
     {NULL, NULL, NULL, NULL, NULL} /* Sentinel */
@@ -724,7 +724,7 @@ static PyMappingMethods quantity_array_map = {
 
 static PyTypeObject QuantityArray_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.units.QuantityArray",      /* tp_name */
+    "yggdrasil_rapidjson.units.QuantityArray",      /* tp_name */
     sizeof(QuantityArrayObject),          /* tp_basicsize */
     0,                                    /* tp_itemsize */
     (destructor) quantity_array_dealloc,  /* tp_dealloc */
@@ -798,7 +798,7 @@ PyDoc_STRVAR(quantity_doc,
 
 static PyTypeObject Quantity_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.units.Quantity",     /* tp_name */
+    "yggdrasil_rapidjson.units.Quantity",     /* tp_name */
     sizeof(QuantityObject),         /* tp_basicsize */
     0,                              /* tp_itemsize */
     0,                              /* tp_dealloc */
@@ -1410,7 +1410,7 @@ static PyObject* quantity_array__array_ufunc__(PyObject* self, PyObject* args, P
     if (is_call < 0) {
 	goto cleanup;
     } else if (!is_call) {
-        std::string msg = "Only the __call__ ufunc method is currently supported by rapidjson.units.QuantityArray, not \"";
+        std::string msg = "Only the __call__ ufunc method is currently supported by yggdrasil_rapidjson.units.QuantityArray, not \"";
         msg += std::string(PyUnicode_AsUTF8(method_name));
         msg += "\"";
 	PyErr_SetString(units_error, msg.c_str());
@@ -1449,7 +1449,7 @@ static PyObject* quantity_array__array_ufunc__(PyObject* self, PyObject* args, P
 	}
 	if (inplace && !PyObject_IsInstance(i0, (PyObject*)&QuantityArray_Type)) {
 	    PyErr_Format(units_error,
-			 "Inplace '%s' operation not supported by rapidjson.units.QuantityArray", ufunc_name.c_str());
+			 "Inplace '%s' operation not supported by yggdrasil_rapidjson.units.QuantityArray", ufunc_name.c_str());
 	    goto cleanup;
 	}
     }
@@ -1614,7 +1614,7 @@ static PyObject* quantity_array__array_ufunc__(PyObject* self, PyObject* args, P
 	    }
 	} else {
 	    PyErr_Format(units_error,
-			 "Unary operator '%s' not currently supported by rapidjson.units.QuantityArray.", ufunc_name.c_str());
+			 "Unary operator '%s' not currently supported by yggdrasil_rapidjson.units.QuantityArray.", ufunc_name.c_str());
 	    goto cleanup;
 	}
     } else if (Nargs == 2) { // binary operators
@@ -1795,12 +1795,12 @@ static PyObject* quantity_array__array_ufunc__(PyObject* self, PyObject* args, P
 	    }
 	} else {
 	    PyErr_Format(units_error,
-			 "Binary operator '%s' not currently supported by rapidjson.units.QuantityArray.", ufunc_name.c_str());
+			 "Binary operator '%s' not currently supported by yggdrasil_rapidjson.units.QuantityArray.", ufunc_name.c_str());
 	    goto cleanup;
 	}
     } else {
 	PyErr_Format(units_error,
-		     "Operator '%s' not currently supported by rapidjson.units.QuantityArray.", ufunc_name.c_str());
+		     "Operator '%s' not currently supported by yggdrasil_rapidjson.units.QuantityArray.", ufunc_name.c_str());
 	goto cleanup;
     }
     if (result == NULL) {
@@ -2030,7 +2030,7 @@ static PyObject* quantity_array__array_function__(PyObject* self, PyObject* c_ar
 	// No units
     } else {
 	    PyErr_Format(units_error,
-			 "Array function '%s' not supported by rapidjson.units.QuantityArray", func_nameS.c_str());
+			 "Array function '%s' not supported by yggdrasil_rapidjson.units.QuantityArray", func_nameS.c_str());
 	    goto cleanup;
     }
     if (result == NULL) {
@@ -2691,7 +2691,7 @@ units_module_exec(PyObject* m)
 {
     if (sizeof(PyArrayObject) > (size_t)QuantityArray_Type.tp_basicsize) {
 	PyErr_SetString(PyExc_ImportError,
-			"Binary incompatibility with NumPy, must recompile/update rapidjson.");
+			"Binary incompatibility with NumPy, must recompile/update yggdrasil_rapidjson.");
 	return -1;
     }
     if (PyType_Ready(&Units_Type) < 0)
@@ -2711,14 +2711,14 @@ units_module_exec(PyObject* m)
 #define XSTRINGIFY(x) #x
 
     if (PyModule_AddStringConstant(m, "__version__",
-				   STRINGIFY(PYTHON_RAPIDJSON_VERSION))
+				   STRINGIFY(YGGDRASIL_RAPIDJSON_PYTHON_VERSION))
         || PyModule_AddStringConstant(m, "__author__",
 				      "Meagan Lang <langmm.astro@gmail.com>")
-        || PyModule_AddStringConstant(m, "__rapidjson_version__",
-                                      RAPIDJSON_VERSION_STRING)
-#ifdef RAPIDJSON_EXACT_VERSION
-        || PyModule_AddStringConstant(m, "__rapidjson_exact_version__",
-                                      STRINGIFY(RAPIDJSON_EXACT_VERSION))
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_version__",
+                                      YGGDRASIL_RAPIDJSON_VERSION_STRING)
+#ifdef YGGDRASIL_RAPIDJSON_EXACT_VERSION
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_exact_version__",
+                                      STRINGIFY(YGGDRASIL_RAPIDJSON_EXACT_VERSION))
 #endif
         )
         return -1;
@@ -2741,7 +2741,7 @@ units_module_exec(PyObject* m)
         return -1;
     }
 
-    units_error = PyErr_NewException("rapidjson.UnitsError",
+    units_error = PyErr_NewException("yggdrasil_rapidjson.UnitsError",
 				     PyExc_ValueError, NULL);
     if (units_error == NULL)
         return -1;
@@ -2765,7 +2765,7 @@ static struct PyModuleDef_Slot units_slots[] = {
 
 static PyModuleDef units_module = {
     PyModuleDef_HEAD_INIT,      /* m_base */
-    "rapidjson.units",          /* m_name */
+    "yggdrasil_rapidjson.units",          /* m_name */
     PyDoc_STR("Fast, simple units library developed for yggdrasil."),
     0,                          /* m_size */
     units_functions,            /* m_methods */

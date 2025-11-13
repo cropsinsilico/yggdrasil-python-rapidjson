@@ -4,6 +4,12 @@ Changes
 yggdrasil-python-rapidjson
 ==========================
 
+1.21.0.1 (2025-11-12)
+~~~~~~~~~~~~~~~~~~~~~
+
+This update primarily serves to update the version of `yggdrasil_rapidjson` to the 1.1.0.1 release which repackages the source code to allow for compatibility in side-by-side installation with rapidjson at request of conda-forge team. This has no impact on the Python package.
+
+
 1.21.0.0 (2025-09-29)
 ~~~~~~~~~~~~~~~~~~~~~
 

@@ -13,7 +13,7 @@
 #include <locale.h>
 
 #include <Python.h>
-#include "rapidjson/pythoncapi_compat.h"
+#include "yggdrasil_rapidjson/pythoncapi_compat.h"
 #include <datetime.h>
 #include <structmember.h>
 
@@ -22,20 +22,23 @@
 #include <string>
 #include <vector>
 
-#define RAPIDJSON_FORCE_IMPORT_ARRAY
+#define YGGDRASIL_RAPIDJSON_FORCE_IMPORT_ARRAY
+#ifndef YGGDRASIL_RAPIDJSON_PYTHON_WRAPPER
+#define YGGDRASIL_RAPIDJSON_PYTHON_WRAPPER
+#endif // YGGDRASIL_RAPIDJSON_PYTHON_WRAPPER
 #define PYRJ_TWO_PHASE_INIT
 // #define YGG_ENSURE_PY_GIL
-#include "rapidjson/pyrj.h"
-#include "rapidjson/reader.h"
-#include "rapidjson/schema.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/error/en.h"
+#include "yggdrasil_rapidjson/pyrj.h"
+#include "yggdrasil_rapidjson/reader.h"
+#include "yggdrasil_rapidjson/schema.h"
+#include "yggdrasil_rapidjson/stringbuffer.h"
+#include "yggdrasil_rapidjson/writer.h"
+#include "yggdrasil_rapidjson/prettywriter.h"
+#include "yggdrasil_rapidjson/error/en.h"
 #include "units.cpp"
 #include "geometry.cpp"
 
-using namespace rapidjson;
+using namespace yggdrasil_rapidjson;
 
 
 /* On some MacOS combo, using Py_IS_XXX() macros does not work (see
@@ -439,7 +442,7 @@ public:
                 size_t complete = (size_t)(multiByteChar - buffer);
                 c = PyUnicode_FromStringAndSize(buffer, complete);
                 size_t remaining = (size_t)(cursor - multiByteChar);
-                if (RAPIDJSON_LIKELY(remaining < complete))
+                if (YGGDRASIL_RAPIDJSON_LIKELY(remaining < complete))
                     memcpy(buffer, multiByteChar, remaining);
                 else
                     std::memmove(buffer, multiByteChar, remaining);
@@ -548,15 +551,15 @@ static PyMemberDef RawJSON_members[] = {
 PyDoc_STRVAR(rawjson_doc,
              "Raw (preserialized) JSON object\n"
              "\n"
-             "When rapidjson tries to serialize instances of this class, it will"
+             "When yggdrasil_rapidjson tries to serialize instances of this class, it will"
              " use their literal `value`. For instance:\n"
-             ">>> rapidjson.dumps(RawJSON('{\"already\": \"serialized\"}'))\n"
+             ">>> yggdrasil_rapidjson.dumps(RawJSON('{\"already\": \"serialized\"}'))\n"
              "'{\"already\": \"serialized\"}'");
 
 
 static PyTypeObject RawJSON_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.RawJSON",            /* tp_name */
+    "yggdrasil_rapidjson.RawJSON",            /* tp_name */
     sizeof(RawJSON),                /* tp_basicsize */
     0,                              /* tp_itemsize */
     (destructor) RawJSON_dealloc,   /* tp_dealloc */
@@ -1755,26 +1758,26 @@ struct PyHandler {
 
         switch (usecLength) {
             case 9: if (!isdigit(str[17])) { return false; }
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 8: if (!isdigit(str[16])) { return false; }
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 7: if (!isdigit(str[15])) { return false; }
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 6: if (!isdigit(str[14])) { return false; }
 		usecs += digit(14);
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 5: if (!isdigit(str[13])) { return false; }
 		usecs += digit(13)*10;
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 4: if (!isdigit(str[12])) { return false; }
 		usecs += digit(12)*100;
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 3: if (!isdigit(str[11])) { return false; }
 		usecs += digit(11)*1000;
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 2: if (!isdigit(str[10])) { return false; }
 		usecs += digit(10)*10000;
-		RAPIDJSON_DELIBERATE_FALLTHROUGH;
+		YGGDRASIL_RAPIDJSON_DELIBERATE_FALLTHROUGH;
             case 1: if (!isdigit(str[9])) { return false; }
 		usecs += digit(9)*100000;
         }
@@ -1963,7 +1966,7 @@ struct PyHandler {
     template <typename YggSchemaValueType>
     bool YggdrasilString(const char* str, SizeType length, bool, YggSchemaValueType& schema) {
 	PyObject* value = NULL;
-	RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	Value* x = new Value(str, length, allocator, schema);
 	if (x->HasUnits()) {
 	    PyObject* type = NULL;
@@ -1972,7 +1975,7 @@ struct PyHandler {
 	    } else {
 		type = (PyObject*)&QuantityArray_Type;
 	    }
-	    RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	    YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	    PyObject* arr = x->GetPythonObjectRaw();
 	    PyObject* units = PyUnicode_FromStringAndSize(x->GetUnits().GetString(),
 							  x->GetUnits().GetStringLength());
@@ -2133,7 +2136,7 @@ loads(PyObject*, PyObject* args, PyObject* kwargs)
     unsigned parseMode = PM_NONE;
     int allowNan = -1;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|$OOOOOp:rapidjson.loads",
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|$OOOOOp:yggdrasil_rapidjson.loads",
                                      (char**) kwlist,
                                      &jsonObject,
                                      &objectHook,
@@ -2251,7 +2254,7 @@ load(PyObject*, PyObject* args, PyObject* kwargs)
     size_t chunkSize = 65536;
     int allowNan = -1;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|$OOOOOOp:rapidjson.load",
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|$OOOOOOp:yggdrasil_rapidjson.load",
                                      (char**) kwlist,
                                      &jsonObject,
                                      &objectHook,
@@ -2406,7 +2409,7 @@ static PyMemberDef decoder_members[] = {
 
 static PyTypeObject Decoder_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.Decoder",                      /* tp_name */
+    "yggdrasil_rapidjson.Decoder",                      /* tp_name */
     sizeof(DecoderObject),                    /* tp_basicsize */
     0,                                        /* tp_itemsize */
     0,                                        /* tp_dealloc */
@@ -3381,7 +3384,7 @@ PythonAccept(
             Py_DECREF(hexval);
             return false;
         }
-        if (RAPIDJSON_UNLIKELY(size != 32 && size != 36)) {
+        if (YGGDRASIL_RAPIDJSON_UNLIKELY(size != 32 && size != 36)) {
             PyErr_Format(PyExc_ValueError,
                          "Bad UUID hex, expected a string of either 32 or 36 chars,"
                          " got %.200R", hexval);
@@ -3435,7 +3438,7 @@ PythonAccept(
         ASSERT_VALID_SIZE(l);
         handler->String(jsonStr, (SizeType) l, true);
     } else if (PyObject_IsInstance(object, (PyObject*)&Units_Type)) {
-	RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	UnitsObject* v = (UnitsObject*) object;
 	Value* x = new Value();
 	std::string unitsS = v->units->str();
@@ -3451,7 +3454,7 @@ PythonAccept(
 	}
 	return ret;
     } else if (PyObject_IsInstance(object, (PyObject*)&QuantityArray_Type)) {
-	RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	QuantityArrayObject* v = (QuantityArrayObject*) object;
 	Value* x = new Value();
 	bool ret = x->SetPythonObjectRaw(object, allocator);
@@ -3470,7 +3473,7 @@ PythonAccept(
 	}
 	return ret;
     } else if (PyObject_IsInstance(object, (PyObject*)&Ply_Type)) {
-	RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	PlyObject* v = (PlyObject*) object;
 	Value* x = new Value();
 	x->SetPlyRaw(*v->ply, allocator);
@@ -3480,7 +3483,7 @@ PythonAccept(
 	    PyErr_Format(PyExc_TypeError, "Error serializing Ply instance");
 	return ret;
     } else if (PyObject_IsInstance(object, (PyObject*)&ObjWavefront_Type)) {
-	RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	ObjWavefrontObject* v = (ObjWavefrontObject*) object;
 	Value* x = new Value();
 	x->SetObj(*v->obj, allocator);
@@ -3513,7 +3516,7 @@ PythonAccept(
             Py_CLEAR(trimeshClass);
         }
         if (isTrimesh) {
-	    RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	    YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	    Py_INCREF(object);
 	    PyObject* ply_args = PyTuple_Pack(1, object);
 	    if (ply_args == NULL) {
@@ -3537,7 +3540,7 @@ PythonAccept(
 	    return ret;
 	}
 	// PythonAccept
-	RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+	YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
 	Value* x = new Value();
 	bool ret = x->SetPythonObjectRaw(object, allocator, false,
 					 (yggdrasilMode & YM_PICKLE));
@@ -3563,7 +3566,7 @@ PythonAccept(
 static bool cleanup_python_globals(Document& d, bool isPythonDoc) {
     if (!isPythonDoc)
 	return true;
-    rapidjson::CleanupLocals<char> cleaner;
+    yggdrasil_rapidjson::CleanupLocals<char> cleaner;
     if (!d.Accept(cleaner)) {
 	PyErr_SetString(normalization_error, "Error cleaning up local functions/methods in globals");
 	return false;
@@ -4313,7 +4316,7 @@ dumps_internal(
             Py_DECREF(hexval);
             return false;
         }
-        if (RAPIDJSON_UNLIKELY(size != 32 && size != 36)) {
+        if (YGGDRASIL_RAPIDJSON_UNLIKELY(size != 32 && size != 36)) {
             PyErr_Format(PyExc_ValueError,
                          "Bad UUID hex, expected a string of either 32 or 36 chars,"
                          " got %.200R", hexval);
@@ -4476,7 +4479,7 @@ dumps(PyObject*, PyObject* args, PyObject* kwargs)
     int sortKeys = false;
     int allowNan = -1;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|$ppOOpOOOOOOOOp:rapidjson.dumps",
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|$ppOOpOOOOOOOOp:yggdrasil_rapidjson.dumps",
                                      (char**) kwlist,
                                      &value,
                                      &skipKeys,
@@ -4610,7 +4613,7 @@ dump(PyObject*, PyObject* args, PyObject* kwargs)
     int skipKeys = false;
     int sortKeys = false;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO|$ppOOpOOOOOOOOOp:rapidjson.dump",
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO|$ppOOpOOOOOOOOOp:yggdrasil_rapidjson.dump",
                                      (char**) kwlist,
                                      &value,
                                      &stream,
@@ -4753,7 +4756,7 @@ static PyGetSetDef encoder_props[] = {
 
 static PyTypeObject Encoder_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.Encoder",                      /* tp_name */
+    "yggdrasil_rapidjson.Encoder",                      /* tp_name */
     sizeof(EncoderObject),                    /* tp_basicsize */
     0,                                        /* tp_itemsize */
     0,                                        /* tp_dealloc */
@@ -5126,7 +5129,7 @@ static void set_validation_error(ValidatorObject& validator,
 
     StringBuffer sb;
     PrettyWriter<StringBuffer> w(sb);
-    RAPIDJSON_DEFAULT_ALLOCATOR allocator;
+    YGGDRASIL_RAPIDJSON_DEFAULT_ALLOCATOR allocator;
     Value err;
     std::string msg;
     bool success = (warning) ? validator.GetWarningMsg(err, allocator) :
@@ -5204,7 +5207,7 @@ static PyMethodDef validator_methods[] = {
 
 static PyTypeObject Validator_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.Validator",          /* tp_name */
+    "yggdrasil_rapidjson.Validator",          /* tp_name */
     sizeof(ValidatorObject),        /* tp_basicsize */
     0,                              /* tp_itemsize */
     (destructor) validator_dealloc, /* tp_dealloc */
@@ -6260,7 +6263,7 @@ static PyMethodDef normalizer_methods[] = {
 
 static PyTypeObject Normalizer_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.Normalizer",         /* tp_name */
+    "yggdrasil_rapidjson.Normalizer",         /* tp_name */
     sizeof(NormalizerObject),       /* tp_basicsize */
     0,                              /* tp_itemsize */
     (destructor) normalizer_dealloc, /* tp_dealloc */
@@ -6771,7 +6774,7 @@ get_submodule_spec(PyObject* name, PyObject* path) {
     kwargs = PyDict_New();
     if (kwargs == NULL)
 	goto cleanup;
-    // parent = PyUnicode_FromString("rapidjson");
+    // parent = PyUnicode_FromString("yggdrasil_rapidjson");
     // if (parent == NULL)
     //   goto cleanup;
     // if (PyDict_SetItemString(kwargs, "parent", parent) < 0)
@@ -6816,10 +6819,10 @@ set_attr_if_unset(PyObject* m, const std::string& attr, PyObject* value) {
 static PyObject*
 add_submodule(PyObject* m, const char* cname, PyObject* module_base) {
     PyObject *name = NULL, *spec = NULL, *submodule = NULL,
-	*rapidjson_file = NULL, *moduleDict = NULL, *out = NULL;
+	*yggdrasil_rapidjson_file = NULL, *moduleDict = NULL, *out = NULL;
     PyModuleDef* module_def = NULL;
     char fullname[200] = "";
-    int n = snprintf(fullname, 200, "rapidjson.%s", cname);
+    int n = snprintf(fullname, 200, "yggdrasil_rapidjson.%s", cname);
     if ((n < 0) || (n > 200))
 	return NULL;
 #ifdef PYRJ_TWO_PHASE_INIT
@@ -6827,19 +6830,19 @@ add_submodule(PyObject* m, const char* cname, PyObject* module_base) {
     name = PyUnicode_FromString(fullname);
     if (name == NULL)
 	goto cleanup;
-    rapidjson_file = PyModule_GetFilenameObject(m);
-    if (rapidjson_file == NULL)
+    yggdrasil_rapidjson_file = PyModule_GetFilenameObject(m);
+    if (yggdrasil_rapidjson_file == NULL)
 	goto cleanup;
-    spec = get_submodule_spec(name, rapidjson_file);
+    spec = get_submodule_spec(name, yggdrasil_rapidjson_file);
     Py_CLEAR(name);
     if (spec == NULL)
 	goto cleanup;
     submodule = PyModule_FromDefAndSpec(module_def, spec);
     if (submodule == NULL)
 	goto cleanup;
-    if (!set_attr_if_unset(submodule, "__file__", rapidjson_file))
+    if (!set_attr_if_unset(submodule, "__file__", yggdrasil_rapidjson_file))
 	goto cleanup;
-    Py_CLEAR(rapidjson_file);
+    Py_CLEAR(yggdrasil_rapidjson_file);
     if (!set_attr_if_unset(submodule, "__spec__", spec))
 	goto cleanup;
     Py_CLEAR(spec);
@@ -6863,7 +6866,7 @@ add_submodule(PyObject* m, const char* cname, PyObject* module_base) {
 cleanup:
     Py_XDECREF(name);
     Py_XDECREF(spec);
-    Py_XDECREF(rapidjson_file);
+    Py_XDECREF(yggdrasil_rapidjson_file);
     return out;
 }
 
@@ -7092,15 +7095,16 @@ module_exec(PyObject* m)
 	|| PyModule_AddIntConstant(m, "SIZE_OF_SIZE_T", SIZE_OF_SIZE_T)
 
         || PyModule_AddStringConstant(m, "__version__",
-                                      STRINGIFY(PYTHON_RAPIDJSON_VERSION))
+                                      STRINGIFY(YGGDRASIL_RAPIDJSON_PYTHON_VERSION))
         || PyModule_AddStringConstant(m, "__author__",
-                                      "Ken Robbins <ken@kenrobbins.com>"
-                                      ", Lele Gaifax <lele@metapensiero.it>")
-        || PyModule_AddStringConstant(m, "__rapidjson_version__",
-                                      RAPIDJSON_VERSION_STRING)
-        || PyModule_AddStringConstant(m, "__rapidjson_exact_version__",
-#ifdef RAPIDJSON_EXACT_VERSION
-                                      STRINGIFY(RAPIDJSON_EXACT_VERSION)
+                                      "Meagan Lang <langmm@illinois.edu> [yggdrasil-rapidjson]"
+                                      ", Ken Robbins <ken@kenrobbins.com> [rapidjson]"
+                                      ", Lele Gaifax <lele@metapensiero.it> [rapidjson]")
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_version__",
+                                      YGGDRASIL_RAPIDJSON_VERSION_STRING)
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_exact_version__",
+#ifdef YGGDRASIL_RAPIDJSON_EXACT_VERSION
+                                      STRINGIFY(YGGDRASIL_RAPIDJSON_EXACT_VERSION)
 #else
                                       // This may happen for several reasons, under CI
                                       // test or when the RJ library does not come from
@@ -7141,7 +7145,7 @@ module_exec(PyObject* m)
         return -1;
     }
 
-    validation_error = PyErr_NewException("rapidjson.ValidationError",
+    validation_error = PyErr_NewException("yggdrasil_rapidjson.ValidationError",
                                           PyExc_ValueError, NULL);
     if (validation_error == NULL)
         return -1;
@@ -7151,7 +7155,7 @@ module_exec(PyObject* m)
         return -1;
     }
 
-    validation_warning = PyErr_NewException("rapidjson.ValidationWarning",
+    validation_warning = PyErr_NewException("yggdrasil_rapidjson.ValidationWarning",
 					       PyExc_Warning, NULL);
     if (validation_warning == NULL)
         return -1;
@@ -7161,7 +7165,7 @@ module_exec(PyObject* m)
         return -1;
     }
     
-    normalization_error = PyErr_NewException("rapidjson.NormalizationError",
+    normalization_error = PyErr_NewException("yggdrasil_rapidjson.NormalizationError",
 					     PyExc_ValueError, NULL);
     if (normalization_error == NULL)
         return -1;
@@ -7171,7 +7175,7 @@ module_exec(PyObject* m)
         return -1;
     }
 
-    normalization_warning = PyErr_NewException("rapidjson.NormalizationWarning",
+    normalization_warning = PyErr_NewException("yggdrasil_rapidjson.NormalizationWarning",
 					       PyExc_Warning, NULL);
     if (normalization_warning == NULL)
         return -1;
@@ -7181,7 +7185,7 @@ module_exec(PyObject* m)
         return -1;
     }
     
-    decode_error = PyErr_NewException("rapidjson.JSONDecodeError",
+    decode_error = PyErr_NewException("yggdrasil_rapidjson.JSONDecodeError",
                                       PyExc_ValueError, NULL);
     if (decode_error == NULL)
         return -1;
@@ -7191,7 +7195,7 @@ module_exec(PyObject* m)
         return -1;
     }
 
-    comparison_error = PyErr_NewException("rapidjson.ComparisonError",
+    comparison_error = PyErr_NewException("yggdrasil_rapidjson.ComparisonError",
 					  PyExc_ValueError, NULL);
     if (comparison_error == NULL)
 	return -1;
@@ -7201,7 +7205,7 @@ module_exec(PyObject* m)
 	return -1;
     }
 
-    generate_error = PyErr_NewException("rapidjson.GenerateError",
+    generate_error = PyErr_NewException("yggdrasil_rapidjson.GenerateError",
 					  PyExc_ValueError, NULL);
     if (generate_error == NULL)
 	return -1;
@@ -7250,8 +7254,8 @@ static struct PyModuleDef_Slot slots[] = {
 
 static PyModuleDef rj_module = {
     PyModuleDef_HEAD_INIT,      /* m_base */
-    "rapidjson",                /* m_name */
-    PyDoc_STR("Fast, simple JSON encoder and decoder. Based on RapidJSON C++ library."),
+    "yggdrasil_rapidjson",                /* m_name */
+    PyDoc_STR("Fast, simple JSON encoder and decoder. Based on YggdrasilRapidJSON C++ library."),
     0,                          /* m_size */
     functions,                  /* m_methods */
 #ifdef PYRJ_TWO_PHASE_INIT
@@ -7266,7 +7270,7 @@ static PyModuleDef rj_module = {
 
 
 PyMODINIT_FUNC
-PyInit_rapidjson()
+PyInit_yggdrasil_rapidjson()
 {
     import_array();
     import_umath();

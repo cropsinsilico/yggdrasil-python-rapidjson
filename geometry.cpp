@@ -1,5 +1,5 @@
 // -*- coding: utf-8 -*-
-// :Project:   python-rapidjson -- Python extension module
+// :Project:   yggdrasil-python-rapidjson -- Python extension module
 // :Author:    Meagan Lang <langmm.astro@gmail.com>
 // :License:   BSD License
 //
@@ -10,13 +10,13 @@
 
 #include <Python.h>
 
-#include "rapidjson/ply.h"
-#include "rapidjson/obj.h"
-#include "rapidjson/precision.h"
-#include "rapidjson/rapidjson.h"
+#include "yggdrasil_rapidjson/ply.h"
+#include "yggdrasil_rapidjson/obj.h"
+#include "yggdrasil_rapidjson/precision.h"
+#include "yggdrasil_rapidjson/yggdrasil_rapidjson.h"
 
 
-using namespace rapidjson;
+using namespace yggdrasil_rapidjson;
 
 
 static PyObject* geom_error = NULL;
@@ -463,7 +463,7 @@ static PySequenceMethods ply_seq = {
 
 static PyTypeObject Ply_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.geometry.Ply",       /* tp_name */
+    "yggdrasil_rapidjson.geometry.Ply",       /* tp_name */
     sizeof(PlyObject),              /* tp_basicsize */
     0,                              /* tp_itemsize */
     (destructor) ply_dealloc,       /* tp_dealloc */
@@ -643,7 +643,7 @@ static PySequenceMethods objwavefront_seq = {
 
 static PyTypeObject ObjWavefront_Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "rapidjson.geometry.ObjWavefront",  /* tp_name */
+    "yggdrasil_rapidjson.geometry.ObjWavefront",  /* tp_name */
     sizeof(ObjWavefrontObject),         /* tp_basicsize */
     0,                                  /* tp_itemsize */
     (destructor) objwavefront_dealloc,  /* tp_dealloc */
@@ -3845,14 +3845,14 @@ geom_module_exec(PyObject* m)
 #define XSTRINGIFY(x) #x
 
     if (PyModule_AddStringConstant(m, "__version__",
-				   STRINGIFY(PYTHON_RAPIDJSON_VERSION))
+				   STRINGIFY(YGGDRASIL_RAPIDJSON_PYTHON_VERSION))
         || PyModule_AddStringConstant(m, "__author__",
 				      "Meagan Lang <langmm.astro@gmail.com>")
-        || PyModule_AddStringConstant(m, "__rapidjson_version__",
-                                      RAPIDJSON_VERSION_STRING)
-#ifdef RAPIDJSON_EXACT_VERSION
-        || PyModule_AddStringConstant(m, "__rapidjson_exact_version__",
-                                      STRINGIFY(RAPIDJSON_EXACT_VERSION))
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_version__",
+                                      YGGDRASIL_RAPIDJSON_VERSION_STRING)
+#ifdef YGGDRASIL_RAPIDJSON_EXACT_VERSION
+        || PyModule_AddStringConstant(m, "__yggdrasil_rapidjson_exact_version__",
+                                      STRINGIFY(YGGDRASIL_RAPIDJSON_EXACT_VERSION))
 #endif
         )
         return -1;
@@ -3869,7 +3869,7 @@ geom_module_exec(PyObject* m)
         return -1;
     }
 
-    geom_error = PyErr_NewException("rapidjson.geometry.GeometryError",
+    geom_error = PyErr_NewException("yggdrasil_rapidjson.geometry.GeometryError",
 				    PyExc_ValueError, NULL);
     if (geom_error == NULL)
         return -1;
@@ -3893,7 +3893,7 @@ static struct PyModuleDef_Slot geom_slots[] = {
 
 static PyModuleDef geom_module = {
     PyModuleDef_HEAD_INIT,      /* m_base */
-    "rapidjson.geometry",       /* m_name */
+    "yggdrasil_rapidjson.geometry",       /* m_name */
     PyDoc_STR("Structures for handling 3D geometries."),
     0,                          /* m_size */
     geom_functions,             /* m_methods */

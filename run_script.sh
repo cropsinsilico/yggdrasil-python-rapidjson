@@ -32,7 +32,7 @@ if [ -n "$BUILD_DIR" ]; then
     BUILD_ARGS="${BUILD_ARGS} --config-settings=build-dir=${BUILD_DIR}"
 fi
 if [ ! -n "$DONT_BUILD" ]; then
-    pip install --config-settings=cmake.define.RAPIDJSON_INCLUDE_DIRS=../rapidjson/include/ \
+    pip install --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_INCLUDE_DIRS=../yggdrasil_rapidjson/include/ \
 	$BUILD_ARGS -v -e .
 fi
 

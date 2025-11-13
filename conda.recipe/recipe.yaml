@@ -1,6 +1,6 @@
 context:
   name: "yggdrasil-python-rapidjson"
-  version: "1.21.0.0"
+  version: "1.21.0.1"
 
 package:
   name: ${{ name|lower }}
@@ -34,12 +34,14 @@ requirements:
   host:
     - hatch-fancy-pypi-readme
     - numpy >=1.13.0
+    - pandas
     - pip
     - python >=3.9
     - scikit-build-core
     - setuptools_scm
   run:
     - ${{ stdlib('c') }}
+    - pandas
     - python >=3.9
     - numpy >=1.13.0
 

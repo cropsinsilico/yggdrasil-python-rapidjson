@@ -56,9 +56,10 @@ editable.verbose = true
 # yggdrasil-rapidjson-stubs = "typings/rapidjson-stubs"
 
 [tool.setuptools_scm]
-# version_file = "_version.py"
-write_to = "_version.py"
-git_describe_command = "git describe --tags --long --abbrev=0"
+version_file = "_version.py"
+# write_to = "_version.py"
+# scm.git.describe_command = "git describe --tags --long --abbrev=0"
+scm.git.describe_command = "git describe --tags --abbrev=0"
 
 [tool.hatch.metadata.hooks.fancy-pypi-readme]
 content-type = "text/x-rst"
@@ -66,9 +67,7 @@ content-type = "text/x-rst"
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 path = "README.rst"
 
-[tool.pytest.ini]
+[tool.pytest]
 norecursedirs = ["*.egg", ".tox", "rapidjson"]
 addopts = ["--verbose", "-s", "--ignore=rapidjson/thirdparty"]
-
-[tool.pytest.ini_options]
 filterwarnings = ["error"]

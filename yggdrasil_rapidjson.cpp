@@ -612,6 +612,9 @@ static PyTypeObject RawJSON_Type = {
 #if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12))
     0,                              /* tp_watched */
 #endif
+#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 13))
+    0,                              /* tp_versions_used */
+#endif
 };
 
 
@@ -2461,6 +2464,9 @@ static PyTypeObject Decoder_Type = {
 #endif
 #if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12))
     0,                                        /* tp_watched */
+#endif
+#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 13))
+    0,                                        /* tp_versions_used */
 #endif
 };
 
@@ -4809,6 +4815,9 @@ static PyTypeObject Encoder_Type = {
 #if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12))
     0,                                        /* tp_watched */
 #endif
+#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 13))
+    0,                                        /* tp_versions_used */
+#endif
 };
 
 
@@ -5259,6 +5268,9 @@ static PyTypeObject Validator_Type = {
 #endif
 #if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12))
     0,                              /* tp_watched */
+#endif
+#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 13))
+    0,                              /* tp_versions_used */
 #endif
 };
 
@@ -6315,6 +6327,9 @@ static PyTypeObject Normalizer_Type = {
 #endif
 #if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12))
     0,                              /* tp_watched */
+#endif
+#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 13))
+    0,                              /* tp_versions_used */
 #endif
 };
 

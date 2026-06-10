@@ -4,9 +4,19 @@ DONT_BUILD=""
 WITH_ASAN=""
 BUILD_ARGS=""
 BUILD_DIR=""
+DONT_USE_LOCAL=""
+RJ_DIR="../yggdrasil_rapidjson"
+if [ ! -d ${RJ_DIR} ]; then
+    RJ_DIR="$(pwd)/yggdrasil-rapidjson"
+fi
 
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --dont-use-local )
+            RJ_DIR=""
+            DONT_USE_LOCAL="TRUE"
+	    shift # past argument with no value
+	    ;;
 	--dont-build )
 	    DONT_BUILD="TRUE"
 	    shift # past argument with no value
@@ -26,14 +36,22 @@ done
 if [ -n "$WITH_ASAN" ]; then
     export ASAN_OPTIONS=symbolize=1
     export ASAN_SYMBOLIZER_PATH=$(which llvm-symbolizer)
-    BUILD_ARGS="${BUILD_ARGS} --config-settings=cmake.define.YGG_BUILD_ASAN:BOOL=ON --config-settings=cmake.define.YGG_BUILD_UBSAN:BOOL=ON"
+    BUILD_ARGS="${BUILD_ARGS} --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_BUILD_ASAN:BOOL=ON --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_BUILD_UBSAN:BOOL=ON"
 fi
 if [ -n "$BUILD_DIR" ]; then
     BUILD_ARGS="${BUILD_ARGS} --config-settings=build-dir=${BUILD_DIR}"
 fi
 if [ ! -n "$DONT_BUILD" ]; then
-    pip install --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_INCLUDE_DIRS=../yggdrasil_rapidjson/include/ \
-	$BUILD_ARGS -v -e .
+    if [ -n "$RJ_DIR" ]; then
+        RJ_INSTALL_DIR="$RJ_DIR/_install_for_pyrj"
+        RJ_BUILD_DIR="$RJ_DIR/_build_for_pyrj"
+        ./install_local_rapidjson.sh --rj-dir $RJ_DIR --install-dir $RJ_INSTALL_DIR --build-dir $RJ_BUILD_DIR
+        pip install \
+            --config-settings=cmake.define.CMAKE_PREFIX_PATH=$RJ_INSTALL_DIR \
+	    $BUILD_ARGS -v -e .
+    else
+        pip install $BUILD_ARGS -v -e .
+    fi
 fi
 
 if [ -n "$WITH_ASAN" ]; then

@@ -334,20 +334,30 @@ class TestPly:
             assert x != cls()
 
     def test_as_dict(self, x, y, result):
-        assert x.as_dict() == result['dict']
-        assert y.as_dict() == result['dict']
-        assert x.as_dict() == y.as_dict()
+        x_dict = x.as_dict()
+        y_dict = y.as_dict()
+        assert x_dict == result['dict']
+        assert y_dict == result['dict']
+        assert x_dict == y_dict
+        z = type(x).from_dict(x_dict)
+        assert z == x
+        # assert z.mesh == x.mesh
 
-    def test_as_dict_array(self, x, y, result, requires_vertex):
-        np.testing.assert_array_equal(x.as_dict(as_array=True)['vertex'],
-                                      result['arr']['vertex'])
-        np.testing.assert_array_equal(y.as_dict(as_array=True)['vertex'],
-                                      result['arr']['vertex'])
+    def test_as_array_dict(self, x, y, result, requires_vertex):
         x_arr = x.as_dict(as_array=True)
         y_arr = y.as_dict(as_array=True)
+        x_alt = x.as_array_dict()
         assert list(x_arr.keys()) == list(y_arr.keys())
+        assert list(x_alt.keys()) == list(x_arr.keys())
         for k in x_arr.keys():
+            np.testing.assert_array_equal(x_arr[k], result['arr'][k])
+            np.testing.assert_array_equal(y_arr[k], result['arr'][k])
             np.testing.assert_array_equal(x_arr[k], y_arr[k])
+            np.testing.assert_array_equal(x_alt[k], x_arr[k])
+        z = type(x).from_dict(x_arr)
+        z_alt = type(x).from_array_dict(x_alt)
+        assert z.mesh == x.mesh
+        assert z_alt.mesh == x.mesh
 
     def test_from_dict(self, cls, x, y, args, kwargs):
         if not args:

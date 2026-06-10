@@ -67,9 +67,9 @@ static PyObject* ply__setstate__(PyObject* self, PyObject* state);
 static void objwavefront_dealloc(PyObject* self);
 static PyObject* objwavefront_new(PyTypeObject* type, PyObject* args, PyObject* kwargs);
 static int objwavefront_add_elements_from_dict(PyObject *self, PyObject* kwargs, bool preserveOrder=false);
-static int objwavefront_add_elements_from_list(PyObject *self, PyObject* kwargs);
-static int objwavefront_add_element_from_python(PyObject* self, PyObject* x, std::string name="");
-static PyObject* objwavefront_element2dict(const ObjElement* x, bool includeCode=false);
+static int objwavefront_add_elements_from_list(PyObject *self, PyObject* kwargs, bool dontInc=false);
+static int objwavefront_add_element_from_python(PyObject* self, PyObject* x, std::string name="", bool dontInc=false);
+static PyObject* objwavefront_element2dict(const ObjElement* x, bool includeCode=false, bool dontDec=false);
 static PyObject* objwavefront_richcompare(PyObject *self, PyObject *other, int op);
 static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObject* kwargs);
 static PyObject* objwavefront_add_elements(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -551,7 +551,7 @@ static PyMethodDef objwavefront_methods[] = {
      METH_VARARGS | METH_KEYWORDS,
      "Get all elements of a given type."},
     {"add_elements", (PyCFunction) objwavefront_add_elements,
-     METH_VARARGS, "Add elements of a given type."},
+     METH_VARARGS | METH_KEYWORDS, "Add elements of a given type."},
     {"as_trimesh", (PyCFunction) objwavefront_as_trimesh,
      METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a Trimesh mesh."},
@@ -571,10 +571,10 @@ static PyMethodDef objwavefront_methods[] = {
      METH_VARARGS | METH_CLASS,
      "Create a ObjWavefront instance from a dictionary of element arrays."},
     {"as_list", (PyCFunction) objwavefront_as_list,
-     METH_NOARGS,
+     METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a list of elements."},
     {"from_list", (PyCFunction) objwavefront_from_list,
-     METH_VARARGS | METH_CLASS,
+     METH_VARARGS | METH_KEYWORDS | METH_CLASS,
      "Create a ObjWavefront instance from a list of elements."},
     {"as_mesh", (PyCFunction) objwavefront_as_mesh,
      METH_NOARGS,
@@ -1391,7 +1391,7 @@ static PyObject* ply_as_trimesh(PyObject* self, PyObject*, PyObject* kwargs) {
     Py_DECREF(mesh_dict);
     return out;
 }
-static PyObject* ply_from_trimesh(PyObject* cls, PyObject* args, PyObject*) {
+static PyObject* ply_from_trimesh(PyObject* cls, PyObject* args, PyObject* kwargs) {
     PyObject* solf = NULL;
     if (!PyArg_ParseTuple(args, "O:", &solf))
 	return NULL;
@@ -1404,19 +1404,8 @@ static PyObject* ply_from_trimesh(PyObject* cls, PyObject* args, PyObject*) {
 	Py_DECREF(geom_kwargs);
 	return NULL;
     }
-    PyObject* dict_kwargs = PyDict_New();
-    if (dict_kwargs == NULL) {
-	Py_DECREF(dict_args);
-	return NULL;
-    }
-    if (PyDict_SetItemString(dict_kwargs, "as_array", Py_True) < 0) {
-	Py_DECREF(dict_args);
-	Py_DECREF(dict_kwargs);
-	return NULL;
-    }
-    PyObject* out = ply_from_dict(cls, dict_args, dict_kwargs);
+    PyObject* out = ply_from_dict(cls, dict_args, kwargs);
     Py_DECREF(dict_args);
-    Py_DECREF(dict_kwargs);
     return out;
 }
 
@@ -1510,7 +1499,7 @@ static PyObject* ply_as_dict(PyObject* self, PyObject* args, PyObject* kwargs) {
 }
 
 
-static PyObject* ply_from_dict(PyObject* type, PyObject* args, PyObject*) {
+static PyObject* ply_from_dict(PyObject* type, PyObject* args, PyObject* kwargs) {
     PyObject* inDict = NULL;
     
     if (!PyArg_ParseTuple(args, "O:", &inDict))
@@ -1521,11 +1510,7 @@ static PyObject* ply_from_dict(PyObject* type, PyObject* args, PyObject*) {
 	return NULL;
     }
 
-    PyObject* emptyArgs = PyTuple_New(0);
-
-    PyObject* out = ply_new((PyTypeObject*)type, emptyArgs, inDict);
-    
-    Py_DECREF(emptyArgs);
+    PyObject* out = ply_new((PyTypeObject*)type, args, kwargs);
     
     return out;
     
@@ -1550,22 +1535,7 @@ cleanup:
     return out;
 }
 static PyObject* ply_from_array_dict(PyObject* type, PyObject* args, PyObject* kwargs) {
-    bool dec_kwargs = false;
-    PyObject* out = NULL;
-    if (kwargs == NULL) {
-	kwargs = PyDict_New();
-	dec_kwargs = true;
-	if (kwargs == NULL)
-	    return NULL;
-    }
-    if (PyDict_SetItemString(kwargs, "as_array", Py_True) < 0) {
-	goto cleanup;
-    }
-    out = ply_from_dict(type, args, kwargs);
-cleanup:
-    if (dec_kwargs)
-	Py_DECREF(kwargs);
-    return out;
+    return ply_from_dict(type, args, kwargs);
 }
 
 #define VECTOR2LIST_(T, meth, args)					\
@@ -2329,6 +2299,27 @@ static int objwavefront_add_elements_from_dict(PyObject *self, PyObject* kwargs,
 	PyObject *key, *value;
 	Py_ssize_t pos = 0;
 	std::vector<std::string> skip, delayed;
+        
+        PyObject *nested_kwargs = NULL;
+        std::vector<std::string> nested_keys = {
+            "dont_normalize_indices"
+        };
+        for (std::vector<std::string>::iterator it = nested_keys.begin();
+             it != nested_keys.end(); it++) {
+            value = PyDict_GetItemString(kwargs, it->c_str());
+            if (value == NULL) continue;
+            if (nested_kwargs == NULL) {
+                nested_kwargs = PyDict_New();
+                if (nested_kwargs == NULL) {
+                    return -1;
+                }
+            }
+            if (PyDict_SetItemString(nested_kwargs, it->c_str(), value) < 0) {
+                Py_XDECREF(nested_kwargs);
+                return -1;
+            }
+            skip.push_back(*it);
+        }
 
 	// Do comments & vertices first
 	if (!preserveOrder) {
@@ -2338,8 +2329,9 @@ static int objwavefront_add_elements_from_dict(PyObject *self, PyObject* kwargs,
 		value = PyDict_GetItemString(kwargs, it->c_str());
 		if (value == NULL) continue;
 		PyObject* iargs = Py_BuildValue("(sO)", it->c_str(), value);
-		if (objwavefront_add_elements(self, iargs, NULL) == NULL) {
+		if (objwavefront_add_elements(self, iargs, nested_kwargs) == NULL) {
 		    Py_DECREF(iargs);
+                    Py_XDECREF(nested_kwargs);
 		    return -1;
 		}
 		Py_DECREF(iargs);
@@ -2365,7 +2357,7 @@ static int objwavefront_add_elements_from_dict(PyObject *self, PyObject* kwargs,
 		continue;
 	    }
 	    PyObject* iargs = Py_BuildValue("(OO)", key, value);
-	    if (objwavefront_add_elements(self, iargs, NULL) == NULL) {
+	    if (objwavefront_add_elements(self, iargs, nested_kwargs) == NULL) {
 		Py_DECREF(iargs);
                 error = true;
                 break;
@@ -2373,21 +2365,26 @@ static int objwavefront_add_elements_from_dict(PyObject *self, PyObject* kwargs,
 	    Py_DECREF(iargs);
 	}
         YGGDRASIL_PYGIL_CRITICAL_END();
-        if (error) return -1;
+        if (error) {
+            Py_XDECREF(nested_kwargs);
+            return -1;
+        }
 	for (std::vector<std::string>::iterator it = delayed.begin();
 	     it != delayed.end(); it++) {
 	    value = PyDict_GetItemString(kwargs, it->c_str());
 	    PyObject* iargs = Py_BuildValue("(sO)", it->c_str(), value);
-	    if (objwavefront_add_elements(self, iargs, NULL) == NULL) {
+	    if (objwavefront_add_elements(self, iargs, nested_kwargs) == NULL) {
 		Py_DECREF(iargs);
+                Py_XDECREF(nested_kwargs);
 		return -1;
 	    }
 	    Py_DECREF(iargs);
 	}
+        Py_XDECREF(nested_kwargs);
     }
     return 0;
 }
-static int objwavefront_add_elements_from_list(PyObject *self, PyObject* inList) {
+static int objwavefront_add_elements_from_list(PyObject *self, PyObject* inList, bool dontInc) {
     if (!PyList_Check(inList)) {
 	PyErr_SetString(PyExc_TypeError, "Argument must be a list.");
 	return -1;
@@ -2395,7 +2392,7 @@ static int objwavefront_add_elements_from_list(PyObject *self, PyObject* inList)
     for (Py_ssize_t i = 0; i < PyList_Size(inList); i++) {
 	PyObject* item = PyList_GetItemRef(inList, i);
 	if (item == NULL) return -1;
-	if (objwavefront_add_element_from_python(self, item, "") < 0) {
+	if (objwavefront_add_element_from_python(self, item, "", dontInc) < 0) {
             Py_DECREF(item);
 	    return -1;
         }
@@ -2403,7 +2400,7 @@ static int objwavefront_add_elements_from_list(PyObject *self, PyObject* inList)
     }
     return 0;
 }
-static int objwavefront_add_element_from_python(PyObject* self, PyObject* x, std::string name) {
+static int objwavefront_add_element_from_python(PyObject* self, PyObject* x, std::string name, bool dontInc) {
     if (x == NULL)
 	return -1;
     ObjWavefrontObject* v = (ObjWavefrontObject*) self;
@@ -2524,9 +2521,9 @@ static int objwavefront_add_element_from_python(PyObject* self, PyObject* x, std
 #define HANDLE_SET_(type, ELEMENT)					\
 	bool iresult = false;						\
 	if (src_is_dict) {						\
-	    iresult = ELEMENT->set_property(src_key, ivalue, true);	\
+	    iresult = ELEMENT->set_property(src_key, ivalue, (!dontInc)); \
 	} else {							\
-	    iresult = ELEMENT->set_property(src_idx, ivalue, true);	\
+	    iresult = ELEMENT->set_property(src_idx, ivalue, (!dontInc)); \
 	}								\
 	if (!iresult) {							\
 	    PyErr_SetString(geom_error, "Error adding " type " value to ObjWavefront element"); \
@@ -2704,7 +2701,7 @@ static int objwavefront_add_element_from_python(PyObject* self, PyObject* x, std
     }
     return 0;
 }
-static PyObject* objwavefront_element2dict(const ObjElement* x, bool includeCode) {
+static PyObject* objwavefront_element2dict(const ObjElement* x, bool includeCode, bool dontDec) {
     PyObject* out = PyDict_New();
     if (out == NULL)
 	return NULL;
@@ -2733,7 +2730,7 @@ static PyObject* objwavefront_element2dict(const ObjElement* x, bool includeCode
 	    }
 #define GET_ARRAY_(type, method)					\
 	    std::vector<type> values;					\
-	    if (!p->get(values, true)) {				\
+	    if (!p->get(values, (!dontDec))) {                          \
 		Py_DECREF(ival);					\
 		Py_DECREF(out);						\
 		return NULL;						\
@@ -2768,7 +2765,7 @@ static PyObject* objwavefront_element2dict(const ObjElement* x, bool includeCode
 #undef GET_ARRAY_
 #define GET_SCALAR_(type, method)					\
 	    type value;							\
-	    if (!p->get(value, true)) {					\
+	    if (!p->get(value, (!dontDec))) {                           \
 		Py_DECREF(out);						\
 		return NULL;						\
 	    }								\
@@ -2851,7 +2848,7 @@ static PyObject* objwavefront_richcompare(PyObject *self, PyObject *other, int o
 
 static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObject* kwargs) {
     const char* elementType0 = 0;
-    int asArray = 0, integerColors = 0;
+    int asArray = 0, integerColors = 0, dontDec = 0;
     PyObject* defaultRet = NULL;
     
     static char const* kwlist[] = {
@@ -2859,13 +2856,14 @@ static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObj
 	"default",
 	"as_array",
         "integer_colors",
+        "dont_normalize_indices",
         NULL
     };
     
     
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|Opp:", (char**) kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|Oppp:", (char**) kwlist,
 				     &elementType0, &defaultRet, &asArray,
-                                     &integerColors))
+                                     &integerColors, &dontDec))
 	return NULL;
 
     std::string elementType = obj_alias2base(std::string(elementType0));
@@ -2884,11 +2882,31 @@ static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObj
     
     PyObject* out = NULL;
     
-    if (asArray) {
+    // TODO: Need to add method for determining if an element can be an
+    //   array/string array
+    bool canBeArray = false;
+    if (asArray) {  //  && elementType != "comment") {
+        canBeArray = true;
+	for (std::vector<ObjElement*>::const_iterator elit = v->obj->elements.begin(); elit != v->obj->elements.end(); elit++) {
+	    if ((*elit)->code == elementType) {
+                for (ObjPropertiesMap::const_iterator p = (*elit)->properties.begin();
+                     p != (*elit)->properties.end(); p++) {
+                    if(!(_type_compatible_double(p->second) ||
+                         _type_compatible_int(p->second))) {
+                        canBeArray = false;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    if (asArray && canBeArray) {
 	
 #define GET_ARRAY(T, npT)						\
 	size_t N = 0, M = 0;						\
-	std::vector<T> vect = v->obj->get_ ## T ## _array(elementType, N, M, true, true); \
+	std::vector<T> vect = v->obj->get_ ## T ## _array(elementType, N, M, true, (!dontDec)); \
 	PyArray_Descr* desc = PyArray_DescrNewFromType(npT);		\
 	if (desc == NULL) return NULL;					\
 	npy_intp np_shape[2] = { (npy_intp)N, (npy_intp)M };		\
@@ -2914,7 +2932,7 @@ static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObj
 	Py_ssize_t i = 0;
 	for (std::vector<ObjElement*>::const_iterator elit = v->obj->elements.begin(); elit != v->obj->elements.end(); elit++) {
 	    if ((*elit)->code != elementType) continue;
-	    PyObject* item = objwavefront_element2dict(*elit);
+	    PyObject* item = objwavefront_element2dict(*elit, false, dontDec);
 	    if (item == NULL) {
 		Py_DECREF(out);
 		return NULL;
@@ -2932,12 +2950,20 @@ static PyObject* objwavefront_get_elements(PyObject* self, PyObject* args, PyObj
     
 }
 
-static PyObject* objwavefront_add_elements(PyObject* self, PyObject* args, PyObject*) {
-    // TODO: Get double & int values to ignore, maybe flag for skipping inc
+static PyObject* objwavefront_add_elements(PyObject* self, PyObject* args, PyObject* kwargs) {
+    // TODO: Get double & int values to ignore?
     const char* name0 = 0;
     PyObject* x = NULL;
-    
-    if (!PyArg_ParseTuple(args, "sO:", &name0, &x))
+    int dontInc = 0;
+    static char const* kwlist[] = {
+        "name",
+        "elements",
+        "dont_normalize_indices",
+        NULL
+    };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO|p:", (char**) kwlist,
+                                     &name0, &x, &dontInc))
 	return NULL;
 
     std::string name(name0);
@@ -2957,7 +2983,7 @@ static PyObject* objwavefront_add_elements(PyObject* self, PyObject* args, PyObj
     if (PyList_Check(x)) {
 	for (Py_ssize_t i = 0; i < PyList_Size(x); i++) {
 	    PyObject* item = PyList_GetItemRef(x, i);
-	    if (objwavefront_add_element_from_python(self, item, name) < 0) {
+	    if (objwavefront_add_element_from_python(self, item, name, dontInc) < 0) {
                 Py_DECREF(item);
 		return NULL;
             }
@@ -2991,7 +3017,10 @@ static PyObject* objwavefront_add_elements(PyObject* self, PyObject* args, PyObj
 	} else {
 	    int* xa = (int*)PyArray_BYTES((PyArrayObject*)x2);
 	    int ignore = -1;
-	    v->obj->add_element_set(name, xa, xn, xm, &ignore, true);
+            if (dontInc) {
+                ignore = 0;
+            }
+	    v->obj->add_element_set(name, xa, xn, xm, &ignore, (!dontInc));
 	}
 	Py_DECREF(x2);
     } else {
@@ -3027,11 +3056,11 @@ static PyObject* objwavefront_as_trimesh(PyObject* self, PyObject*, PyObject* kw
     PyObject* mesh_dict = objwavefront_as_dict(self, dict_args, dict_kwargs);
     Py_DECREF(dict_args);
     Py_DECREF(dict_kwargs);
-    PyObject* out = dict2trimesh(mesh_dict, kwargs, true);
+    PyObject* out = dict2trimesh(mesh_dict, kwargs);
     Py_DECREF(mesh_dict);
     return out;
 }
-static PyObject* objwavefront_from_trimesh(PyObject* cls, PyObject* args, PyObject*) {
+static PyObject* objwavefront_from_trimesh(PyObject* cls, PyObject* args, PyObject* kwargs) {
     PyObject* solf = NULL;
     if (!PyArg_ParseTuple(args, "O:", &solf))
 	return NULL;
@@ -3044,34 +3073,24 @@ static PyObject* objwavefront_from_trimesh(PyObject* cls, PyObject* args, PyObje
 	Py_DECREF(geom_kwargs);
 	return NULL;
     }
-    PyObject* dict_kwargs = PyDict_New();
-    if (dict_kwargs == NULL) {
-	Py_DECREF(dict_args);
-	return NULL;
-    }
-    if (PyDict_SetItemString(dict_kwargs, "as_array", Py_True) < 0) {
-	Py_DECREF(dict_args);
-	Py_DECREF(dict_kwargs);
-	return NULL;
-    }
-    PyObject* out = objwavefront_from_dict(cls, dict_args, dict_kwargs);
+    PyObject* out = objwavefront_from_dict(cls, dict_args, kwargs);
     Py_DECREF(dict_args);
-    Py_DECREF(dict_kwargs);
     return out;
 }
 
 static PyObject* objwavefront_as_dict(PyObject* self, PyObject* args, PyObject* kwargs) {
-    int asArray = 0, integerColors = 0;
+    int asArray = 0, integerColors = 0, dontDec = 0;
     
     static char const* kwlist[] = {
 	"as_array",
         "integer_colors",
+        "dont_normalize_indices",
         NULL
     };
     
     
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|pp:", (char**) kwlist,
-				     &asArray, &integerColors))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|ppp:", (char**) kwlist,
+				     &asArray, &integerColors, &dontDec))
 	return NULL;
 
     ObjWavefrontObject* v = (ObjWavefrontObject*) self;
@@ -3120,7 +3139,7 @@ static PyObject* objwavefront_as_dict(PyObject* self, PyObject* args, PyObject* 
 }
 
 
-static PyObject* objwavefront_from_dict(PyObject* type, PyObject* args, PyObject*) {
+static PyObject* objwavefront_from_dict(PyObject* type, PyObject* args, PyObject* kwargs) {
     PyObject* inDict = NULL;
     
     if (!PyArg_ParseTuple(args, "O:", &inDict))
@@ -3131,27 +3150,21 @@ static PyObject* objwavefront_from_dict(PyObject* type, PyObject* args, PyObject
 	return NULL;
     }
 
-    PyObject* emptyArgs = PyTuple_New(0);
+    return objwavefront_new((PyTypeObject*)type, args, kwargs);
 
-    PyObject* out = objwavefront_new((PyTypeObject*)type, emptyArgs, inDict);
-    
-    Py_DECREF(emptyArgs);
-    
-    return out;
-    
 }
 
 static PyObject* objwavefront_as_array_dict(PyObject* self, PyObject* args, PyObject* kwargs) {
     bool dec_kwargs = false;
     PyObject* out = NULL;
     if (kwargs == NULL) {
-	kwargs = PyDict_New();
-	dec_kwargs = true;
-	if (kwargs == NULL)
-	    return NULL;
+        kwargs = PyDict_New();
+        dec_kwargs = true;
+        if (kwargs == NULL)
+            return NULL;
     }
     if (PyDict_SetItemString(kwargs, "as_array", Py_True) < 0) {
-	goto cleanup;
+        goto cleanup;
     }
     out = objwavefront_as_dict(self, args, kwargs);
 cleanup:
@@ -3160,25 +3173,18 @@ cleanup:
     return out;
 }
 static PyObject* objwavefront_from_array_dict(PyObject* type, PyObject* args, PyObject* kwargs) {
-    bool dec_kwargs = false;
-    PyObject* out = NULL;
-    if (kwargs == NULL) {
-	kwargs = PyDict_New();
-	dec_kwargs = true;
-	if (kwargs == NULL)
-	    return NULL;
-    }
-    if (PyDict_SetItemString(kwargs, "as_array", Py_True) < 0) {
-	goto cleanup;
-    }
-    out = objwavefront_from_dict(type, args, kwargs);
-cleanup:
-    if (dec_kwargs)
-	Py_DECREF(kwargs);
-    return out;
+    return objwavefront_from_dict(type, args, kwargs);
 }
 
-static PyObject* objwavefront_as_list(PyObject* self, PyObject*, PyObject*) {
+static PyObject* objwavefront_as_list(PyObject* self, PyObject* args, PyObject* kwargs) {
+    int dontDec = 0;
+    static char const* kwlist[] = {
+        "dont_normalize_indices",
+        NULL
+    };
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|p:", (char**) kwlist,
+                                     &dontDec))
+        return NULL;
     ObjWavefrontObject* v = (ObjWavefrontObject*) self;
     PyObject* out = PyList_New(v->obj->elements.size());
     if (out == NULL)
@@ -3186,7 +3192,7 @@ static PyObject* objwavefront_as_list(PyObject* self, PyObject*, PyObject*) {
     Py_ssize_t i = 0;
     for (std::vector<ObjElement*>::const_iterator it = v->obj->elements.begin();
 	 it != v->obj->elements.end(); it++, i++) {
-	PyObject* element = objwavefront_element2dict(*it, true);
+	PyObject* element = objwavefront_element2dict(*it, true, dontDec);
 	if (element == NULL) {
 	    Py_DECREF(out);
 	    return NULL;
@@ -3199,10 +3205,17 @@ static PyObject* objwavefront_as_list(PyObject* self, PyObject*, PyObject*) {
     return out;
 }
 
-static PyObject* objwavefront_from_list(PyObject* type, PyObject* args, PyObject*) {
+static PyObject* objwavefront_from_list(PyObject* type, PyObject* args, PyObject* kwargs) {
     PyObject* inList = NULL;
+    int dontInc = 0;
+    static char const* kwlist[] = {
+        "elements",
+        "dont_normalize_indices",
+        NULL
+    };
     
-    if (!PyArg_ParseTuple(args, "O:", &inList))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|p:", (char**) kwlist,
+                                     &inList, &dontInc))
 	return NULL;
 
     PyObject* emptyArgs = PyTuple_New(0);
@@ -3212,7 +3225,7 @@ static PyObject* objwavefront_from_list(PyObject* type, PyObject* args, PyObject
     if (out == NULL)
 	return NULL;
 
-    if (objwavefront_add_elements_from_list(out, inList) < 0)
+    if (objwavefront_add_elements_from_list(out, inList, dontInc) < 0)
 	return NULL;
     
     return out;

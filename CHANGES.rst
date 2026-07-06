@@ -4,6 +4,17 @@ Changes
 yggdrasil-python-rapidjson
 ==========================
 
+1.21.0.2 (2026-07-XX)
+~~~~~~~~~~~~~~~~~~~~~
+
+This update includes some package maintenance and dependency updates.
+
+* Update the conda recipe to use the yggdrasil-rapidjson version
+* Update CMakeLists.txt to use updated yggdrasil-rapidjson package configuration
+
+TOOD:
+* Fix bug in tests for pandas >=3.0.0
+
 1.21.0.1 (2025-11-12)
 ~~~~~~~~~~~~~~~~~~~~~
 

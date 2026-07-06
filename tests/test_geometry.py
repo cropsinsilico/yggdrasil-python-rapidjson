@@ -232,14 +232,17 @@ def mesh_args_factory(mesh_base, mesh_array, mesh_dict):
 
 
 class TestPly:
+    @classmethod
     @pytest.fixture(scope="class")
-    def cls(self):
+    def cls(testcls):
         return geometry.Ply
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def isObj(self, cls):
+    def isObj(testcls, cls):
         return (cls == geometry.ObjWavefront)
 
+    @classmethod
     @pytest.fixture(scope="class", params=[
         ({'args': []}),
         ({'args': ['vertices']}),
@@ -262,31 +265,37 @@ class TestPly:
         ({'args': ['vertices', 'faces', 'edges'], 'as_list': True}),
         ({'args': ['vertices'], 'kwargs': ['edges'], 'as_list': True}),
     ])
-    def factory_options(self, request, cls, isObj):
+    def factory_options(testcls, request, cls, isObj):
         return dict(request.param, obj=isObj)
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def parameters(self, mesh_args_factory, factory_options):
+    def parameters(testcls, mesh_args_factory, factory_options):
         return mesh_args_factory(**factory_options)
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def args(self, parameters):
+    def args(testcls, parameters):
         return parameters[0]
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def kwargs(self, parameters):
+    def kwargs(testcls, parameters):
         return parameters[1]
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def result(self, parameters):
+    def result(testcls, parameters):
         return parameters[2]
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def x(self, cls, args, kwargs):
+    def x(testcls, cls, args, kwargs):
         return cls(*args, **kwargs)
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def y(self, cls, args, kwargs):
+    def y(testcls, cls, args, kwargs):
         y = cls()
         for k, v in zip(['vertex', 'face', 'edge'], args):
             y.add_elements(k, v)
@@ -294,27 +303,31 @@ class TestPly:
             y.add_elements(k, v)
         return cls(*args, **kwargs)
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def requires_vertex(self, result):
+    def requires_vertex(testcls, result):
         if 'vertex' not in result['dict']:
             pytest.skip("requires vertex data")
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def requires_face(self, result):
+    def requires_face(testcls, result):
         if 'face' not in result['dict']:
             pytest.skip("requires face data")
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def without_colors(self, factory_options):
+    def without_colors(testcls, factory_options):
         if factory_options.get('with_colors', False):
             pytest.skip("requires no colors")
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def without_array(self, factory_options):
+    def without_array(testcls, factory_options):
         if factory_options.get('as_array', False):
             pytest.skip("requires no as_array")
 
-    def test_key_access(self, x, y, result):
+    def test_key_access(testcls, x, y, result):
         with pytest.raises(KeyError):
             x['invalid']
         assert 'invalid' not in x
@@ -606,8 +619,9 @@ def test_Ply_color(mesh_args_factory, factory_options):
 
 
 class TestObj(TestPly):
+    @classmethod
     @pytest.fixture(scope="class")
-    def cls(self):
+    def cls(testcls):
         return geometry.ObjWavefront
 
 

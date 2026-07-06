@@ -29,6 +29,7 @@ def test_submodule_units():
 # ///////////
 
 class TestUnits:
+    @classmethod
     @pytest.fixture(scope="class", params=[
         ("kg", "kg"),
         ("°C", "degC"),
@@ -39,11 +40,12 @@ class TestUnits:
         ("100%", "100%"),
         ("fraction", "100%"),
     ])
-    def options(self, request):
+    def options(testcls, request):
         return request.param
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def x(self, options):
+    def x(testcls, options):
         return units.Units(options[0])
 
     def test_str(self, x, options):
@@ -99,10 +101,12 @@ class TestUnits:
 # //////////////
 
 class TestQuantity:
+    @classmethod
     @pytest.fixture(scope="class")
-    def cls(self):
+    def cls(testcls):
         return units.Quantity
 
+    @classmethod
     @pytest.fixture(scope="class", params=[
         ({'args': (5.5, ),
           'units_equiv': 'n/a',
@@ -125,73 +129,86 @@ class TestQuantity:
         ({'args': (int(1), "mol"),
           'args_compat': (int(1e6), "umol")}),
     ])
-    def options(self, request):
+    def options(testcls, request):
         return request.param
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def value(self):
+    def value(testcls):
         return 3
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def equals(self):
+    def equals(testcls):
         def wrapped_equals(x, y):
             return (x == y)
         return wrapped_equals
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def assert_equal(self):
+    def assert_equal(testcls):
         def wrapped_assert_equal(x, y):
             assert x == y
         return wrapped_assert_equal
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def assert_close(self):
+    def assert_close(testcls):
         def wrapped_assert_close(x, y):
             return np.isclose(x, y)
         return wrapped_assert_close
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def args(self, options):
+    def args(testcls, options):
         return options['args']
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def args_equiv(self, options):
+    def args_equiv(testcls, options):
         if 'units_equiv' not in options:
             pytest.skip("requires args_equiv")
         return (options['args'][0], options['units_equiv'])
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def args_compat(self, options):
+    def args_compat(testcls, options):
         if 'args_compat' not in options:
             pytest.skip("requires args_compat")
         return options['args_compat']
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def units_compat(self, options):
+    def units_compat(testcls, options):
         if 'args_compat' not in options:
             pytest.skip("requires args_compat")
         return options['args_compat'][1]
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def units_incompat(self, options):
+    def units_incompat(testcls, options):
         if 'units_incompat' not in options:
             pytest.skip("requires units_incompat")
         return options['units_incompat']
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def x(self, cls, args):
+    def x(testcls, cls, args):
         return cls(*args)
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def x_equiv(self, cls, args_equiv):
+    def x_equiv(testcls, cls, args_equiv):
         return cls(*args_equiv)
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def x_compat(self, cls, args_compat):
+    def x_compat(testcls, cls, args_compat):
         return cls(*args_compat)
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def x_incompat(self, cls, args, units_incompat):
+    def x_incompat(testcls, cls, args, units_incompat):
         return cls(args[0], units_incompat)
 
     def test_str(self, x):
@@ -379,10 +396,12 @@ class TestQuantity:
 # ///////////////////
 
 class TestQuantityArray(TestQuantity):
+    @classmethod
     @pytest.fixture(scope="class")
-    def cls(self):
+    def cls(testcls):
         return units.QuantityArray
 
+    @classmethod
     @pytest.fixture(scope="class", params=[
         ({'args': ([0, 1, 2], 'cm'),
           'args_compat': ([0.0, 0.01, 0.02], 'm'),
@@ -411,21 +430,24 @@ class TestQuantityArray(TestQuantity):
           'units_equiv': 'mole',
           'units_incompat': 'cm'}),
     ])
-    def options(self, request):
+    def options(testcls, request):
         return request.param
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def value(self):
+    def value(testcls):
         return np.arange(1, 11, dtype=np.float32).reshape((2, 5))
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def equals(self):
+    def equals(testcls):
         def wrapped_equals(x, y):
             return np.array_equal(x, y)
         return wrapped_equals
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def assert_equal(self):
+    def assert_equal(testcls):
         def wrapped_assert_equal(x, y):
             if x.shape or y.shape:
                 assert np.array_equal(x, y)
@@ -433,8 +455,9 @@ class TestQuantityArray(TestQuantity):
                 assert x == y
         return wrapped_assert_equal
 
+    @classmethod
     @pytest.fixture(scope="class")
-    def assert_close(self):
+    def assert_close(testcls):
         def wrapped_assert_close(x, y):
             return np.allclose(x, y)
         return wrapped_assert_close
@@ -612,8 +635,9 @@ class TestQuantityArray(TestQuantity):
 
 class TestUnyt:
 
+    @classmethod
     @pytest.fixture(autouse=True, scope="class")
-    def unyt(self):
+    def unyt(testcls):
         try:
             import unyt as unyt_pkg
             return unyt_pkg

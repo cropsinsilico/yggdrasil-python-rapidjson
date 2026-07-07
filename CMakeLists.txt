@@ -45,17 +45,6 @@ message(STATUS "BEFORE: Python3_LIBRARIES = ${Python3_LIBRARIES}")
 find_package(YggdrasilRapidJSON)
 if(NOT YggdrasilRapidJSON_FOUND)
   message(WARNING "Could not locate the YggdrasilRapidJSON package via find_package, installing as an external project...")
-  # cmake_path(
-  #   APPEND CMAKE_CURRENT_SOURCE_DIR yggdrasil-rapidjson
-  #   OUTPUT_VARIABLE YggdrasilRapidJSON_SOURCE_DIR
-  # )
-  # cmake_path(
-  #   APPEND CMAKE_CURRENT_BINARY_DIR yggdrasil-rapidjson
-  #   OUTPUT_VARIABLE YggdrasilRapidJSON_BINARY_DIR
-  # )
-  # execute_process(
-  #   COMMAND ${CMAKE_COMMAND} 
-  # )
   set(YGGDRASIL_DISABLE_PYTHON_C_API_PREV "${YGGDRASIL_DISABLE_PYTHON_C_API}")
   set(YGGDRASIL_DISABLE_PYTHON_C_API ON)
   foreach(suffix BUILD_EXAMPLES BUILD_TESTS BUILD_DOC)
@@ -67,7 +56,8 @@ if(NOT YggdrasilRapidJSON_FOUND)
   FetchContent_Declare(
     YggdrasilRapidJSON
     GIT_REPOSITORY https://github.com/cropsinsilico/yggdrasil-rapidjson.git
-    GIT_TAG        origin/yggdrasil
+    # GIT_TAG        origin/yggdrasil
+    GIT_TAG        origin/bug_fixes  # TODO: Revert this before release
     OVERRIDE_FIND_PACKAGE
   )
   find_package(YggdrasilRapidJSON)

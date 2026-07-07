@@ -1351,6 +1351,8 @@ static PyObject* ply_add_elements(PyObject* self, PyObject* args, PyObject*) {
 	CASES_ARRAY_NPY_(uint, UINT, -1)
 	CASE_ARRAY_NPY_(float, NPY_FLOAT, NAN)
 	CASE_ARRAY_NPY_(double, NPY_DOUBLE, NAN)
+	CASE_ARRAY_NPY_(float, NPY_CFLOAT, NAN)
+	CASE_ARRAY_NPY_(double, NPY_CDOUBLE, NAN)
 	default: {
 	    Py_DECREF(x2);
 	    PyErr_SetString(PyExc_TypeError, "Unsupported numpy datatype.");

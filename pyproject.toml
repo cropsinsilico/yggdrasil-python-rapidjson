@@ -61,7 +61,7 @@ dev = [
 test = [
   'flake8',
   'mypy',
-  'pandas<3.0.0',  # Remove this pin after yggdrasil-rapidjson v1.1.0.5 released with fix
+  'pandas',
   'pytest',
   'pytz',
   'sphinx',

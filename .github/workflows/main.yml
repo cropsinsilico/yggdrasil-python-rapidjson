@@ -44,8 +44,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements-test.txt
-          pip install -v .
+          pip install -v '.[test]'
 
       - name: Tests
         run: |
@@ -75,8 +74,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements-test.txt
-          pip install --config-settings=cmake.build-type="Debug" --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_CHECK_PYREFS:BOOL=ON -v .
+          pip install --config-settings=cmake.build-type="Debug" --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_CHECK_PYREFS:BOOL=ON -v '.[test]'
 
       - run: |
           pytest -sv tests

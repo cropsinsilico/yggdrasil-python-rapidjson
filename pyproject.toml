@@ -41,7 +41,34 @@ dependencies = [
 requires-python = ">=3.9"
 
 [project.urls]
+Homepage = "https://cropsinsilico.github.io/yggdrasil-python-rapidjson"
+Documentation = "https://cropsinsilico.github.io/yggdrasil-python-rapidjson"
 Repository = "https://github.com/cropsinsilico/yggdrasil-python-rapidjson"
+Issues = "https://github.com/cropsinsilico/yggdrasil-python-rapidjson/issues"
+Changelog = "https://cropsinsilico.github.io/yggdrasil-python-rapidjson/blob/main/CHANGES.rst"
+
+[project.optional-dependencies]
+dev = [
+  'bump-my-version',
+  'readme-renderer',
+  'twine',
+  # For make benchmarks-*
+  'pytest-benchmark',
+  'pysimdjson',
+  'orjson',
+  'simplejson',
+  'ujson'
+]
+test = [
+  'flake8',
+  'mypy',
+  'pandas',
+  'pytest<3.4.0',
+  'pytz',
+  'sphinx',
+  'trimesh',
+  'unyt'
+]
 
 [tool.scikit-build]
 wheel.packages = ['yggdrasil-rapidjson']  # , 'yggdrasil-rapidjson-stubs']

@@ -28,7 +28,6 @@ classifiers = [
     "Programming Language :: C++",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -38,7 +37,7 @@ classifiers = [
 dependencies = [
     "numpy"
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 [project.urls]
 Homepage = "https://cropsinsilico.github.io/yggdrasil-python-rapidjson"
@@ -62,8 +61,8 @@ dev = [
 test = [
   'flake8',
   'mypy',
-  'pandas',
-  'pytest<3.4.0',
+  'pandas<3.0.0',  # Remove this pin after yggdrasil-rapidjson v1.1.0.5 released with fix
+  'pytest',
   'pytz',
   'sphinx',
   'trimesh',
@@ -94,7 +93,16 @@ content-type = "text/x-rst"
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 path = "README.rst"
 
-[tool.pytest]
+[tool.pytest.ini_options]
 norecursedirs = ["*.egg", ".tox", "rapidjson"]
+testpaths = "tests"
 addopts = ["--verbose", "-s", "--ignore=rapidjson/thirdparty"]
-filterwarnings = ["error"]
+filterwarnings = [
+  "error",
+  # Errors from trimesh use of pkgutil
+  "ignore:((.|\n)*)'pkgutil.find_loader' is deprecated and slated for removal((.|\n)*):DeprecationWarning:trimesh.*",
+  "ignore:((.|\n)*)datetime\\.datetime\\.utcfromtimestamp((.|\n)*):DeprecationWarning:pytz.*",
+  "ignore:((.|\n)*)datetime\\.datetime\\.utcfromtimestamp((.|\n)*):DeprecationWarning:pandas.*",
+  "ignore:((.|\n)*)datetime\\.datetime\\.utcfromtimestamp((.|\n)*):DeprecationWarning:dateutil.*",
+  "ignore:((.|\n)*)numpy\\.core\\.umath is deprecated and has been renamed to numpy\\._core\\.umath((.|\n)*):DeprecationWarning:unyt.*"
+]

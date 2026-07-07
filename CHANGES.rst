@@ -9,6 +9,7 @@ yggdrasil-python-rapidjson
 
 This update includes some package maintenance and dependency updates.
 
+* Drop support for Python 3.9
 * Update the conda recipe to use the yggdrasil-rapidjson version
 * Update CMakeLists.txt to use updated yggdrasil-rapidjson package configuration
 

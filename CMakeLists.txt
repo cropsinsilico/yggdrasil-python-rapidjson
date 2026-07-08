@@ -70,9 +70,7 @@ else()
     FetchContent_Declare(
       YggdrasilRapidJSON
       GIT_REPOSITORY https://github.com/cropsinsilico/yggdrasil-rapidjson.git
-      # GIT_TAG          v1.1.0.3
-      # GIT_TAG        origin/yggdrasil
-      GIT_TAG        origin/bug_fixes  # TODO: Revert this before release
+      GIT_TAG        origin/yggdrasil
       EXCLUDE_FROM_ALL
       OVERRIDE_FIND_PACKAGE
     )

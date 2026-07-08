@@ -35,6 +35,35 @@ Tag of version with YggdrasilRapidJSON extension features
 python-rapidjson
 ================
 
+1.24 (unreleased)
+~~~~~~~~~~~~~~~~~
+
+* Fix error handling after ``PyList_SetItem()`` calls (`issue 231`__)
+
+  __ https://github.com/python-rapidjson/python-rapidjson/issues/231
+
+* Fix error handling after ``PyList_Append()`` calls (`issue 232`__)
+
+  __ https://github.com/python-rapidjson/python-rapidjson/issues/232
+
+
+1.23 (2025-12-07)
+~~~~~~~~~~~~~~~~~
+
+* Fix serialization bug when using ``MM_COERCE_KEYS_TO_STRINGS`` together with
+  ``sort_keys=True`` (`issue #229`__)
+
+  __ https://github.com/python-rapidjson/python-rapidjson/issues/229
+
+
+1.22 (2025-10-21)
+~~~~~~~~~~~~~~~~~
+
+* Generate wheels on PyPI using Python 3.14 final release, thanks to cibuildwheel `3.2.1`__
+
+  __ https://cibuildwheel.pypa.io/en/stable/changelog/#v321
+
+
 1.21 (2025-07-10)
 ~~~~~~~~~~~~~~~~~
 

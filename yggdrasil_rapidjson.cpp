@@ -3,7 +3,7 @@
 // :Author:    Ken Robbins <ken@kenrobbins.com>
 // :License:   MIT License
 // :Copyright: © 2015 Ken Robbins
-// :Copyright: © 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 Lele Gaifax
+// :Copyright: © 2015-2026 Lele Gaifax
 //
 
 #ifndef _USE_MATH_DEFINES
@@ -1268,8 +1268,11 @@ struct PyHandler {
                     return false;
                 }
             } else {
-                PyList_Append(current.object, value);
+                int rc = PyList_Append(current.object, value);
                 Py_DECREF(value);
+                if (rc == -1) {
+                    return false;
+                }
             }
         } else {
             root = value;
@@ -1423,11 +1426,11 @@ struct PyHandler {
 
                     rc = PyList_SetItem(current.object, listLen - 1, pair);
 
-                    // NB: PyList_SetItem() steals a reference on the replacement, so it
-                    // must not be DECREFed when the operation succeeds
+                    // NB: PyList_SetItem() always steals a reference on the replacement,
+                    // even in case of error:
+                    // https://docs.python.org/3/c-api/list.html#c.PyList_SetItem
 
                     if (rc == -1) {
-                        Py_DECREF(pair);
                         return false;
                     }
                 } else {
@@ -1448,11 +1451,11 @@ struct PyHandler {
                 Py_ssize_t listLen = PyList_GET_SIZE(current.object);
                 int rc = PyList_SetItem(current.object, listLen - 1, replacement);
 
-                // NB: PyList_SetItem() steals a reference on the replacement, so it must
-                // not be DECREFed when the operation succeeds
+                // NB: PyList_SetItem() always steals a reference on the replacement,
+                // even in case of error:
+                // https://docs.python.org/3/c-api/list.html#c.PyList_SetItem
 
                 if (rc == -1) {
-                    Py_DECREF(replacement);
                     return false;
                 }
             }
@@ -1548,11 +1551,11 @@ struct PyHandler {
                 Py_ssize_t listLen = PyList_GET_SIZE(current.object);
                 int rc = PyList_SetItem(current.object, listLen - 1, replacement);
 
-                // NB: PyList_SetItem() steals a reference on the replacement, so it must
-                // not be DECREFed when the operation succeeds
-
+                // NB: PyList_SetItem() always steals a reference on the replacement,
+                // even in case of error:
+                // https://docs.python.org/3/c-api/list.html#c.PyList_SetItem
+                //
                 if (rc == -1) {
-                    Py_DECREF(replacement);
                     return false;
                 }
             }
@@ -2835,23 +2838,17 @@ decoder_new(PyTypeObject* type, PyObject* args, PyObject* kwargs)
 
 
 struct DictItem {
-    const char* key_str;
-    Py_ssize_t key_size;
-    PyObject* item;
+    std::string key;
+    PyObject* value;
 
-    DictItem(const char* k,
-             Py_ssize_t s,
-             PyObject* i)
-        : key_str(k),
-          key_size(s),
-          item(i)
+    DictItem(std::string k,
+             PyObject* v)
+        : key(k),
+          value(v)
         {}
 
     bool operator<(const DictItem& other) const {
-        Py_ssize_t tks = this->key_size;
-        Py_ssize_t oks = other.key_size;
-        int cmp = strncmp(this->key_str, other.key_str, tks < oks ? tks : oks);
-        return (cmp == 0) ? (tks < oks) : (cmp < 0);
+        return key < other.key;
     }
 };
 
@@ -3993,7 +3990,7 @@ dumps_internal(
                         break;
                     }
                     ASSERT_VALID_SIZE(l);
-                    items.push_back(DictItem(key_str, l, item));
+                    items.push_back(DictItem(std::string(key_str, l), item));
                 } else if (!(mappingMode & MM_SKIP_NON_STRING_KEYS)) {
                     PyErr_SetString(PyExc_TypeError, "keys must be strings");
                     assert(!coercedKey);
@@ -4008,10 +4005,10 @@ dumps_internal(
             std::sort(items.begin(), items.end());
 
             for (size_t i=0, s=items.size(); i < s; i++) {
-                writer->Key(items[i].key_str, (SizeType) items[i].key_size);
+                writer->Key(items[i].key.c_str(), (SizeType) items[i].key.length());
                 if (Py_EnterRecursiveCall(" while JSONifying dict object"))
                     return false;
-                bool r = RECURSE(items[i].item);
+                bool r = RECURSE(items[i].value);
                 Py_LeaveRecursiveCall();
                 if (!r)
                     return false;

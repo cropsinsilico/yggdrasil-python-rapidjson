@@ -12,7 +12,7 @@
 # and
 # https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 
-name: Build, test and upload to PyPI
+name: Build & test
 
 on:
   push:

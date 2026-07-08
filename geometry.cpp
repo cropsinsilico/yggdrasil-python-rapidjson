@@ -1332,6 +1332,9 @@ static PyObject* ply_add_elements(PyObject* self, PyObject* args, PyObject*) {
 	    v->ply->add_element_set(name, xa, xn, xm, &ignore);		\
 	    break;							\
 	}
+#define CASES_ARRAY_NPY_INT_(type, npy_type, ig)                \
+        CASE_ARRAY_NPY_(type, NPY_ ## npy_type, ig)             \
+        CASE_ARRAY_NPY_(unsigned type, NPY_U ## npy_type, ig)
 #define CASES_ARRAY_NPY_(type, npy_type, ig)	\
 	CASE_ARRAY_NPY_(type ## 8_t, NPY_ ## npy_type ## 8, ig)		\
 	CASE_ARRAY_NPY_(type ## 16_t, NPY_ ## npy_type ## 16, ig)	\
@@ -1347,8 +1350,12 @@ static PyObject* ply_add_elements(PyObject* self, PyObject* args, PyObject*) {
 	    if (x2 == NULL) return NULL;
 	}
 	switch (PyArray_TYPE((PyArrayObject*)x2)) {
-	CASES_ARRAY_NPY_(int, INT, -1)
-	CASES_ARRAY_NPY_(uint, UINT, -1)
+        CASE_ARRAY_NPY_(signed char, NPY_BYTE, -1)
+        CASE_ARRAY_NPY_(unsigned char, NPY_UBYTE, -1)
+        CASES_ARRAY_NPY_INT_(short, SHORT, -1)
+        CASES_ARRAY_NPY_INT_(int, INT, -1)
+        CASES_ARRAY_NPY_INT_(long, LONG, -1)
+        CASES_ARRAY_NPY_INT_(long long, LONGLONG, -1)
 	CASE_ARRAY_NPY_(float, NPY_FLOAT, NAN)
 	CASE_ARRAY_NPY_(double, NPY_DOUBLE, NAN)
 	default: {
@@ -1359,6 +1366,7 @@ static PyObject* ply_add_elements(PyObject* self, PyObject* args, PyObject*) {
 	}
 	}
 #undef CASES_ARRAY_NPY_
+#undef CASES_ARRAY_NPY_INT_
 #undef CASE_ARRAY_NPY_
 	Py_DECREF(x2);
     } else {

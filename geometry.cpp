@@ -381,19 +381,19 @@ static PyMethodDef ply_methods[] = {
      METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a Trimesh mesh."},
     {"from_trimesh", (PyCFunction) ply_from_trimesh,
-     METH_VARARGS | METH_CLASS,
+     METH_VARARGS | METH_KEYWORDS | METH_CLASS,
      "Create a Ply object from a Trimesh mesh."},
     {"as_dict", (PyCFunction) ply_as_dict,
      METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a dictionary."},
     {"from_dict", (PyCFunction) ply_from_dict,
-     METH_VARARGS | METH_CLASS,
+     METH_VARARGS | METH_KEYWORDS | METH_CLASS,
      "Create a Ply instance from a dictionary of elements."},
     {"as_array_dict", (PyCFunction) ply_as_array_dict,
      METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a dictionary of arrays."},
     {"from_array_dict", (PyCFunction) ply_from_array_dict,
-     METH_VARARGS | METH_CLASS,
+     METH_VARARGS | METH_KEYWORDS | METH_CLASS,
      "Create a Ply instance from a dictionary of element arrays."},
     {"as_mesh", (PyCFunction) ply_as_mesh,
      METH_NOARGS,
@@ -556,19 +556,19 @@ static PyMethodDef objwavefront_methods[] = {
      METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a Trimesh mesh."},
     {"from_trimesh", (PyCFunction) objwavefront_from_trimesh,
-     METH_VARARGS | METH_CLASS,
+     METH_VARARGS | METH_KEYWORDS | METH_CLASS,
      "Create a ObjWavefront object from a Trimesh mesh."},
     {"as_dict", (PyCFunction) objwavefront_as_dict,
      METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a dictionary."},
     {"from_dict", (PyCFunction) objwavefront_from_dict,
-     METH_VARARGS | METH_CLASS,
+     METH_VARARGS | METH_KEYWORDS | METH_CLASS,
      "Create a ObjWavefront instance from a dictionary of elements."},
     {"as_array_dict", (PyCFunction) objwavefront_as_array_dict,
      METH_VARARGS | METH_KEYWORDS,
      "Get the structure as a dictionary of arrays."},
     {"from_array_dict", (PyCFunction) objwavefront_from_array_dict,
-     METH_VARARGS | METH_CLASS,
+     METH_VARARGS | METH_KEYWORDS | METH_CLASS,
      "Create a ObjWavefront instance from a dictionary of element arrays."},
     {"as_list", (PyCFunction) objwavefront_as_list,
      METH_VARARGS | METH_KEYWORDS,
@@ -1350,19 +1350,25 @@ static PyObject* ply_add_elements(PyObject* self, PyObject* args, PyObject*) {
 	    if (x2 == NULL) return NULL;
 	}
 	switch (PyArray_TYPE((PyArrayObject*)x2)) {
-        CASE_ARRAY_NPY_(signed char, NPY_BYTE, -1)
-        CASE_ARRAY_NPY_(unsigned char, NPY_UBYTE, -1)
-        CASES_ARRAY_NPY_INT_(short, SHORT, -1)
-        CASES_ARRAY_NPY_INT_(int, INT, -1)
-        CASES_ARRAY_NPY_INT_(long, LONG, -1)
-        CASES_ARRAY_NPY_INT_(long long, LONGLONG, -1)
+        CASES_ARRAY_NPY_(int, INT, -1)
+        CASES_ARRAY_NPY_(uint, UINT, -1)
 	CASE_ARRAY_NPY_(float, NPY_FLOAT, NAN)
 	CASE_ARRAY_NPY_(double, NPY_DOUBLE, NAN)
 	default: {
-            std::string dtype_name = NPY_TYPE2STRING(PyArray_TYPE((PyArrayObject*)x2));
-	    Py_DECREF(x2);
-	    PyErr_Format(PyExc_TypeError, "Unsupported numpy datatype for field %s (dtype = %s).", name.c_str(), dtype_name.c_str());
-	    return NULL;
+            switch (PyArray_TYPE((PyArrayObject*)x2)) {
+            CASE_ARRAY_NPY_(signed char, NPY_BYTE, -1)
+            CASE_ARRAY_NPY_(unsigned char, NPY_UBYTE, -1)
+            CASES_ARRAY_NPY_INT_(short, SHORT, -1)
+            CASES_ARRAY_NPY_INT_(int, INT, -1)
+            CASES_ARRAY_NPY_INT_(long, LONG, -1)
+            CASES_ARRAY_NPY_INT_(long long, LONGLONG, -1)
+            default: {
+                std::string dtype_name = NPY_TYPE2STRING(PyArray_TYPE((PyArrayObject*)x2));
+                Py_DECREF(x2);
+                PyErr_Format(PyExc_TypeError, "Unsupported numpy datatype for field %s (dtype = %s).", name.c_str(), dtype_name.c_str());
+                return NULL;
+            }
+            }
 	}
 	}
 #undef CASES_ARRAY_NPY_

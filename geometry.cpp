@@ -1352,9 +1352,9 @@ static PyObject* ply_add_elements(PyObject* self, PyObject* args, PyObject*) {
 	CASE_ARRAY_NPY_(float, NPY_FLOAT, NAN)
 	CASE_ARRAY_NPY_(double, NPY_DOUBLE, NAN)
 	default: {
+            std::string dtype_name = NPY_TYPE2STRING(PyArray_TYPE((PyArrayObject*)x2));
 	    Py_DECREF(x2);
-            std::cerr << "Unsupported dtype: " << NPY_TYPE2STRING(PyArray_TYPE((PyArrayObject*)x2)) << std::endl;
-	    PyErr_SetString(PyExc_TypeError, "Unsupported numpy datatype.");
+	    PyErr_Format(PyExc_TypeError, "Unsupported numpy datatype for field %s (dtype = %s).", name.c_str(), dtype_name.c_str());
 	    return NULL;
 	}
 	}

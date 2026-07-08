@@ -61,7 +61,7 @@ dev = [
 test = [
   'flake8',
   'mypy',
-  'pandas',
+  'pandas<3.0.0',
   'pytest',
   'pytz',
   'sphinx',

@@ -41,7 +41,6 @@ if (Python3_VERSION VERSION_LESS "3.9.0")
   message(FATAL_ERROR "Only Python 3.9+ is supported.")
 endif()
 
-message(STATUS "BEFORE: Python3_LIBRARIES = ${Python3_LIBRARIES}")
 find_package(YggdrasilRapidJSON)
 if(NOT YggdrasilRapidJSON_FOUND)
   message(WARNING "Could not locate the YggdrasilRapidJSON package via find_package, installing as an external project...")
@@ -56,18 +55,17 @@ if(NOT YggdrasilRapidJSON_FOUND)
   FetchContent_Declare(
     YggdrasilRapidJSON
     GIT_REPOSITORY https://github.com/cropsinsilico/yggdrasil-rapidjson.git
-    GIT_TAG          v1.1.0.3
+    # GIT_TAG          v1.1.0.3
     # GIT_TAG        origin/yggdrasil
-    # GIT_TAG        origin/bug_fixes  # TODO: Revert this before release
+    GIT_TAG        origin/bug_fixes  # TODO: Revert this before release
     OVERRIDE_FIND_PACKAGE
   )
   find_package(YggdrasilRapidJSON)
   # FetchContent_MakeAvailable(YggdrasilRapidJSON)
   set(YGGDRASIL_DISABLE_PYTHON_C_API "${YGGDRASIL_DISABLE_PYTHON_C_API_PREV}")
-  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/YggdrasilRapidJSONMacros.cmake)
-  # include(${yggdrasilrapidjson_SOURCE_DIR}/YggdrasilRapidJSONMacros.cmake)
+  # include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/YggdrasilRapidJSONMacros.cmake)
+  include(${yggdrasilrapidjson_SOURCE_DIR}/YggdrasilRapidJSONMacros.cmake)
 endif()
-message(STATUS "AFTER: Python3_LIBRARIES = ${Python3_LIBRARIES}")
 yggdrasil_rapidjson_global_compiler_flags(CXX)
 
 set(PYRJ_TARGET "yggdrasil_python_rapidjson")

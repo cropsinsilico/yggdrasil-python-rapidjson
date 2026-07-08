@@ -11,7 +11,7 @@ on:
   - cron: 0 10 1 * *
 
 env:
-  PYTHONVERSION_STD: "3.11"
+  PYTHONVERSION_STD: "3.13"
 
 jobs:
   tests:

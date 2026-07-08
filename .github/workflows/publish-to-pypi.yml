@@ -37,7 +37,7 @@ jobs:
       - name: Build a binary wheel and a source tarball
         run: python -m build --sdist
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sdist
           path: dist/*.tar.gz
@@ -92,7 +92,7 @@ jobs:
           # CIBW_BEFORE_BUILD: python -m pip install oldest-supported-numpy
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-for-${{ matrix.os }}-${{ matrix.arch }}
           path: ./wheelhouse/*.whl

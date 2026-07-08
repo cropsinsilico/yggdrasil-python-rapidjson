@@ -143,6 +143,7 @@ def test_pandas(dumps, loads):
                      dtype=[('name', 'U4'), ('age', 'i4'),
                             ('weight', 'f4'), ('color', 'S5')])
     value_pd = pd.DataFrame(value)
+    print(value_pd.dtypes)
     dumped = dumps(value_pd)
     loaded = loads(dumped)
     assert type(loaded) is type(value) and loaded.dtype == value.dtype

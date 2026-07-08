@@ -363,6 +363,9 @@ class TestPly:
         assert list(x_arr.keys()) == list(y_arr.keys())
         assert list(x_alt.keys()) == list(x_arr.keys())
         for k in x_arr.keys():
+            if k != 'comment':
+                print(k, x_arr[k].dtype, result['arr'][k].dtype,
+                      x_alt[k].dtype)
             np.testing.assert_array_equal(x_arr[k], result['arr'][k])
             np.testing.assert_array_equal(y_arr[k], result['arr'][k])
             np.testing.assert_array_equal(x_arr[k], y_arr[k])

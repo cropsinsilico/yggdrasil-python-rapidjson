@@ -1,5 +1,6 @@
 set -e
 
+INSTALL_RJ_FIRST=""
 REBUILD=""
 DONT_BUILD=""
 WITH_ASAN=""
@@ -12,6 +13,10 @@ fi
 
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --install-rj-first )
+            INSTALL_RJ_FIRST="TRUE"
+            shift
+            ;;
         --rebuild )
             REBUILD="TRUE"
             shift
@@ -56,13 +61,14 @@ if [ ! -n "$DONT_BUILD" ]; then
                 rm -rf "$RJ_BUILD_DIR"
             fi
         fi
-        ./install_local_rapidjson.sh --rj-dir $RJ_DIR --install-dir $RJ_INSTALL_DIR --build-dir $RJ_BUILD_DIR
-        pip install \
-            --config-settings=cmake.define.CMAKE_PREFIX_PATH=$RJ_INSTALL_DIR \
-	    $BUILD_ARGS -v -e .
-    else
-        pip install $BUILD_ARGS -v -e .
+        if [ -n "$INSTALL_RJ_FIRST" ]; then
+            ./install_local_rapidjson.sh --rj-dir $RJ_DIR --install-dir $RJ_INSTALL_DIR --build-dir $RJ_BUILD_DIR
+            BUILD_ARGS="${BUILD_ARGS} --config-settings=cmake.define.CMAKE_PREFIX_PATH=$RJ_INSTALL_DIR"
+        else
+            BUILD_ARGS="${BUILD_ARGS} --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_REPO_DIR:PATH=${RJ_DIR}"
+        fi
     fi
+    pip install $BUILD_ARGS -v -e .
 fi
 
 if [ -n "$WITH_ASAN" ]; then

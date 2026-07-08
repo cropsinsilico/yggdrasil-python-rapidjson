@@ -4,7 +4,7 @@ Changes
 yggdrasil-python-rapidjson
 ==========================
 
-1.21.0.2 (2026-07-08)
+1.21.0.2 (2026-07-09)
 ~~~~~~~~~~~~~~~~~~~~~
 
 This update includes some package maintenance and dependency updates.

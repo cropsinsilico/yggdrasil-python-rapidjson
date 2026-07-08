@@ -33,6 +33,7 @@ requirements:
     - ${{ stdlib('c') }}
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
+    - yggdrasil-rapidjson
   host:
     - hatch-fancy-pypi-readme
     - numpy

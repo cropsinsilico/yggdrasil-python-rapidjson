@@ -22,6 +22,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: recursive
+          fetch-tags: true
 
       - name: Set up Python ${{ env.PYTHONVERSION_STD }}
         uses: actions/setup-python@v6
@@ -52,6 +53,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: recursive
+          fetch-tags: true
 
       - uses: deadsnakes/action@v3.2.0
         with:

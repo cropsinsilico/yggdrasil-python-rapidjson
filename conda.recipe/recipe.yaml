@@ -1,6 +1,7 @@
 context:
   name: "yggdrasil-python-rapidjson"
-  version: "1.21.0.1"
+  python_name: "yggdrasil_python_rapidjson"
+  version: "1.23.0.0"
 
 package:
   name: ${{ name|lower }}
@@ -13,7 +14,8 @@ build:
   number: 0
   script:
     - if: unix
-      then: '${{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
+      then:
+        - 'CMAKE_GENERATOR="Ninja" ${{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
     - if: win
       then:
         - 'set "SKBUILD_CMAKE_ARGS=-G Ninja"'
@@ -24,26 +26,25 @@ requirements:
     - if: build_platform != target_platform
       then:
         - cross-python_${{ target_platform }}
-        - numpy >=1.13.0
-        - python >=3.9
+        - numpy
+        - python
     - cmake >=3.15
     - ninja
     - ${{ stdlib('c') }}
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
+    - yggdrasil-rapidjson
   host:
     - hatch-fancy-pypi-readme
-    - numpy >=1.13.0
-    - pandas
+    - numpy
     - pip
-    - python >=3.9
+    - python
     - scikit-build-core
     - setuptools_scm
   run:
     - ${{ stdlib('c') }}
-    - pandas
-    - python >=3.9
-    - numpy >=1.13.0
+    - python
+    - numpy
 
 tests:
   - python:
@@ -61,7 +62,6 @@ tests:
     files:
       source:
       - tests/
-      - rapidjson/test/example_python.py
 
 about:
   homepage: https://github.com/cropsinsilico/yggdrasil-python-rapidjson
@@ -74,7 +74,7 @@ about:
     A Python wrapper around YggdrasilRapidJSON. YggdrasilRapidJSON is a
     header-only C++ library for JSON operation extended for use with
     yggdrasil
-  # documentation:
+  documentation: https://cropsinsilico.github.io/yggdrasil-python-rapidjson
 
 extra:
   recipe-maintainers:

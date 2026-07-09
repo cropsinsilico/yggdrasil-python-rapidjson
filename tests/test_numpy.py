@@ -143,6 +143,7 @@ def test_pandas(dumps, loads):
                      dtype=[('name', 'U4'), ('age', 'i4'),
                             ('weight', 'f4'), ('color', 'S5')])
     value_pd = pd.DataFrame(value)
+    print(value_pd.dtypes)
     dumped = dumps(value_pd)
     loaded = loads(dumped)
     assert type(loaded) is type(value) and loaded.dtype == value.dtype
@@ -156,11 +157,16 @@ def test_pandas_empty(dumps, loads):
         pytest.skip("requires pandas")
     value = np.array([], dtype=[('name', 'U0'), ('age', 'i4'),
                                 ('weight', 'f4'), ('color', 'S0')])
-    # Because pandas stores both unicode & bytes as object type, the
-    # type defaults to bytes for empty arrays where the elements cannot
-    # be inspected for their type
-    value_def = np.array([], dtype=[('name', 'S0'), ('age', 'i4'),
-                                    ('weight', 'f4'), ('color', 'S0')])
+    if int(pd.__version__.split('.')[0]) >= 3:
+        value_def = value
+    else:
+        # Because pandas<3.0.0 stores both unicode & bytes as object
+        # type, the type defaults to bytes for empty arrays where the
+        # elements cannot be inspected for their type
+        value_def = np.array([], dtype=[
+            ('name', 'S0'), ('age', 'i4'),
+            ('weight', 'f4'), ('color', 'S0')
+        ])
     value_pd = pd.DataFrame(value)
     dumped = dumps(value_pd)
     loaded = loads(dumped)

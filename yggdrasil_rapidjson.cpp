@@ -3102,7 +3102,8 @@ PythonAccept(
                         break;
                     }
                     ASSERT_VALID_SIZE(l);
-                    items.push_back(DictItem(key_str, l, item));
+                    std::string key_string(key_str, l);
+                    items.push_back(DictItem(key_string, item));
                 } else if (!(mappingMode & MM_SKIP_NON_STRING_KEYS)) {
                     PyErr_SetString(PyExc_TypeError, "keys must be strings");
                     assert(!coercedKey);
@@ -3117,10 +3118,10 @@ PythonAccept(
             std::sort(items.begin(), items.end());
 
             for (size_t i=0, s=items.size(); i < s; i++) {
-                handler->Key(items[i].key_str, (SizeType) items[i].key_size, true);
+                handler->Key(items[i].key.c_str(), (SizeType) items[i].key.size(), true);
                 if (Py_EnterRecursiveCall(" while JSONifying dict object"))
                     return false;
-                bool r = RECURSE(items[i].item);
+                bool r = RECURSE(items[i].value);
                 Py_LeaveRecursiveCall();
                 if (!r)
                     return false;

@@ -37,52 +37,17 @@ find_package(
   Python3 COMPONENTS
   Interpreter Development.Module NumPy REQUIRED
 )
-if (Python3_VERSION VERSION_LESS "3.9.0")
-  message(FATAL_ERROR "Only Python 3.9+ is supported.")
+if (Python3_VERSION VERSION_LESS "3.10.0")
+  message(FATAL_ERROR "Only Python 3.10+ is supported.")
 endif()
 
-set(YGGDRASIL_RAPIDJSON_REPO_DIR "" CACHE PATH "Existing directory containing the yggdrasil-rapidjson repository")
-
-if(NOT YGGDRASIL_RAPIDJSON_REPO_DIR)
-  find_package(YggdrasilRapidJSON)
-endif()
-if(YggdrasilRapidJSON_FOUND)
-  message(STATUS "Using YggdrasilRapidJSON installation at \"${YggdrasilRapidJSON_DIR}\"")
-else()
-  foreach(suffix BUILD_EXAMPLES BUILD_TESTS BUILD_DOC)
-    if(NOT YGGDRASIL_RAPIDJSON_${suffix})
-      set(YGGDRASIL_RAPIDJSON_${suffix} OFF)
-    endif()
-  endforeach()
-  if(YGGDRASIL_RAPIDJSON_REPO_DIR AND EXISTS "${YGGDRASIL_RAPIDJSON_REPO_DIR}")
-    message(STATUS "Installing YggdrasilRapidJSON from \"${YGGDRASIL_RAPIDJSON_REPO_DIR}\"")
-    add_subdirectory(
-      "${YGGDRASIL_RAPIDJSON_REPO_DIR}"
-      "${YGGDRASIL_RAPIDJSON_REPO_DIR}/_build_for_pyrj"
-      EXCLUDE_FROM_ALL
-    )
-    include("${YGGDRASIL_RAPIDJSON_REPO_DIR}/YggdrasilRapidJSONMacros.cmake")
-  else()
-    message(WARNING "Could not locate the YggdrasilRapidJSON package via find_package, installing as an external project...")
-    include(FetchContent)
-    FetchContent_Declare(
-      YggdrasilRapidJSON
-      GIT_REPOSITORY https://github.com/cropsinsilico/yggdrasil-rapidjson.git
-      GIT_TAG        origin/yggdrasil
-      EXCLUDE_FROM_ALL
-      OVERRIDE_FIND_PACKAGE
-    )
-    # Required for cmake <3.28 when EXCLUDE_FROM_ALL was added to FetchContent_Declare
-    find_package(YggdrasilRapidJSON)
-    include(${yggdrasilrapidjson_SOURCE_DIR}/YggdrasilRapidJSONMacros.cmake)
-    set_property(
-      DIRECTORY ${yggdrasilrapidjson_SOURCE_DIR}
-      PROPERTY EXCLUDE_FROM_ALL ON
-    )
-  endif()
-  yggdrasil_rapidjson_options_config(LOCAL)
-  yggdrasil_rapidjson_target_config(YggdrasilRapidJSON INTERFACE LOCAL)
-endif()
+file(
+  DOWNLOAD
+  "https://raw.githubusercontent.com/cropsinsilico/yggdrasil-rapidjson/refs/heads/bug_fixes/YggdrasilRapidJSONTools.cmake"
+  "${CMAKE_CURRENT_SOURCE_DIR}/YggdrasilRapidJSONTools.cmake"
+)
+include("${CMAKE_CURRENT_SOURCE_DIR}/YggdrasilRapidJSONTools.cmake")
+find_yggdrasil_rapidjson()
 yggdrasil_rapidjson_global_compiler_flags(CXX)
 
 set(PYRJ_TARGET "yggdrasil_python_rapidjson")

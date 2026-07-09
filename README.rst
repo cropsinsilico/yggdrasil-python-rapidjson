@@ -25,7 +25,7 @@ First install ``yggdrasil-python-rapidjson``:
 
     $ pip install yggdrasil-python-rapidjson
 
-or, if you prefer `Conda <https://conda.io/docs/>`_:
+or, if you prefer `Conda <https://conda.io/docs/>`_ (NOTE: the conda-forge feedstock for ``yggdrasil-python-rapidjson`` is not yet available, but will be once the PR is merged):
 
 .. code-block:: bash
 
@@ -62,25 +62,26 @@ enhancements) you may clone the repository:
 
 .. code-block:: bash
 
-    $ git clone --recursive https://github.com/cropsinsilico/yggdrasil-python-rapidjson.git
-
-.. note:: The ``--recursive`` option is needed because we use a *submodule* to
-          include YggdrasilRapidJSON_ sources. Alternatively you can do a plain
-          ``clone`` immediately followed by a ``git submodule update --init``.
-
-          Alternatively, if you already have (a *compatible* version of)
-          YggdrasilRapidJSON includes around, you can compile the module specifying
-          their location with the option ``--config-settings=cmake.define.RAPIDJSON_INCLUDE_DIRS=``, for example:
-
-          .. code-block:: shell
-
-             $ pip install . --config-settings=cmake.define.RAPIDJSON_INCLUDE_DIRS=/usr/include/rapidjson
+    $ git clone https://github.com/cropsinsilico/yggdrasil-python-rapidjson.git
 
 The package can be built and installed from source via
 
 .. code-block:: bash
 
     $ pip install .
+
+.. note:: The install command will clone a copy of the YggdrasilRapidJSON_
+          sources as part of the build process if an existing
+          YggdrasilRapidJSON installation cannot be found (in the usual
+          locations checked by cmake for your OS).
+
+          Alternatively, if you already have a (*compatible*) local copy of the 
+          YggdrasilRapidJSON repository around, you can compile the module specifying
+          their location with the option ``--config-settings=cmake.define.YGGDRASIL_RAPIDJSON_REPO_DIR=``, for example:
+
+          .. code-block:: shell
+
+             $ pip install . --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_REPO_DIR=/usr/local/yggdrasil-rapidjson
 
 The package tests and doctests can be run via pytest
 

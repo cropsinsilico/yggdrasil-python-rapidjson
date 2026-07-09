@@ -41,31 +41,48 @@ if (Python3_VERSION VERSION_LESS "3.9.0")
   message(FATAL_ERROR "Only Python 3.9+ is supported.")
 endif()
 
-message(STATUS "BEFORE: Python3_LIBRARIES = ${Python3_LIBRARIES}")
-find_package(YggdrasilRapidJSON)
-if(NOT YggdrasilRapidJSON_FOUND)
-  message(WARNING "Could not locate the YggdrasilRapidJSON package via find_package, installing as an external project...")
-  set(YGGDRASIL_DISABLE_PYTHON_C_API_PREV "${YGGDRASIL_DISABLE_PYTHON_C_API}")
-  set(YGGDRASIL_DISABLE_PYTHON_C_API ON)
+set(YGGDRASIL_RAPIDJSON_REPO_DIR "" CACHE PATH "Existing directory containing the yggdrasil-rapidjson repository")
+
+if(NOT YGGDRASIL_RAPIDJSON_REPO_DIR)
+  find_package(YggdrasilRapidJSON)
+endif()
+if(YggdrasilRapidJSON_FOUND)
+  message(STATUS "Using YggdrasilRapidJSON installation at \"${YggdrasilRapidJSON_DIR}\"")
+else()
   foreach(suffix BUILD_EXAMPLES BUILD_TESTS BUILD_DOC)
     if(NOT YGGDRASIL_RAPIDJSON_${suffix})
       set(YGGDRASIL_RAPIDJSON_${suffix} OFF)
     endif()
   endforeach()
-  include(FetchContent)
-  FetchContent_Declare(
-    YggdrasilRapidJSON
-    GIT_REPOSITORY https://github.com/cropsinsilico/yggdrasil-rapidjson.git
-    # GIT_TAG        origin/yggdrasil
-    GIT_TAG        origin/bug_fixes  # TODO: Revert this before release
-    OVERRIDE_FIND_PACKAGE
-  )
-  find_package(YggdrasilRapidJSON)
-  # FetchContent_MakeAvailable(YggdrasilRapidJSON)
-  set(YGGDRASIL_DISABLE_PYTHON_C_API "${YGGDRASIL_DISABLE_PYTHON_C_API_PREV}")
-  include(${yggdrasilrapidjson_SOURCE_DIR}/YggdrasilRapidJSONMacros.cmake)
+  if(YGGDRASIL_RAPIDJSON_REPO_DIR AND EXISTS "${YGGDRASIL_RAPIDJSON_REPO_DIR}")
+    message(STATUS "Installing YggdrasilRapidJSON from \"${YGGDRASIL_RAPIDJSON_REPO_DIR}\"")
+    add_subdirectory(
+      "${YGGDRASIL_RAPIDJSON_REPO_DIR}"
+      "${YGGDRASIL_RAPIDJSON_REPO_DIR}/_build_for_pyrj"
+      EXCLUDE_FROM_ALL
+    )
+    include("${YGGDRASIL_RAPIDJSON_REPO_DIR}/YggdrasilRapidJSONMacros.cmake")
+  else()
+    message(WARNING "Could not locate the YggdrasilRapidJSON package via find_package, installing as an external project...")
+    include(FetchContent)
+    FetchContent_Declare(
+      YggdrasilRapidJSON
+      GIT_REPOSITORY https://github.com/cropsinsilico/yggdrasil-rapidjson.git
+      GIT_TAG        origin/yggdrasil
+      EXCLUDE_FROM_ALL
+      OVERRIDE_FIND_PACKAGE
+    )
+    # Required for cmake <3.28 when EXCLUDE_FROM_ALL was added to FetchContent_Declare
+    find_package(YggdrasilRapidJSON)
+    include(${yggdrasilrapidjson_SOURCE_DIR}/YggdrasilRapidJSONMacros.cmake)
+    set_property(
+      DIRECTORY ${yggdrasilrapidjson_SOURCE_DIR}
+      PROPERTY EXCLUDE_FROM_ALL ON
+    )
+  endif()
+  yggdrasil_rapidjson_options_config(LOCAL)
+  yggdrasil_rapidjson_target_config(YggdrasilRapidJSON INTERFACE LOCAL)
 endif()
-message(STATUS "AFTER: Python3_LIBRARIES = ${Python3_LIBRARIES}")
 yggdrasil_rapidjson_global_compiler_flags(CXX)
 
 set(PYRJ_TARGET "yggdrasil_python_rapidjson")

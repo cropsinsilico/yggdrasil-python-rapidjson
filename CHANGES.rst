@@ -4,17 +4,19 @@ Changes
 yggdrasil-python-rapidjson
 ==========================
 
-1.21.0.2 (2026-07-XX)
+1.21.0.2 (2026-07-09)
 ~~~~~~~~~~~~~~~~~~~~~
 
 This update includes some package maintenance and dependency updates.
 
 * Drop support for Python 3.9
 * Update the conda recipe to use the yggdrasil-rapidjson version
-* Update CMakeLists.txt to use updated yggdrasil-rapidjson package configuration
+* Update CMakeLists.txt to fetch yggdrasil-rapidjson via git and use the updated yggdrasil-rapidjson package configuration
+* Removed the yggdrasil-rapidjson submodule (was in rapidjson)
+* Fixed bug in handling of strings for pandas >=3.0.0
+* Add YGGDRASIL_RAPIDJSON_REPO_DIR cmake option for specifying an existing local copy of the yggdrasil-rapidjson library to use (replaces YGGDRASIL_RAPIDJSON_INCLUDE_DIR)
+* Fixed bug in handling of int32 fields for Ply from_array on windows
 
-TOOD:
-* Fix bug in tests for pandas >=3.0.0
 
 1.21.0.1 (2025-11-12)
 ~~~~~~~~~~~~~~~~~~~~~

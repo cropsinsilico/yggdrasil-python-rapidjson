@@ -233,11 +233,13 @@ def mesh_args_factory(mesh_base, mesh_array, mesh_dict):
 
 class TestPly:
     @pytest.fixture(scope="class")
-    def cls(self):
+    @classmethod
+    def cls(testcls):
         return geometry.Ply
 
     @pytest.fixture(scope="class")
-    def isObj(self, cls):
+    @classmethod
+    def isObj(testcls, cls):
         return (cls == geometry.ObjWavefront)
 
     @pytest.fixture(scope="class", params=[
@@ -262,31 +264,38 @@ class TestPly:
         ({'args': ['vertices', 'faces', 'edges'], 'as_list': True}),
         ({'args': ['vertices'], 'kwargs': ['edges'], 'as_list': True}),
     ])
-    def factory_options(self, request, cls, isObj):
+    @classmethod
+    def factory_options(testcls, request, cls, isObj):
         return dict(request.param, obj=isObj)
 
     @pytest.fixture(scope="class")
-    def parameters(self, mesh_args_factory, factory_options):
+    @classmethod
+    def parameters(testcls, mesh_args_factory, factory_options):
         return mesh_args_factory(**factory_options)
 
     @pytest.fixture(scope="class")
-    def args(self, parameters):
+    @classmethod
+    def args(testcls, parameters):
         return parameters[0]
 
     @pytest.fixture(scope="class")
-    def kwargs(self, parameters):
+    @classmethod
+    def kwargs(testcls, parameters):
         return parameters[1]
 
     @pytest.fixture(scope="class")
-    def result(self, parameters):
+    @classmethod
+    def result(testcls, parameters):
         return parameters[2]
 
     @pytest.fixture(scope="class")
-    def x(self, cls, args, kwargs):
+    @classmethod
+    def x(testcls, cls, args, kwargs):
         return cls(*args, **kwargs)
 
     @pytest.fixture(scope="class")
-    def y(self, cls, args, kwargs):
+    @classmethod
+    def y(testcls, cls, args, kwargs):
         y = cls()
         for k, v in zip(['vertex', 'face', 'edge'], args):
             y.add_elements(k, v)
@@ -295,26 +304,30 @@ class TestPly:
         return cls(*args, **kwargs)
 
     @pytest.fixture(scope="class")
-    def requires_vertex(self, result):
+    @classmethod
+    def requires_vertex(testcls, result):
         if 'vertex' not in result['dict']:
             pytest.skip("requires vertex data")
 
     @pytest.fixture(scope="class")
-    def requires_face(self, result):
+    @classmethod
+    def requires_face(testcls, result):
         if 'face' not in result['dict']:
             pytest.skip("requires face data")
 
     @pytest.fixture(scope="class")
-    def without_colors(self, factory_options):
+    @classmethod
+    def without_colors(testcls, factory_options):
         if factory_options.get('with_colors', False):
             pytest.skip("requires no colors")
 
     @pytest.fixture(scope="class")
-    def without_array(self, factory_options):
+    @classmethod
+    def without_array(testcls, factory_options):
         if factory_options.get('as_array', False):
             pytest.skip("requires no as_array")
 
-    def test_key_access(self, x, y, result):
+    def test_key_access(testcls, x, y, result):
         with pytest.raises(KeyError):
             x['invalid']
         assert 'invalid' not in x
@@ -334,20 +347,33 @@ class TestPly:
             assert x != cls()
 
     def test_as_dict(self, x, y, result):
-        assert x.as_dict() == result['dict']
-        assert y.as_dict() == result['dict']
-        assert x.as_dict() == y.as_dict()
+        x_dict = x.as_dict()
+        y_dict = y.as_dict()
+        assert x_dict == result['dict']
+        assert y_dict == result['dict']
+        assert x_dict == y_dict
+        z = type(x).from_dict(x_dict)
+        assert z == x
+        # assert z.mesh == x.mesh
 
-    def test_as_dict_array(self, x, y, result, requires_vertex):
-        np.testing.assert_array_equal(x.as_dict(as_array=True)['vertex'],
-                                      result['arr']['vertex'])
-        np.testing.assert_array_equal(y.as_dict(as_array=True)['vertex'],
-                                      result['arr']['vertex'])
+    def test_as_array_dict(self, x, y, result, requires_vertex):
         x_arr = x.as_dict(as_array=True)
         y_arr = y.as_dict(as_array=True)
+        x_alt = x.as_array_dict()
         assert list(x_arr.keys()) == list(y_arr.keys())
+        assert list(x_alt.keys()) == list(x_arr.keys())
         for k in x_arr.keys():
+            if k != 'comment':
+                print(k, x_arr[k].dtype, result['arr'][k].dtype,
+                      x_alt[k].dtype)
+            np.testing.assert_array_equal(x_arr[k], result['arr'][k])
+            np.testing.assert_array_equal(y_arr[k], result['arr'][k])
             np.testing.assert_array_equal(x_arr[k], y_arr[k])
+            np.testing.assert_array_equal(x_alt[k], x_arr[k])
+        z = type(x).from_dict(x_arr)
+        z_alt = type(x).from_array_dict(x_alt)
+        assert z.mesh == x.mesh
+        assert z_alt.mesh == x.mesh
 
     def test_from_dict(self, cls, x, y, args, kwargs):
         if not args:
@@ -597,7 +623,8 @@ def test_Ply_color(mesh_args_factory, factory_options):
 
 class TestObj(TestPly):
     @pytest.fixture(scope="class")
-    def cls(self):
+    @classmethod
+    def cls(testcls):
         return geometry.ObjWavefront
 
 

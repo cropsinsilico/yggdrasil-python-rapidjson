@@ -114,7 +114,7 @@
       >>> loads('123456789012345678901234567890')
       123456789012345678901234567890
       >>> loads('123456789012345678901234567890', number_mode=NM_NATIVE)
-      1.2345678901234568e+29
+      1.2345678901234566e+29
 
    These flags can be combined together:
 
@@ -185,7 +185,7 @@
          >>> loads('"00:01:02+01:00"', datetime_mode=mode)
          Traceback (most recent call last):
            ...
-         ValueError: ... Time literal cannot be shifted to UTC: 00:01:02+01:00
+         ValueError: ...Time literal cannot be shifted to UTC: 00:01:02+01:00
 
    If you combine it with :data:`DM_NAIVE_IS_UTC` then all values without a timezone will
    be assumed to be relative to UTC_:

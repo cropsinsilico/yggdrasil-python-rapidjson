@@ -609,7 +609,7 @@
       >>> dumps(c, mapping_mode=MM_ONLY_DICTS, default=bad_counter)
       Traceback (most recent call last):
         File "<stdin>", line 1, in <module>
-      ValueError: OrderedDict([('a', 1), ('b', 2), ('c', 3)]) is not JSON serializable
+      ValueError: OrderedDict({'a': 1, 'b': 2, 'c': 3}) is not JSON serializable
 
    Normally, dumping a dictionary containing *non-string* keys raises a ``TypeError``
    exception:

@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-# :Project:   python-rapidjson -- Unicode tests
-# :Author:    John Anderson <sontek@gmail.com>
-# :License:   MIT License
-# :Copyright: © 2015 John Anderson
-# :Copyright: © 2016, 2017, 2018, 2020 Lele Gaifax
-#
-
 import pytest
 import numpy as np
 
@@ -14,8 +6,8 @@ from yggdrasil_rapidjson import units
 
 
 def test_class_import_units():
-    from yggdrasil_rapidjson.units import (
-        Units, Quantity, QuantityArray  # noqa: F401
+    from yggdrasil_rapidjson.units import (  # noqa: F401
+        Units, Quantity, QuantityArray
     )
 
 
@@ -39,11 +31,13 @@ class TestUnits:
         ("100%", "100%"),
         ("fraction", "100%"),
     ])
-    def options(self, request):
+    @classmethod
+    def options(testcls, request):
         return request.param
 
     @pytest.fixture(scope="class")
-    def x(self, options):
+    @classmethod
+    def x(testcls, options):
         return units.Units(options[0])
 
     def test_str(self, x, options):
@@ -100,7 +94,8 @@ class TestUnits:
 
 class TestQuantity:
     @pytest.fixture(scope="class")
-    def cls(self):
+    @classmethod
+    def cls(testcls):
         return units.Quantity
 
     @pytest.fixture(scope="class", params=[
@@ -125,73 +120,87 @@ class TestQuantity:
         ({'args': (int(1), "mol"),
           'args_compat': (int(1e6), "umol")}),
     ])
-    def options(self, request):
+    @classmethod
+    def options(testcls, request):
         return request.param
 
     @pytest.fixture(scope="class")
-    def value(self):
+    @classmethod
+    def value(testcls):
         return 3
 
     @pytest.fixture(scope="class")
-    def equals(self):
+    @classmethod
+    def equals(testcls):
         def wrapped_equals(x, y):
             return (x == y)
         return wrapped_equals
 
     @pytest.fixture(scope="class")
-    def assert_equal(self):
+    @classmethod
+    def assert_equal(testcls):
         def wrapped_assert_equal(x, y):
             assert x == y
         return wrapped_assert_equal
 
     @pytest.fixture(scope="class")
-    def assert_close(self):
+    @classmethod
+    def assert_close(testcls):
         def wrapped_assert_close(x, y):
             return np.isclose(x, y)
         return wrapped_assert_close
 
     @pytest.fixture(scope="class")
-    def args(self, options):
+    @classmethod
+    def args(testcls, options):
         return options['args']
 
     @pytest.fixture(scope="class")
-    def args_equiv(self, options):
+    @classmethod
+    def args_equiv(testcls, options):
         if 'units_equiv' not in options:
             pytest.skip("requires args_equiv")
         return (options['args'][0], options['units_equiv'])
 
     @pytest.fixture(scope="class")
-    def args_compat(self, options):
+    @classmethod
+    def args_compat(testcls, options):
         if 'args_compat' not in options:
             pytest.skip("requires args_compat")
         return options['args_compat']
 
     @pytest.fixture(scope="class")
-    def units_compat(self, options):
+    @classmethod
+    def units_compat(testcls, options):
         if 'args_compat' not in options:
             pytest.skip("requires args_compat")
         return options['args_compat'][1]
 
     @pytest.fixture(scope="class")
-    def units_incompat(self, options):
+    @classmethod
+    def units_incompat(testcls, options):
         if 'units_incompat' not in options:
             pytest.skip("requires units_incompat")
         return options['units_incompat']
 
     @pytest.fixture(scope="class")
-    def x(self, cls, args):
+    @classmethod
+    def x(testcls, cls, args):
         return cls(*args)
 
     @pytest.fixture(scope="class")
-    def x_equiv(self, cls, args_equiv):
+    @classmethod
+    def x_equiv(testcls, cls, args_equiv):
         return cls(*args_equiv)
 
     @pytest.fixture(scope="class")
-    def x_compat(self, cls, args_compat):
+    @classmethod
+    def x_compat(testcls, cls, args_compat):
         return cls(*args_compat)
 
     @pytest.fixture(scope="class")
-    def x_incompat(self, cls, args, units_incompat):
+    @classmethod
+    def x_incompat(testcls, cls, args, units_incompat):
         return cls(args[0], units_incompat)
 
     def test_str(self, x):
@@ -380,7 +389,8 @@ class TestQuantity:
 
 class TestQuantityArray(TestQuantity):
     @pytest.fixture(scope="class")
-    def cls(self):
+    @classmethod
+    def cls(testcls):
         return units.QuantityArray
 
     @pytest.fixture(scope="class", params=[
@@ -411,21 +421,25 @@ class TestQuantityArray(TestQuantity):
           'units_equiv': 'mole',
           'units_incompat': 'cm'}),
     ])
-    def options(self, request):
+    @classmethod
+    def options(testcls, request):
         return request.param
 
     @pytest.fixture(scope="class")
-    def value(self):
+    @classmethod
+    def value(testcls):
         return np.arange(1, 11, dtype=np.float32).reshape((2, 5))
 
     @pytest.fixture(scope="class")
-    def equals(self):
+    @classmethod
+    def equals(testcls):
         def wrapped_equals(x, y):
             return np.array_equal(x, y)
         return wrapped_equals
 
     @pytest.fixture(scope="class")
-    def assert_equal(self):
+    @classmethod
+    def assert_equal(testcls):
         def wrapped_assert_equal(x, y):
             if x.shape or y.shape:
                 assert np.array_equal(x, y)
@@ -434,7 +448,8 @@ class TestQuantityArray(TestQuantity):
         return wrapped_assert_equal
 
     @pytest.fixture(scope="class")
-    def assert_close(self):
+    @classmethod
+    def assert_close(testcls):
         def wrapped_assert_close(x, y):
             return np.allclose(x, y)
         return wrapped_assert_close
@@ -613,7 +628,8 @@ class TestQuantityArray(TestQuantity):
 class TestUnyt:
 
     @pytest.fixture(autouse=True, scope="class")
-    def unyt(self):
+    @classmethod
+    def unyt(testcls):
         try:
             import unyt as unyt_pkg
             return unyt_pkg

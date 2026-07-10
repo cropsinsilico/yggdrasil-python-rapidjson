@@ -44,7 +44,7 @@ endif()
 
 file(
   DOWNLOAD
-  "https://raw.githubusercontent.com/cropsinsilico/yggdrasil-rapidjson/refs/heads/bug_fixes/YggdrasilRapidJSONTools.cmake"
+  "https://raw.githubusercontent.com/cropsinsilico/yggdrasil-rapidjson/refs/heads/yggdrasil/YggdrasilRapidJSONTools.cmake"
   "${CMAKE_CURRENT_SOURCE_DIR}/YggdrasilRapidJSONTools.cmake"
 )
 include("${CMAKE_CURRENT_SOURCE_DIR}/YggdrasilRapidJSONTools.cmake")

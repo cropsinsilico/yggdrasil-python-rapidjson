@@ -4,7 +4,7 @@ Changes
 yggdrasil-python-rapidjson
 ==========================
 
-1.23.0.1 (2026-XX-XX)
+1.23.0.1 (2026-07-10)
 ~~~~~~~~~~~~~~~~~~~~~
 
 * Updated README

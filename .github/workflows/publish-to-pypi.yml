@@ -122,12 +122,12 @@ jobs:
     if: github.event_name == 'release'
 
     steps:
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           pattern: wheels-for-*
           merge-multiple: true
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           pattern: sdist

@@ -4,11 +4,19 @@ Changes
 yggdrasil-python-rapidjson
 ==========================
 
-1.21.0.2 (2026-07-09)
+1.23.0.1 (2026-07-10)
+~~~~~~~~~~~~~~~~~~~~~
+
+* Updated README
+* Updated version in this change log to reflect inclusion of upstream changes
+* Added YggdrasilRapidJSONTools.cmake for building against local yggdrasil-rapidjson during development
+
+1.23.0.0 (2026-07-09)
 ~~~~~~~~~~~~~~~~~~~~~
 
 This update includes some package maintenance and dependency updates.
 
+* Merge upstream changes from python-rapidjson 1.23
 * Drop support for Python 3.9
 * Update the conda recipe to use the yggdrasil-rapidjson version
 * Update CMakeLists.txt to fetch yggdrasil-rapidjson via git and use the updated yggdrasil-rapidjson package configuration

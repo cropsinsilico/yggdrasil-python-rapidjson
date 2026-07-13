@@ -60,7 +60,7 @@ tests:
         - unyt
     files:
       source:
-      - tests/
+        - tests/
 
 about:
   homepage: https://github.com/cropsinsilico/yggdrasil-python-rapidjson

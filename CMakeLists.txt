@@ -36,7 +36,7 @@ set(YGGDRASIL_RAPIDJSON_CLONE_IF_MISSING ON)
 
 find_package(
   Python3 COMPONENTS
-  Interpreter Development.Module NumPy REQUIRED
+  Development.Module NumPy REQUIRED
 )
 if (Python3_VERSION VERSION_LESS "3.10.0")
   message(FATAL_ERROR "Only Python 3.10+ is supported.")

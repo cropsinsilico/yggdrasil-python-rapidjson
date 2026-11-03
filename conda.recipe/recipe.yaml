@@ -27,6 +27,7 @@ requirements:
         - cross-python_${{ target_platform }}
         - numpy
         - python
+        - libpython
     - cmake >=3.15
     - ninja
     - ${{ stdlib('c') }}
@@ -38,11 +39,13 @@ requirements:
     - numpy
     - pip
     - python
+    - libpython
     - scikit-build-core
     - setuptools_scm
   run:
     - ${{ stdlib('c') }}
     - python
+    - libpython
     - numpy
 
 tests:

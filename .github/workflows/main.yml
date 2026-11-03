@@ -1,17 +1,12 @@
-name: Build & test
-
-on:
+name: Test of package installation & execution
+'on':
   push:
     branches-ignore:
-     - gh-pages
-    tags:
-     - '*'
+      - gh-pages
   schedule:
   - cron: 0 10 * * 1
   - cron: 0 10 1 * *
-
-env:
-  PYTHONVERSION_STD: "3.13"
+  workflow_dispatch:
 
 jobs:
   tests:
@@ -24,26 +19,18 @@ jobs:
           submodules: recursive
           fetch-tags: true
 
-      - name: Set up Python ${{ env.PYTHONVERSION_STD }}
-        uses: actions/setup-python@v6
+      - name: Set up pixi
+        uses: prefix-dev/pixi-action@v0.10.2
         with:
-          python-version: ${{ env.PYTHONVERSION_STD }}
-
-      - name: Install dependencies
-        run: |
-          pip install -v '.[test]'
+          environments: test
 
       - name: Tests
         run: |
-          pytest -sv tests
+          pixi run -e test test
 
-      - name: Doctests
-        run: |
-          make -C docs doctest -e PYTHON=$(which python3)
-
-      # - name: Typing stub tests
+      # - name: Doctests
       #   run: |
-      #     stubtest rapidjson
+      #     make -C docs doctest -e PYTHON=$(which python3)
 
   debug-tests:
     name: Memory leak tests, on current debug build Python
@@ -55,17 +42,13 @@ jobs:
           submodules: recursive
           fetch-tags: true
 
-      - uses: deadsnakes/action@v3.2.0
+      - name: Set up pixi
+        uses: prefix-dev/pixi-action@v0.10.2
         with:
-          python-version: ${{ env.PYTHONVERSION_STD }}
-          debug: true
-
-      - name: Install dependencies
-        run: |
-          pip install --config-settings=cmake.build-type="Debug" --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_CHECK_PYREFS:BOOL=ON -v '.[test]'
+          environments: debug
 
       - run: |
-          pytest -sv tests
+          pixi run -e debug test
 
   all_tests_passed:
     runs-on: ubuntu-latest

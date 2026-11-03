@@ -1,0 +1,132 @@
+[workspace]
+name = "yggdrasil-python-rapidjson"
+version = "1.23.0.1"
+description = "Version of rapidjson Python wrapper with extended support for yggdrasil"
+authors = ["Meagan Lang <langmm.astro@gmail.com>"]
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "osx-64", "linux-64", "linux-aarch64", "win-64"]
+preview = ["pixi-build"]
+build-variants-files = [
+  "./conda.recipe/conda_build_config.yaml",
+]
+
+[feature.python.dependencies]
+python = "3.15.*"
+libpython = "3.15.*"
+numpy = ">=1.13.0"
+pip = "*"
+
+[feature.python.pypi-dependencies]
+yggdrasil-python-rapidjson = { path = ".", editable = true }
+
+[feature.debug]
+channels = ["conda-forge/label/python_debug", "conda-forge"]
+
+[feature.debug.target.unix.dependencies]
+python = {
+  version = "3.15.*",
+  channel = "conda-forge/label/python_debug"
+}
+numpy = ">=1.13.0"
+pip = "*"
+
+[feature.py311.dependencies]
+python = "3.11.*"
+
+[feature.py312.dependencies]
+python = "3.12.*"
+
+[feature.py313.dependencies]
+python = "3.13.*"
+
+[feature.py314.dependencies]
+python = "3.14.*"
+
+[feature.py315.dependencies]
+python = "3.15.*"
+libpython = "3.15.*"
+
+[feature.build.dependencies]
+cmake = ">=3.15"
+ninja = "*"
+hatch-fancy-pypi-readme = "*"
+scikit-build-core = "*"
+setuptools_scm = "*"
+yggdrasil-rapidjson = ">=1.1.0.5"
+
+[feature.build.target.unix.dependencies]
+c-compiler = "*"
+cxx-compiler = "*"
+
+[feature.build.target.win-64.dependencies]
+vc = "14.5.*"
+vs2026_win-64 = "19.51.*"
+
+[feature.test.dependencies]
+pandas = "*"
+pytest = "*"
+pytest-cov = "*"
+pytz = "*"
+trimesh = "*"
+unyt = "*"
+
+[feature.docs.dependencies]
+myst-parser = "*"
+sphinx = "*"
+standard-imghdr = "*"
+
+[feature.build-conda.dependencies]
+rattler-build = "*"
+
+[environments]
+default = { features = ["python", "build", "test", "docs"], solve-group = "default" }
+build = { features = ["python", "build"], solve-group = "default" }
+test = { features = ["python", "build", "test"], solve-group = "default" }
+docs = { features = ["python", "build", "docs"], solve-group = "default" }
+debug = { features = ["debug", "build", "test"], solve-group = "debug" }
+build-conda = { features = ["build-conda"] }
+test-py311 = { features = ["py311", "build", "test"] }
+test-py312 = { features = ["py312", "build", "test"] }
+test-py313 = { features = ["py313", "build", "test"] }
+test-py314 = { features = ["py314", "build", "test"] }
+test-py315 = { features = ["py315", "build", "test"] }
+
+[tasks.install]
+description = "Install the package"
+cmd = "pip install -v .[test]"
+
+[tasks.build-wheel]
+description = "Build wheel"
+cmd = "pip install build && python -m build"
+
+[tasks.test]
+description = "Run the test suite"
+cmd = "pytest"
+default-environment = "test"
+
+[tasks.docs]
+description = "Build the documentation with Sphinx"
+# cmd = "make -C docs html"
+cmd = "sphinx-build docs docs/_build"
+default-environment = "docs"
+
+[feature.debug.tasks.install]
+description = "Install the package with debug symbols"
+cmd = "pip install --config-settings=cmake.build-type=\"Debug\" --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_CHECK_PYREFS:BOOL=ON -v '.[test]'"
+default-environment = "debug"
+
+[feature.debug.tasks.test]
+description = "Run the test suite with memory leak checks"
+cmd = "pytest"
+depends-on = [
+    { task = "install", environment = "debug" },
+]
+default-environment = "debug"
+
+[tasks.build-conda]
+description = "Build conda package with pixi publish"
+args = [
+    { arg = "output_dir", default = "build_conda" },
+]
+cmd = "pixi publish --path conda.recipe/recipe.yaml --target-dir {{ output_dir }}"
+default-environment = "build-conda"

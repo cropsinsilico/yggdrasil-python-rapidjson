@@ -110,6 +110,11 @@ description = "Build the documentation with Sphinx"
 cmd = "sphinx-build docs docs/_build"
 default-environment = "docs"
 
+[tasks.doc-tests]
+description = "Run the documentation doctests with Sphinx"
+cmd = "sphinx-build -b doctest docs docs/_build/doctest"
+default-environment = "docs"
+
 [feature.debug.tasks.install]
 description = "Install the package with debug symbols"
 cmd = "pip install --config-settings=cmake.build-type=\"Debug\" --config-settings=cmake.define.YGGDRASIL_RAPIDJSON_CHECK_PYREFS:BOOL=ON -v '.[test]'"

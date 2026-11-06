@@ -4,6 +4,8 @@ Changes
 yggdrasil-python-rapidjson
 ==========================
 
+.. git-cliff: end of header
+
 1.23.0.1 (2026-07-10)
 ~~~~~~~~~~~~~~~~~~~~~
 

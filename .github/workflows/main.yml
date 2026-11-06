@@ -22,7 +22,9 @@ jobs:
       - name: Set up pixi
         uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          environments: [test, docs]
+          environments: >-
+            test
+            docs
 
       - name: Tests
         run: |

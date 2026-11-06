@@ -12,22 +12,32 @@ source:
 build:
   number: 0
   script:
-    - if: unix
-      then:
-        - 'CMAKE_GENERATOR="Ninja" ${{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
-    - if: win
-      then:
-        - 'set "SKBUILD_CMAKE_ARGS=-G Ninja"'
-        - '${{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
+    content:
+      - if: unix
+        then: |
+          if [[ "${{ python }}" == *t ]]; then
+            export CMAKE_ARGS="${CMAKE_ARGS} -DPython3_FIND_ABI=ANY;ANY;ANY;ON"
+          fi
+          export CMAKE_GENERATOR="Ninja"
+          ${{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv
+      - if: win
+        then: |
+          set "PYTHON_VERSION=${{ python }}"
+          IF "%PYTHON_VERSION:~-1%"=="t" (
+            set "CMAKE_ARGS=%CMAKE_ARGS% -DPython3_FIND_ABI=ANY;ANY;ANY;ON"
+          )
+          set "SKBUILD_CMAKE_ARGS=-G Ninja"
+          ${{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv
 
 requirements:
   build:
-    - if: build_platform != target_platform
+    - if: build_platform != host_platform
       then:
-        - cross-python_${{ target_platform }}
+        - cross-python_${{ host_platform }}
         - numpy
         - python
-        - libpython
+        - if: match(python, ">=3.15")
+          then: libpython
     - cmake >=3.15
     - ninja
     - ${{ stdlib('c') }}
@@ -39,13 +49,15 @@ requirements:
     - numpy
     - pip
     - python
-    - libpython
+    - if: match(python, ">=3.15")
+      then: libpython
     - scikit-build-core
     - setuptools_scm
   run:
     - ${{ stdlib('c') }}
     - python
-    - libpython
+    - if: match(python, ">=3.15")
+      then: libpython
     - numpy
 
 tests:

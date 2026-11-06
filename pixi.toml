@@ -75,6 +75,10 @@ myst-parser = "*"
 sphinx = "*"
 standard-imghdr = "*"
 
+[feature.dev.dependencies]
+git = "*"
+git-cliff = "*"
+
 [feature.build-conda.dependencies]
 rattler-build = "*"
 
@@ -83,6 +87,7 @@ default = { features = ["python", "build", "test", "docs"], solve-group = "defau
 build = { features = ["python", "build"], solve-group = "default" }
 test = { features = ["python", "build", "test"], solve-group = "default" }
 docs = { features = ["python", "build", "docs"], solve-group = "default" }
+dev = { features = ["dev"], solve-group = "default" }
 debug = { features = ["debug", "build", "test"], solve-group = "debug" }
 build-conda = { features = ["build-conda"] }
 test-py311 = { features = ["py311", "build", "test"] }
@@ -135,3 +140,13 @@ args = [
 ]
 cmd = "pixi publish --path conda.recipe/recipe.yaml --target-dir {{ output_dir }}"
 default-environment = "build-conda"
+
+[tasks.changelog]
+cmd = "git-cliff --unreleased --bump --prepend"
+description = "Update the change log"
+default-environment = "dev"
+
+[tasks.setup-hooks]
+description = "Enable the tracked git hooks in githooks/"
+cmd = "git config core.hooksPath githooks"
+default-environment = "dev"
